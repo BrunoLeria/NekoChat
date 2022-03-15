@@ -1,6 +1,6 @@
 <script setup>
 import SideMenu from "../components/SideMenu.vue";
-import { shallowRef } from "vue";
+import { ref } from "vue";
 import Dashboard from "./home/Dashboard.vue";
 import Team from "./home/Team.vue";
 import Chat from "./home/Chat.vue";
@@ -15,17 +15,19 @@ const components = {
 	Settings
 };
 
-const activeComponent = "Dashboard";
+const activeComponent = ref("Dashboard");
 </script>
 
 <template>
-	<div>
+	<div class="flex h-full">
 		<SideMenu v-model="activeComponent" />
-		<div class="py-10 w-full bg-indigo-100 absolute top-0"></div>
-		<transition name="component-fade" mode="out-in">
-			<component :is="components[activeComponent]"></component>
-		</transition>
-		<div class="py-10 w-full bg-indigo-100 absolute bottom-0"></div>
+		<div class="flex-1 flex flex-col">
+			<div class="py-10 bg-indigo-100"></div>
+			<transition name="component-fade" mode="out-in">
+				<component :is="components[activeComponent]" class="h-full w-full"></component>
+			</transition>
+			<div class="py-10 bg-indigo-100"></div>
+		</div>
 	</div>
 </template>
 

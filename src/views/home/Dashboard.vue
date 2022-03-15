@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-yellow-800 h-full w-full z-2">Component D</div>
+	<div class="bg-yellow-800 z-2">Component D</div>
 </template>
 
 <script>

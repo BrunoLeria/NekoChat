@@ -1,6 +1,6 @@
 
 <template>
-	<div id="app">
+	<div id="app" class="h-full w-full fixed">
 		<router-view v-slot="{ Component }">
 			<transition name="component-fade" mode="out-in">
 				<component :is="Component"></component>

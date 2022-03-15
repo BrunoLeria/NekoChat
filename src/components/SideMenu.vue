@@ -1,6 +1,6 @@
 <template>
 	<!-- Sidebar -->
-	<div class="xl:w-1/5 w-1/4 h-full fixed flex flex-col bg-indigo-700 auto-rows-max z-10 shadow-2xl">
+	<div class="flex-none xl:w-1/5 w-1/4 h-full bg-indigo-700 auto-rows-max flex-none flex flex-col z-10">
 		<div class="py-6 w-full bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500">
 			<h3 class="text-white text-2xl text-left ml-4 font-bold rounded-xl">NekoChat</h3>
 		</div>
