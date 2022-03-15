@@ -14,8 +14,27 @@
 .component-fade-leave-active {
 	transition: opacity 0.3s ease;
 }
-.component-fade-enter, .component-fade-leave-to
+.component-fade-enter, 
+.component-fade-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
+}
+
+/*
+  Enter and leave animations can use different
+  durations and timing functions.
+*/
+.slide-fade-enter-active {
+	transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+	transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+	transform: translateX(20px);
 	opacity: 0;
 }
 </style>

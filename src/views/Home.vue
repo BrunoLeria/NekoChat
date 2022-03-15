@@ -22,7 +22,11 @@ const activeComponent = ref("Dashboard");
 	<div class="flex h-full">
 		<SideMenu v-model="activeComponent" />
 		<div class="flex-1 flex flex-col">
-			<div class="py-10 bg-indigo-100"></div>
+			<div class="py-6 bg-indigo-100">
+				<transition name="slide-fade">
+					<h3 class="text-indigo-700 text-2xl text-left ml-4 font-bold rounded-xl">{{ activeComponent }}</h3>
+				</transition>
+			</div>
 			<transition name="component-fade" mode="out-in">
 				<component :is="components[activeComponent]" class="h-full m-12 border-8 z-10 shadow-xl"></component>
 			</transition>
