@@ -1,10 +1,10 @@
+<script setup>
+</script>
 <template>
-	<div class="bg-emerald-800">Component T</div>
+	<div class=""></div>
 </template>
 
-<script>
-export default {};
-</script>
+
 
 <style>
 </style>

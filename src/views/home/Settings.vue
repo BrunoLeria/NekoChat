@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-lime-800">Component S</div>
+	<div>Component S</div>
 </template>
 
 <script>

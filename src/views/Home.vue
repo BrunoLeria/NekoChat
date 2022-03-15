@@ -24,7 +24,7 @@ const activeComponent = ref("Dashboard");
 		<div class="flex-1 flex flex-col">
 			<div class="py-10 bg-indigo-100"></div>
 			<transition name="component-fade" mode="out-in">
-				<component :is="components[activeComponent]" class="h-full w-full"></component>
+				<component :is="components[activeComponent]" class="h-full m-12 border-8 z-10 shadow-xl"></component>
 			</transition>
 			<div class="py-10 bg-indigo-100"></div>
 		</div>
