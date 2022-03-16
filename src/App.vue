@@ -1,4 +1,9 @@
+<script setup>
+import { provide } from "vue";
+import firebaseMessaging from "./services/firebase";
 
+provide("messaging", firebaseMessaging);
+</script>
 <template>
 	<div id="app" class="h-full w-full fixed">
 		<router-view v-slot="{ Component }">

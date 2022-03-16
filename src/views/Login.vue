@@ -3,6 +3,12 @@ import TextInput from "/src/components/inputs/TextInput.vue";
 import Checkbox from "/src/components/inputs/Checkbox.vue";
 import Sublink from "/src/components/Sublink.vue";
 import logo from "/src/assets/logo.svg";
+import { inject } from "vue";
+import { getToken } from "firebase/messaging";
+import { useAuthStore } from "/src/services/stores/authStore";
+
+const messaging = inject("messaging");
+const authStore = useAuthStore();
 
 let email = "";
 let password = "";

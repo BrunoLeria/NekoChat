@@ -19,7 +19,7 @@ const activeComponent = ref("Dashboard");
 </script>
 
 <template>
-	<div class="flex h-full">
+	<div class="flex h-full bg-white dark:bg-slate-90">
 		<SideMenu v-model="activeComponent" />
 		<div class="flex-1 flex flex-col">
 			<div class="py-6 bg-indigo-100">
