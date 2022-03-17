@@ -4,8 +4,6 @@
     import Sublink from "/src/components/Sublink.vue";
     import logo from "/src/assets/logo.svg";
 
-    const authStore = useAuthStore();
-
     let email = "";
     let password = "";
     let remember = false;
