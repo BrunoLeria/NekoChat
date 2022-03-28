@@ -51,7 +51,7 @@
                 :modelValue="mensagem"
                 fieldName="mensagem"
                 type="text"
-                idField="mensagem"
+                id="mensagem"
                 autoComplete="mensagem"
                 class="w-full" />
             <button

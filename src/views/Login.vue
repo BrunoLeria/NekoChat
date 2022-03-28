@@ -40,24 +40,24 @@
                 <div class="rounded-md shadow-sm -space-y-px">
                     <TextInput
                         label="Email"
-                        :modelValue="email"
+                        v-model="email"
                         fieldName="email"
                         type="email"
-                        idField="email"
+                        id="email"
                         autoComplete="email" />
                     <TextInput
                         label="Senha"
-                        :modelValue="password"
+                        v-model="password"
                         fieldName="password"
                         type="password"
-                        idField="password"
+                        id="password"
                         autoComplete="current-password" />
                 </div>
                 <div class="flex items-center justify-between">
                     <Checkbox
-                        label="Lembrar de mim"
-                        :modelValue="remember"
-                        idField="remember-me" />
+                        :id="'remeberCheckbox'"
+                        :label="'Lembrar-me'"
+                        v-model="remember" />
                     <Sublink
                         text="Esqueceu sua senha?"
                         link="https://tailwindui.com/" />

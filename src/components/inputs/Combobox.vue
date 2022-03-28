@@ -1,65 +1,44 @@
 <script setup>
-    defineProps({
-        label: {
-            type: String,
-            default: "",
-            required: true
-        },
-        modelValue: {
-            type: [String, Number, Boolean, Object, Array],
-            default: "",
-            required: true
-        },
-        idField: {
-            type: String,
-            default: "text",
-            required: true
-        },
-        fieldName: {
-            type: String,
-            default: ""
-        },
-        autoComplete: {
-            type: String,
-            default: ""
-        },
-        required: {
-            type: Boolean,
-            default: false
-        },
-        options: {
-            type: Array,
-            default: []
-        }
+    const props = defineProps({
+        alternatives: { type: Array, required: false },
+        disabled: Boolean,
+        modelValue: String,
+        id: String,
+        required: Boolean,
+        label: String
     });
+
+    defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-    <div class="py-5">
+    <div>
         <label
-            :for="idField"
+            :for="id"
             class="sr-only">
             {{ label }}
         </label>
         <select
-            :id="idField"
-            :name="fieldName"
-            :autocomplete="autoComplete"
-            v-model="modelValue"
-            :placeholder="label"
+            :id="id"
+            :name="id"
+            :disabled="disabled"
             :required="required"
-            class="rounded-xl py-4 px-4 relative block w-full border border-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ease-in-out duration-500">
+            class="p-4 rounded-xl relative block w-full border border-gray-400 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            :class="modelValue === '' ? 'text-gray-400' : 'text-gray-900'"
+            v-model="modelValue"
+            @change="$emit('update:modelValue', $event.target.value)"
+            :placeholder="label">
             <option
                 value=""
                 disabled
-                selected
-                class="text-gray-400">
-                Select your option
+                selected>
+                Selecione um(a) {{ label.toLowerCase() }}
             </option>
             <option
-                v-for="option in options"
-                :value="option">
-                {{ option }}
+                v-if="alternatives"
+                v-for="alternative in alternatives"
+                :key="alternative.id">
+                {{ alternative.name }}
             </option>
         </select>
     </div>

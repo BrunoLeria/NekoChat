@@ -1,99 +1,12 @@
 <script setup>
-    let team = [
-        {
-            id: 1,
-            name: "Jane Cooper",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Regional Paradigm Technician",
-            status: "Online",
-            isAdmin: false
-        },
-        {
-            id: 2,
-            name: "Cody Fisher",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Product Directives Officer ",
-            status: "Away",
-            isAdmin: false
-        },
-        {
-            id: 3,
-            name: "Esther Howard",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Forward Response Developer",
-            status: "Online",
-            isAdmin: true
-        },
-        {
-            id: 4,
-            name: "Jenny Wilson",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Central Security Manager",
-            status: "Offline",
-            isAdmin: true
-        },
-        {
-            id: 5,
-            name: "Kristin Watson",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Lead Implementation Liaison",
-            status: "Offline",
-            isAdmin: false
-        },
-        {
-            id: 6,
-            name: "Cameron Williamson",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Internal Applications Engineer",
-            status: "Occupied",
-            isAdmin: false
-        },
-        {
-            id: 7,
-            name: "Mavis Russel",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Internal Applications Engineer",
-            status: "Offline",
-            isAdmin: false
-        },
-        {
-            id: 8,
-            name: "Milton Lowery",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Central Security Guard",
-            status: "Occupied",
-            isAdmin: true
-        },
-        {
-            id: 9,
-            name: "Sullivan Owen",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Regional Paradigm Manager",
-            status: "Occupied",
-            isAdmin: false
-        },
-        {
-            id: 10,
-            name: "Betty Walters",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Internal Applications Engineer",
-            status: "Occupied",
-            isAdmin: false
-        },
-        {
-            id: 11,
-            name: "Leila Strickland",
-            photo: "https://tailwindui.com/img/justin-profile.jpg",
-            office: "Internal Applications Engineer",
-            status: "Occupied",
-            isAdmin: true
-        }
-    ];
+    import { useTeamStore } from "../../services/stores/team";
+
+    const teamStore = useTeamStore();
 </script>
 <template>
     <div class="bg-neutral-100 p-14 grid grid-cols-3 gap-5 overflow-auto">
         <div
-            v-for="member of team"
+            v-for="member of teamStore.team"
             class="bg-white rounded-xl h-fit flex flex-col w-full shadow-lg border-gray-200 border-2 hover:shadow-indigo-500 hover:border-indigo-500 ease-in-out duration-500"
             :key="member.id">
             <div class="flex p-3 justify-between">

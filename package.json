@@ -1,5 +1,5 @@
 {
-    "name": "whatsrice",
+    "name": "nekochat",
     "private": true,
     "version": "0.0.0",
     "scripts": {
@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "autoprefixer": "^10.4.2",
+        "axios": "^0.26.1",
         "firebase": "^9.6.8",
         "firebaseui": "^6.0.1",
         "lodash": "^4.17.21",
@@ -20,6 +21,7 @@
         "ws": "^8.5.0"
     },
     "devDependencies": {
+        "@tailwindcss/forms": "^0.5.0",
         "@vitejs/plugin-vue": "^2.2.0",
         "prettier": "2.6.0",
         "tailwindcss": "^3.0.23",

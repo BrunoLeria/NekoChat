@@ -106,7 +106,7 @@
             </div>
         </div>
         <div
-            class="py-6 px-4 flex items bg-indigo-500 w-full hover:bg-indigo-600 text-white text-xl ease-in-out duration-500"
+            class="py-6 px-4 flex items bg-indigo-700 w-full hover:bg-indigo-600 text-white text-xl ease-in-out duration-500"
             @click="logout()">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
