@@ -49,7 +49,6 @@
             <TextInput
                 label="Digite sua mensagem aqui"
                 :modelValue="mensagem"
-                fieldName="mensagem"
                 type="text"
                 id="mensagem"
                 autoComplete="mensagem"

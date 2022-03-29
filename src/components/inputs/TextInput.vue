@@ -20,10 +20,6 @@
             default: "text",
             required: true
         },
-        fieldName: {
-            type: String,
-            default: ""
-        },
         autoComplete: {
             type: String,
             default: ""
@@ -33,18 +29,17 @@
             default: false
         }
     });
+    defineEmits(["update:modelValue"]);
 </script>
 
 <template>
     <div class="py-5">
-        <label
-            :for="id"
-            class="sr-only">
-            {{ label }}
+        <label class="block text-sm font-medium text-gray-700">
+            {{ label }}:
         </label>
         <input
             :id="id"
-            :name="fieldName"
+            :name="id"
             :type="type"
             :autocomplete="autoComplete"
             v-model="modelValue"

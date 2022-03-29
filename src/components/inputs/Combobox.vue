@@ -13,10 +13,8 @@
 
 <template>
     <div>
-        <label
-            :for="id"
-            class="sr-only">
-            {{ label }}
+        <label class="block text-sm font-medium text-gray-700">
+            {{ label }}:
         </label>
         <select
             :id="id"

@@ -41,14 +41,12 @@
                     <TextInput
                         label="Email"
                         v-model="email"
-                        fieldName="email"
                         type="email"
                         id="email"
                         autoComplete="email" />
                     <TextInput
                         label="Senha"
                         v-model="password"
-                        fieldName="password"
                         type="password"
                         id="password"
                         autoComplete="current-password" />
@@ -57,6 +55,7 @@
                     <Checkbox
                         :id="'remeberCheckbox'"
                         :label="'Lembrar-me'"
+                        :revert="true"
                         v-model="remember" />
                     <Sublink
                         text="Esqueceu sua senha?"

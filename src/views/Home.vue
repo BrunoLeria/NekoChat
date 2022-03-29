@@ -35,7 +35,7 @@
                 mode="out-in">
                 <component
                     :is="components[activeComponent]"
-                    class="h-full m-12 border-8 z-10 shadow-xl"></component>
+                    class="h-full m-12 border-8 z-10 shadow-xl overflow-y-auto"></component>
             </transition>
             <div class="py-10 bg-indigo-100"></div>
         </div>

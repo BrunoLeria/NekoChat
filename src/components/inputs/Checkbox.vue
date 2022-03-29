@@ -14,17 +14,23 @@
             type: String,
             default: "text",
             required: true
+        },
+        revert: {
+            type: Boolean,
+            default: false
         }
     });
     defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-    <div class="p-2">
+    <div
+        class="p-2 flex items-center h-full"
+        :class="revert ? 'flex flex-row-reverse' : ''">
         <label
             for="checkbox"
-            class="text-md text-gray-500 px-4">
-            {{ label }}
+            class="block text-sm font-medium text-gray-700 px-4">
+            {{ label }}:
         </label>
         <input
             :id="id"
