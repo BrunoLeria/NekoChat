@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
+import Register from "../views/Register.vue";
 import NotFound from "../views/NotFound.vue";
 import About from "../views/About.vue";
 import NetworkError from "../views/NetworkError.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 
 const routes = [
     {
@@ -16,6 +18,11 @@ const routes = [
         path: "/home",
         name: "Home",
         component: Home
+    },
+    {
+        path: "/register",
+        name: "Register",
+        component: Register
     },
     {
         path: "/about-us",
@@ -44,23 +51,35 @@ const router = createRouter({
     }
 });
 
-router.beforeEach(() => {
+const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const removeListener = onAuthStateChanged(
+            getAuth(),
+            (user) => {
+                removeListener();
+                resolve(user);
+            },
+            reject
+        );
+    });
+};
+
+router.beforeEach(async (to, from, next) => {
     NProgress.start();
 
-    //   const notAuthorized = true;
-    //   if (to.meta.requireAuth & notAuthorized) {
-    //     GStore.flashMessage = "You must be logged in to view this page";
-
-    //     setTimeout(() => {
-    //       GStore.flashMessage = "";
-    //     }, 3000);
-
-    //     if (from.href) {
-    //       return false;
-    //     }
-
-    //     return { path: "/" };
-    //   }
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (await getCurrentUser()) {
+            next();
+        } else {
+            alert("Você precisa estar logado para acessar esta página");
+            next({
+                path: "/",
+                query: { redirect: to.fullPath }
+            });
+        }
+    } else {
+        next();
+    }
 });
 
 router.afterEach((to, from) => {

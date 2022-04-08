@@ -15,7 +15,7 @@
         Settings
     };
 
-    const activeComponent = ref("Settings");
+    const activeComponent = ref("Dashboard");
 </script>
 
 <template>

@@ -117,7 +117,6 @@
                                 v-model="person.photo" />
                         </div>
                         <div class="col-span-2"></div>
-
                         <div class="col-span-2">
                             <PasswordInput
                                 label="Senha"
@@ -127,9 +126,9 @@
                         </div>
                         <div class="col-span-2">
                             <TextInput
-                                label="Senha"
+                                label="Confirmar senha"
                                 type="password"
-                                id="password"
+                                id="passwordConfirm"
                                 v-model="person.confirmPassword" />
                         </div>
                         <div class="col-span-3">

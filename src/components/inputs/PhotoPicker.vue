@@ -1,12 +1,12 @@
 <script setup>
-    defineProps({
+    const props = defineProps({
         label: {
             type: String,
             default: "",
             required: true
         },
         modelValue: {
-            type: [String, Number, Boolean, Object, Array],
+            type: [String, Number, Boolean, Object, Array, File],
             default: "",
             required: true
         },
@@ -25,13 +25,67 @@
             default: false
         }
     });
-    defineEmits(["update:modelValue"]);
+    const emits = defineEmits(["update:modelValue"]);
+
+    let base64 = null;
+    let imageSrc = null;
+
+    function removeImage() {
+        base64 = null;
+        imageSrc = null;
+        emits("update:modelValue", null);
+    }
+
+    function urlToBase64(urlStorage) {
+        function toDataURL(url, callback) {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                    callback(reader.result);
+                };
+                reader.readAsDataURL(xhr.response);
+            };
+            xhr.open("GET", url);
+            xhr.responseType = "blob";
+            xhr.send();
+        }
+
+        toDataURL(urlStorage, function (dataUrl) {
+            base64 = dataUrl;
+            emits("update:value", {
+                base64: dataUrl,
+                name: null,
+                format: "png"
+            });
+        });
+    }
+
+    function uploadImage(event) {
+        const reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = () => {
+            imageSrc = event.target.files[0];
+            base64 = reader.result;
+            emits("update:modelValue", {
+                base64: reader.result,
+                name: imageSrc.name,
+                format: imageSrc.type.replace("image/", "")
+            });
+        };
+    }
 </script>
 
 <template>
     <label class="block text-sm font-medium text-gray-700">{{ label }}:</label>
     <div class="mt-4 flex items-center">
+        <img
+            :src="modelValue.base64"
+            v-if="modelValue"
+            class="inline-block h-12 w-12 rounded-full overflow-hidden"
+            alt="" />
         <span
+            v-else
             class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
             <svg
                 class="h-full w-full text-gray-300"
@@ -44,7 +98,21 @@
         <input
             type="file"
             accept="image/*"
+            @change="uploadImage"
             class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" />
+        <svg
+            v-if="base64"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
     </div>
 </template>
 

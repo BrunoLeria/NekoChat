@@ -1,4 +1,29 @@
-<script setup></script>
+<script setup>
+    import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+    import { useRouter } from "vue-router";
+    import { ref, onMounted } from "vue";
+
+    const router = useRouter();
+    const isLoggedIn = ref(false);
+    let auth;
+
+    onMounted(() => {
+        auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                isLoggedIn.value = true;
+            } else {
+                isLoggedIn.value = false;
+            }
+        });
+    });
+
+    const handleSignOut = () => {
+        signOut(auth).then(() => {
+            router.push({ name: "Login" });
+        });
+    };
+</script>
 <template>
     <!-- Sidebar -->
     <div
@@ -64,7 +89,7 @@
                 </svg>
                 <h4 class="ml-4 text-center">Chat</h4>
             </div>
-            <div
+            <!-- <div
                 class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
                 :class="$attrs.modelValue == 'Analytics' ? 'bg-indigo-600' : ''"
                 @click="$emit('update:modelValue', 'Analytics')">
@@ -81,7 +106,7 @@
                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <h4 class="ml-4 text-center">Relatórios</h4>
-            </div>
+            </div> -->
             <div
                 class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
                 :class="$attrs.modelValue == 'Settings' ? 'bg-indigo-600' : ''"
@@ -107,7 +132,7 @@
         </div>
         <div
             class="py-6 px-4 flex items bg-indigo-700 w-full hover:bg-indigo-600 text-white text-xl ease-in-out duration-500"
-            @click="logout()">
+            @click="handleSignOut">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-7 w-7"
@@ -125,15 +150,4 @@
     </div>
     <!-- Sidebar -->
 </template>
-
-<script>
-    export default {
-        methods: {
-            logout() {
-                this.$router.push({ name: "Login" });
-            }
-        }
-    };
-</script>
-
 <style></style>
