@@ -82,11 +82,11 @@
         <img
             :src="modelValue.base64"
             v-if="modelValue"
-            class="inline-block h-12 w-12 rounded-full overflow-hidden"
+            class="inline-block h-16 w-16 rounded-full overflow-hidden"
             alt="" />
         <span
             v-else
-            class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+            class="inline-block h-16 w-16 rounded-full overflow-hidden bg-gray-100">
             <svg
                 class="h-full w-full text-gray-300"
                 fill="currentColor"
@@ -99,7 +99,7 @@
             type="file"
             accept="image/*"
             @change="uploadImage"
-            class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" />
+            class="ml-5 bg-white w-4/5 py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
         <svg
             v-if="base64"
             xmlns="http://www.w3.org/2000/svg"

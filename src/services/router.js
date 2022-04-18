@@ -17,7 +17,8 @@ const routes = [
     {
         path: "/home",
         name: "Home",
-        component: Home
+        component: Home,
+        meta: { requiresAuth: true }
     },
     {
         path: "/register",
@@ -66,20 +67,16 @@ const getCurrentUser = () => {
 
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
-
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (await getCurrentUser()) {
-            next();
-        } else {
-            alert("Você precisa estar logado para acessar esta página");
-            next({
-                path: "/",
-                query: { redirect: to.fullPath }
-            });
-        }
-    } else {
-        next();
+    console.log(to);
+    console.log(await getCurrentUser());
+    console.log(to.matched.some((record) => record.meta.requiresAuth));
+    if (to.matched.some((record) => record.meta.requiresAuth) && await getCurrentUser()) next();
+    else if (to.name != "Login") {
+        console.log("redirecting to login");
+        next({ name: "Login" });
+        alert("Você precisa estar logado para acessar esta página");
     }
+    next();
 });
 
 router.afterEach((to, from) => {

@@ -109,14 +109,14 @@
                                 id="phone"
                                 v-model="person.phone" />
                         </div>
-                        <div class="col-span-2">
+                        <div class="col-span-3">
                             <PhotoPicker
                                 label="Foto"
                                 id="photo"
                                 :text="'Selecionar foto'"
                                 v-model="person.photo" />
                         </div>
-                        <div class="col-span-2"></div>
+                        <div class="col-span-1"></div>
                         <div class="col-span-2">
                             <PasswordInput
                                 label="Senha"
@@ -135,28 +135,28 @@
                             <TextInput
                                 label="Endereço"
                                 type="text"
-                                id="address.street"
+                                id="street"
                                 v-model="person.address.street" />
                         </div>
                         <div class="col-span-1">
                             <TextInput
                                 label="Número"
                                 type="text"
-                                id="address.number"
+                                id="number"
                                 v-model="person.address.number" />
                         </div>
                         <div class="col-span-2">
                             <TextInput
                                 label="Complemento"
                                 type="text"
-                                id="address.complement"
+                                id="complement"
                                 v-model="person.address.complement" />
                         </div>
                         <div class="col-span-2">
                             <TextInput
                                 label="Bairro"
                                 type="text"
-                                id="address.neighborhood"
+                                id="neighborhood"
                                 v-model="person.address.neighborhood" />
                         </div>
                         <div class="col-span-1">
