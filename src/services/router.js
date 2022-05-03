@@ -67,12 +67,12 @@ const getCurrentUser = () => {
 
 router.beforeEach(async (to, from, next) => {
     NProgress.start();
-    console.log(to);
-    console.log(await getCurrentUser());
-    console.log(to.matched.some((record) => record.meta.requiresAuth));
-    if (to.matched.some((record) => record.meta.requiresAuth) && await getCurrentUser()) next();
+    if (
+        to.matched.some((record) => record.meta.requiresAuth) &&
+        (await getCurrentUser())
+    )
+        next();
     else if (to.name != "Login") {
-        console.log("redirecting to login");
         next({ name: "Login" });
         alert("Você precisa estar logado para acessar esta página");
     }
