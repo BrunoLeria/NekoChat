@@ -6,12 +6,6 @@ import Team from "./home/Team.vue";
 import Chat from "./home/Chat.vue";
 import Analytics from "./home/Analytics.vue";
 import Settings from "./home/Settings.vue";
-import express from "express";
-import bodyParser from "body-parser";
-
-const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 const components = {
     Dashboard,
@@ -20,19 +14,25 @@ const components = {
     Analytics,
     Settings
 };
-
 const activeComponent = ref("Dashboard");
 
-app.post("/webhook-client", async (req, res) => {
-    console.log("Inside Callback hook", req.body);
-    const { data } = req.body;
-    await Model.create(data);
-    return res.status(200).end();
-});
+// const express = require("express");
+// const bodyParser = request("body-parser");
 
-app.listen(3001, () => {
-    console.log("Client has been stated at: http://localhost:8005");
-});
+// const app = express();
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+
+// app.post("/webhook-client", async (req, res) => {
+//     console.log("Inside Callback hook", req.body);
+//     const { data } = req.body;
+//     await Model.create(data);
+//     return res.status(200).end();
+// });
+
+// app.listen(3001, () => {
+//     console.log("Client has been stated at: http://localhost:8005");
+// });
 </script>
 
 <template>
