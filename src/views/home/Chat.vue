@@ -1,69 +1,66 @@
 <script setup>
 import TextInput from "/src/components/inputs/TextInput.vue";
+import { useTalkStore } from "../../services/stores/talks";
 
-let mensagens = [
-	{
-		id: 1,
-		mensagem: "Olá, tudo bem?",
-		user: "João",
-		data: "01/01/2020"
-	},
-	{
-		id: 2,
-		mensagem: "Tudo bem, obrigado!",
-		user: "Maria",
-		data: "01/01/2020"
-	}
-];
-let mensagem = "";
+const talkStore = useTalkStore();
+const talk = talkStore.talks[talkStore.selected];
+
+let myMessage = "";
+
+const time = (message) => {
+	const date = new Date(message.tlk_date_time);
+	return date.getMinutes() < 10
+		? date.getHours() + ":0" + date.getMinutes()
+		: date.getHours() + ":" + date.getMinutes();
+};
 </script>
 
 <template>
-	<div class="bg-neutral-100 p-14 flex flex-col flex-wrap justify-between">
-		<div class="flex flex-col">
-			<div id="mensagens" class="bg-blue-100 p-5 rounded-xl w-fit h-fit">
-				<h3 class="text-indigo-700 break-words capitalize font-bold">
-					Nome pessoa
-				</h3>
-				<p class="my-3 break-words">
-					Mensagem bem extensiva adad
-					dhuiaddoiajdioajojosjodijsjodjdoiajsodjjdaodajoissoijdoajsoadjaod
-				</p>
-			</div>
+	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between">
+		<div
+			class="
+				flex flex-col
+				p-5
+				overflow-y-auto
+				w-full
+				h-4/5
+				bg-white
+				rounded-xl
+			">
 			<div
+				v-for="(message, index) in talk"
+				:key="index"
 				id="mensagens"
-				class="
-					bg-indigo-100
-					p-5
-					rounded-xl
-					w-fit
-					h-fit
-					my-7
-					place-self-end
+				:class="
+					message.tlk_from_me === '0'
+						? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+						: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
 				">
-				<h3
-					class="
-						text-indigo-700
-						break-words
-						capitalize
-						font-bold
-						place-self-end
-					">
-					Nome pessoa
-				</h3>
-				<p class="my-3 break-words">
-					Mensagem bem extensiva adad
-					dhuiaddoiajdioajojosjodijsjodjdoiajsodjjdaodajoissoijdoajsoadjaod
+				<div class="flex justify-between">
+					<h3
+						:class="'text-indigo-700 break-words capitalize font-bold'">
+						{{
+							message.tlk_from_me === "0"
+								? message.tlk_chat_name
+								: "Robô"
+						}}
+					</h3>
+					<p class="ml-3">
+						{{ time(message) }}
+					</p>
+				</div>
+				<p class="my-3 break-all">
+					{{ message.tlk_message }}
 				</p>
 			</div>
 		</div>
 		<div class="w-full flex items-center">
 			<TextInput
 				label="Digite sua mensagem aqui"
-				:modelValue="mensagem"
+				:modelValue="myMessage"
 				type="text"
-				id="mensagem"
-				autoComplete="mensagem"
+				id="myMessage"
+				autoComplete="myMessage"
 				class="w-full" />
 			<button
 				type="button"

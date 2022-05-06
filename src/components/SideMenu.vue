@@ -2,10 +2,12 @@
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
+import { useTalkStore } from "/src/services/stores/talks";
 
 defineEmits(["update:modelValue"]);
 const router = useRouter();
 const isLoggedIn = ref(false);
+const talkStore = useTalkStore();
 let auth;
 
 onMounted(() => {
@@ -104,6 +106,7 @@ const handleSignOut = () => {
 				<h4 class="ml-4 text-center">Time</h4>
 			</div>
 			<div
+				v-if="talkStore.selected"
 				class="
 					p-4
 					flex
