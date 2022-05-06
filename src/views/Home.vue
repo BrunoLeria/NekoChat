@@ -70,6 +70,7 @@ async function fetchTalks() {
 			<transition name="component-fade" mode="out-in">
 				<component
 					:is="components[activeComponent]"
+					v-model="activeComponent"
 					class="
 						h-full
 						m-12
