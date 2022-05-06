@@ -14,20 +14,20 @@ const props = defineProps({
 			:key="index"
 			id="mensagens"
 			:class="
-				message.con_from_me
+				message.tlk_from_me
 					? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-7 place-self-end'
 					: 'bg-blue-100 p-5 rounFded-xl w-fit h-fit'
 			">
 			<div class="flex">
 				<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-					{{ message.con_from_me ? message.con_chat_name : "Robô" }}
+					{{ message.tlk_from_me ? message.tlk_chat_name : "Robô" }}
 				</h3>
 				<p class="my-3 break-words">
 					{{ message }}
 				</p>
 			</div>
 			<p class="my-3 break-words">
-				{{ message.con_messagens }}
+				{{ message.tlk_message }}
 			</p>
 		</div>
 	</div>

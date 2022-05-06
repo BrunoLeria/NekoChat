@@ -24,7 +24,7 @@ onMounted(() => {
 });
 
 async function fetchTalks() {
-	const url = "http://192.168.12.178:3005/findAllConversa";
+	const url = "http://192.168.12.178:3005/findAllTalk";
 	const response = await fetch(url, {
 		method: "GET",
 		headers: {
@@ -36,10 +36,10 @@ async function fetchTalks() {
 			if (data) {
 				let talks = {};
 				data.forEach((talk) => {
-					if (!Object.keys(talks).includes(talk.con_chat_id)) {
-						talks[talk.con_chat_id] = [];
+					if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
+						talks[talk.tlk_chat_id] = [];
 					}
-					talks[talk.con_chat_id].push(talk);
+					talks[talk.tlk_chat_id].push(talk);
 				});
 				talksStore.talks = talks;
 			}

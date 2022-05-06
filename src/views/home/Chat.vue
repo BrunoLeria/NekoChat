@@ -5,13 +5,13 @@ let mensagens = [
 	{
 		id: 1,
 		mensagem: "Olá, tudo bem?",
-		usuario: "João",
+		user: "João",
 		data: "01/01/2020"
 	},
 	{
 		id: 2,
 		mensagem: "Tudo bem, obrigado!",
-		usuario: "Maria",
+		user: "Maria",
 		data: "01/01/2020"
 	}
 ];

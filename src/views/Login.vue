@@ -53,8 +53,7 @@ const login = () => {
 };
 
 async function fetchUserByEmail(email) {
-	const url =
-		"http://192.168.12.178:3005/findOneUsuarioByEmail?email=" + email;
+	const url = "http://192.168.12.178:3005/findOneUserByEmail?email=" + email;
 	await fetch(url, {
 		method: "GET",
 		headers: {
@@ -80,7 +79,7 @@ async function fetchUserByEmail(email) {
 }
 
 async function recordExternalUser(data) {
-	const url = "http://192.168.12.178:3005/createUsuario";
+	const url = "http://192.168.12.178:3005/createUser";
 	await fetch(url, {
 		method: "POST",
 		headers: {
@@ -88,8 +87,8 @@ async function recordExternalUser(data) {
 		},
 		body: JSON.stringify({
 			usu_email: data.user.email,
-			usu_nome: data.user.displayName,
-			usu_foto: data.user.photoURL
+			usu_name: data.user.displayName,
+			usu_photo: data.user.photoURL
 		})
 	})
 		.then((response) => response.json())
