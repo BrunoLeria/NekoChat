@@ -3,7 +3,6 @@ import TextInput from "/src/components/inputs/TextInput.vue";
 import { useTalkStore } from "../../services/stores/talks";
 
 const talkStore = useTalkStore();
-const talk = talkStore.talks[talkStore.selected];
 
 let myMessage = "";
 
@@ -28,7 +27,7 @@ const time = (message) => {
 				rounded-xl
 			">
 			<div
-				v-for="(message, index) in talk"
+				v-for="(message, index) in talkStore.talks[talkStore.selected]"
 				:key="index"
 				id="mensagens"
 				:class="
