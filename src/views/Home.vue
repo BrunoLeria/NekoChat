@@ -7,6 +7,7 @@ import Chat from "./home/Chat.vue";
 import Analytics from "./home/Analytics.vue";
 import Settings from "./home/Settings.vue";
 import { useTalkStore } from "/src/services/stores/talks.js";
+import Socket from "/src/services/socket.js";
 
 const components = {
 	Dashboard,
@@ -20,6 +21,10 @@ const activeComponent = ref("Dashboard");
 const talksStore = useTalkStore();
 
 onMounted(() => {
+	fetchTalks();
+});
+
+Socket.on("newTalk", () => {
 	fetchTalks();
 });
 
