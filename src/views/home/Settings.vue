@@ -39,7 +39,7 @@ function update() {
 
 async function updateUser() {
 	const url =
-		"http://192.168.12.178:3005/updateUser?id=" +
+		"http://localhost:3005/updateUser?id=" +
 		userStore.user.usu_identification;
 	await fetch(url, {
 		method: "POST",

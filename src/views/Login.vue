@@ -53,7 +53,7 @@ const login = () => {
 };
 
 async function fetchUserByEmail(email) {
-	const url = "http://192.168.12.178:3005/findOneUserByEmail?email=" + email;
+	const url = "http://localhost:3005/findOneUserByEmail?email=" + email;
 	await fetch(url, {
 		method: "GET",
 		headers: {
@@ -79,7 +79,7 @@ async function fetchUserByEmail(email) {
 }
 
 async function recordExternalUser(data) {
-	const url = "http://192.168.12.178:3005/createUser";
+	const url = "http://localhost:3005/createUser";
 	await fetch(url, {
 		method: "POST",
 		headers: {

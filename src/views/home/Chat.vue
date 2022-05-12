@@ -1,10 +1,11 @@
 <script setup>
 import TextInput from "/src/components/inputs/TextInput.vue";
 import { useTalkStore } from "../../services/stores/talks";
+import { ref } from "vue";
 
 const talkStore = useTalkStore();
 
-let myMessage = "";
+const myMessage = ref("");
 
 const time = (message) => {
 	const date = new Date(message.tlk_date_time);
@@ -12,6 +13,55 @@ const time = (message) => {
 		? date.getHours() + ":0" + date.getMinutes()
 		: date.getHours() + ":" + date.getMinutes();
 };
+
+function sendMessage() {
+	if (myMessage.value != "") {
+		const urlSendMessage =
+			"https://api.chat-api.com/instance14140/sendMessage?token=sxefyjuyqkf60mtn";
+		const urlRecordMessage = "http://localhost:3005/createTalk";
+		fetch(urlSendMessage, {
+			body:
+				"body=" +
+				myMessage.value +
+				"&phone=" +
+				talkStore.selected.replace("@c.us", ""),
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			method: "post"
+		})
+			.then((response) => {
+				fetch(urlRecordMessage, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						tlk_message: myMessage.value,
+						tlk_fk_usu_identification: 1,
+						tlk_client:
+							talkStore.talks[talkStore.selected][0].tlk_client,
+						tlk_chat_id:
+							talkStore.talks[talkStore.selected][0].tlk_chat_id,
+						tlk_chat_name:
+							talkStore.talks[talkStore.selected][0]
+								.tlk_chat_name,
+						tlk_from_me: true
+					})
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						console.log("Success:", data);
+					})
+					.catch((error) => {
+						console.error("Error:", error);
+					});
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+}
 </script>
 
 <template>
@@ -32,8 +82,8 @@ const time = (message) => {
 				id="mensagens"
 				:class="
 					message.tlk_from_me === '0'
-						? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
-						: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
+						? 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
+						: 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
 				">
 				<div class="flex justify-between">
 					<h3
@@ -56,7 +106,7 @@ const time = (message) => {
 		<div class="w-full flex items-center">
 			<TextInput
 				label="Digite sua mensagem aqui"
-				:modelValue="myMessage"
+				v-model="myMessage"
 				type="text"
 				id="myMessage"
 				autoComplete="myMessage"
@@ -85,7 +135,7 @@ const time = (message) => {
 					w-12
 					h-12
 				"
-				@click="login()">
+				@click="sendMessage()">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-7 w-7"

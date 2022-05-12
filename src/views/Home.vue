@@ -29,7 +29,7 @@ Socket.on("newTalk", () => {
 });
 
 async function fetchTalks() {
-	const url = "http://192.168.12.178:3005/findAllTalk";
+	const url = "http://localhost:3005/findAllTalk";
 	const response = await fetch(url, {
 		method: "GET",
 		headers: {
