@@ -65,24 +65,13 @@ const getCurrentUser = () => {
     });
 };
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
     NProgress.start();
-    if (
-        to.matched.some((record) => record.meta.requiresAuth) &&
-        (await getCurrentUser())
-    )
-        next();
-    else if (to.name != "Login") {
-        next({ name: "Login" });
+    const user = await getCurrentUser();
+    if (to.meta.requiresAuth && !user) {
         alert("Você precisa estar logado para acessar esta página");
+        return { name: "Login" };
     }
-    next();
-});
-
-router.afterEach((to, from) => {
-    const toDepth = to.path.split("/").length;
-    const fromDepth = from.path.split("/").length;
-    to.meta.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
     NProgress.done();
 });
 
