@@ -26,53 +26,36 @@ const handleSignOut = () => {
 		router.push({ name: "Login" });
 	});
 };
+
+async function goOffline() {
+	const url = "http://localhost:3005/updateUser?usu_id=" + userStore.user.usu_identification;
+	await fetch(url, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			usu_fk_sts_identification: 4
+		})
+	})
+		.then((response) => response.json())
+		.catch((error) => {
+			console.error("Error:", error);
+		});
+}
 </script>
 <template>
 	<!-- Sidebar -->
-	<div
-		class="
-			flex-none
-			xl:w-1/6
-			w-1/8
-			h-full
-			min-w-min
-			bg-indigo-700
-			auto-rows-max
-			flex-none flex flex-col
-			z-10
-		">
-		<div
-			class="
-				py-6
-				w-full
-				bg-indigo-500
-				hover:bg-indigo-600
-				ease-in-out
-				duration-500
-			">
-			<h3 class="text-white text-2xl text-left ml-4 font-bold rounded-xl">
-				NekoChat
-			</h3>
+	<div class="flex-none xl:w-1/6 w-1/8 h-full min-w-min bg-indigo-700 auto-rows-max flex-none flex flex-col z-10">
+		<div class="py-6 w-full bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500">
+			<h3 class="text-white text-2xl text-left ml-4 font-bold rounded-xl">NekoChat</h3>
 		</div>
 		<div class="py-5 text-white text-xl flex flex-col flex-1 content-start">
 			<div
-				class="
-					p-4
-					flex
-					items
-					hover:bg-indigo-600
-					ease-in-out
-					duration-500
-				"
+				class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
 				:class="$attrs.modelValue == 'Dashboard' ? 'bg-indigo-600' : ''"
 				@click="$emit('update:modelValue', 'Dashboard')">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-7 w-7"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					stroke-width="2">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -81,23 +64,10 @@ const handleSignOut = () => {
 				<h4 class="ml-4 text-center">Dashboard</h4>
 			</div>
 			<div
-				class="
-					p-4
-					flex
-					items
-					hover:bg-indigo-600
-					ease-in-out
-					duration-500
-				"
+				class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
 				:class="$attrs.modelValue == 'Team' ? 'bg-indigo-600' : ''"
 				@click="$emit('update:modelValue', 'Team')">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-7 w-7"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					stroke-width="2">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -107,23 +77,10 @@ const handleSignOut = () => {
 			</div>
 			<div
 				v-if="talkStore.selected"
-				class="
-					p-4
-					flex
-					items
-					hover:bg-indigo-600
-					ease-in-out
-					duration-500
-				"
+				class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
 				:class="$attrs.modelValue == 'Chat' ? 'bg-indigo-600' : ''"
 				@click="$emit('update:modelValue', 'Chat')">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-7 w-7"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					stroke-width="2">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -150,56 +107,21 @@ const handleSignOut = () => {
                 <h4 class="ml-4 text-center">Relatórios</h4>
             </div> -->
 			<div
-				class="
-					p-4
-					flex
-					items
-					hover:bg-indigo-600
-					ease-in-out
-					duration-500
-				"
+				class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
 				:class="$attrs.modelValue == 'Settings' ? 'bg-indigo-600' : ''"
 				@click="$emit('update:modelValue', 'Settings')">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-7 w-7"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					stroke-width="2">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 				</svg>
 				<h4 class="ml-4 text-center">Configurações</h4>
 			</div>
 		</div>
-		<div
-			class="
-				py-6
-				px-4
-				flex
-				items
-				bg-indigo-700
-				w-full
-				hover:bg-indigo-600
-				text-white text-xl
-				ease-in-out
-				duration-500
-			"
-			@click="handleSignOut">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-7 w-7"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-				stroke-width="2">
+		<div class="py-6 px-4 flex items bg-indigo-700 w-full hover:bg-indigo-600 text-white text-xl ease-in-out duration-500" @click="handleSignOut">
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"

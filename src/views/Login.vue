@@ -4,12 +4,7 @@ import Sublink from "/src/components/buttons/Sublink.vue";
 import logo from "/src/assets/logo.svg";
 import { ref } from "vue";
 import { useUsersStore } from "/src/services/stores/users.js";
-import {
-	getAuth,
-	GoogleAuthProvider,
-	signInWithPopup,
-	signInWithEmailAndPassword
-} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 const email = ref("");
@@ -32,6 +27,10 @@ const login = () => {
 	const auth = getAuth();
 	signInWithEmailAndPassword(auth, email.value, password.value)
 		.then((data) => {
+			if (!fetchUserByEmail(data.user.email)) {
+				recordExternalUser(data);
+			}
+			goOnline();
 			router.push({ name: "Home" });
 		})
 		.catch((error) => {
@@ -62,7 +61,7 @@ async function fetchUserByEmail(email) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			if (typeof data === "object") {
+			if (data.message === undefined) {
 				userStore.user = data;
 				for (const [key, value] of Object.entries(userStore.user)) {
 					if (value === null) {
@@ -93,8 +92,30 @@ async function recordExternalUser(data) {
 	})
 		.then((response) => response.json())
 		.then((data) => {
-			console.log("Success:", data);
+			userStore.user = data;
+			for (const [key, value] of Object.entries(userStore.user)) {
+				if (value === null) {
+					userStore.user[key] = "";
+				}
+			}
 		})
+		.catch((error) => {
+			console.error("Error:", error);
+		});
+}
+
+async function goOnline() {
+	const url = "http://localhost:3005/updateUser?usu_id=" + userStore.user.usu_identification;
+	await fetch(url, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			usu_fk_sts_identification: 1
+		})
+	})
+		.then((response) => response.json())
 		.catch((error) => {
 			console.error("Error:", error);
 		});
@@ -107,6 +128,7 @@ const signInWithGoogle = () => {
 			if (!fetchUserByEmail(data.user.email)) {
 				recordExternalUser(data);
 			}
+			goOnline();
 			router.push({ name: "Home" });
 		})
 		.catch((error) => {
@@ -116,66 +138,24 @@ const signInWithGoogle = () => {
 </script>
 
 <template>
-	<div
-		class="
-			min-h-full
-			flex
-			items-center
-			justify-center
-			py-12
-			px-4
-			sm:px-6
-			lg:px-8
-		">
+	<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-md w-full space-y-8">
 			<div>
 				<img class="mx-auto h-36 w-auto" :src="logo" alt="Workflow" />
-				<h2
-					class="
-						mt-6
-						text-center text-3xl
-						font-extrabold
-						text-gray-900
-					">
-					Entre com a sua conta
-				</h2>
+				<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Entre com a sua conta</h2>
 				<p class="mt-2 text-center text-sm text-gray-600">
 					Ou
-					<Sublink
-						text="Registre-se gratuitamente."
-						route="Register" />
+					<Sublink text="Registre-se gratuitamente." route="Register" />
 				</p>
 			</div>
-			<form
-				class="
-					mt-8
-					space-y-6
-					border-slate-200 border-2
-					rounded-xl
-					p-5
-					shadow-xl
-				"
-				action="#"
-				method="POST">
+			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST">
 				<input type="hidden" name="remember" value="true" />
 				<div class="rounded-md shadow-sm -space-y-px">
-					<p
-						class="mt-2 text-center text-sm text-red-600"
-						v-show="errMsg != ''">
+					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
 						{{ errMsg }}
 					</p>
-					<TextInput
-						label="Email"
-						v-model="email"
-						type="email"
-						id="email"
-						autoComplete="email" />
-					<TextInput
-						label="Senha"
-						v-model="password"
-						type="password"
-						id="password"
-						autoComplete="current-password" />
+					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
+					<TextInput label="Senha" v-model="password" type="password" id="password" autoComplete="current-password" />
 				</div>
 				<div>
 					<button
@@ -195,32 +175,15 @@ const signInWithGoogle = () => {
 							text-white
 							bg-blue-900
 							hover:bg-blue-700
-							focus:outline-none
-							focus:ring-2
-							focus:ring-offset-2
-							focus:ring-blue-500
+							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
 							ease-in-out
 							duration-500
 						"
 						@click="login">
-						<span
-							class="
-								absolute
-								left-0
-								inset-y-0
-								flex
-								items-center
-								pl-3
-							">
+						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
 							<!-- Heroicon name: solid/lock-closed -->
 							<svg
-								class="
-									lock-closed
-									h-5
-									w-5
-									text-blue-500
-									group-hover:text-blue-400
-								"
+								class="lock-closed h-5 w-5 text-blue-500 group-hover:text-blue-400"
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 20 20"
 								fill="currentColor"
@@ -251,32 +214,15 @@ const signInWithGoogle = () => {
 							text-white
 							bg-red-600
 							hover:bg-red-400
-							focus:outline-none
-							focus:ring-2
-							focus:ring-offset-2
-							focus:ring-red-200
+							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200
 							ease-in-out
 							duration-500
 						"
 						@click="signInWithGoogle">
-						<span
-							class="
-								absolute
-								left-0
-								inset-y-0
-								flex
-								items-center
-								pl-3
-							">
+						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
 							<!-- Heroicon name: solid/lock-closed -->
 							<svg
-								class="
-									lock-closed
-									h-5
-									w-5
-									text-red-400
-									group-hover:text-red-200
-								"
+								class="lock-closed h-5 w-5 text-red-400 group-hover:text-red-200"
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 20 20"
 								fill="currentColor"
