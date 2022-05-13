@@ -22,8 +22,8 @@ const time = (message) => {
 			id="mensagens"
 			:class="
 				message.tlk_from_me === '0'
-					? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
-					: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
+					? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3'
+					: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
 			">
 			<div class="flex justify-between">
 				<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
