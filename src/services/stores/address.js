@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 
-export const useAddressStore = defineStore("countryID", {
+const useAddressStore = defineStore("countryID", {
     state: () => ({
-        countries: [],
         states: [
             {
                 id: 0,
@@ -143,3 +142,20 @@ export const useAddressStore = defineStore("countryID", {
         cities: []
     })
 });
+
+async function findCitiesWithState(state) {
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${state.sigla}/distritos`)
+        .then((response) => response.json())
+        .then((data) =>
+            data.forEach((city, index) => {
+                let obj = {
+                    id: index,
+                    name: city.nome
+                };
+                useAddressStore.cities.push(obj);
+            })
+        )
+        .catch((err) => console.log(err));
+}
+
+export { useAddressStore, findCitiesWithState };

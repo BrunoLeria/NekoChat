@@ -6,8 +6,8 @@ import Team from "./home/Team.vue";
 import Chat from "./home/Chat.vue";
 import Analytics from "./home/Analytics.vue";
 import Settings from "./home/Settings.vue";
-import { useTalkStore } from "/src/services/stores/talks.js";
 import Socket from "/src/services/socket.js";
+import { useTalkStore } from "/src/services/stores/talks.js";
 
 const components = {
 	Dashboard,
@@ -17,42 +17,15 @@ const components = {
 	Settings
 };
 const activeComponent = ref("Dashboard");
-
-const talksStore = useTalkStore();
+const talkStore = useTalkStore();
 
 onMounted(() => {
-	fetchTalks();
+	talkStore.fetchTalks();
 });
 
 Socket.on("newTalk", () => {
-	fetchTalks();
+	talkStore.fetchTalks();
 });
-
-async function fetchTalks() {
-	const url = "http://localhost:3005/findAllTalk";
-	const response = await fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json"
-		}
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			if (data) {
-				let talks = {};
-				data.forEach((talk) => {
-					if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
-						talks[talk.tlk_chat_id] = [];
-					}
-					talks[talk.tlk_chat_id].push(talk);
-				});
-				talksStore.talks = talks;
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
 </script>
 
 <template>
@@ -61,13 +34,7 @@ async function fetchTalks() {
 		<div class="flex-1 flex flex-col">
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">
-					<h3
-						class="
-							text-indigo-700 text-2xl text-left
-							ml-4
-							font-bold
-							rounded-xl
-						">
+					<h3 class="text-indigo-700 text-2xl text-left ml-4 font-bold rounded-xl">
 						{{ activeComponent }}
 					</h3>
 				</transition>
@@ -76,14 +43,7 @@ async function fetchTalks() {
 				<component
 					:is="components[activeComponent]"
 					v-model="activeComponent"
-					class="
-						h-full
-						m-12
-						border-8
-						z-10
-						shadow-xl
-						overflow-y-auto
-					"></component>
+					class="h-full m-12 border-8 z-10 shadow-xl overflow-y-auto"></component>
 			</transition>
 			<div class="py-10 bg-indigo-100"></div>
 		</div>

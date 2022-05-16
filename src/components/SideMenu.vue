@@ -3,11 +3,14 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { useTalkStore } from "/src/services/stores/talks";
+import { useUsersStore } from "/src/services/stores/users.js";
 
 defineEmits(["update:modelValue"]);
 const router = useRouter();
 const isLoggedIn = ref(false);
 const talkStore = useTalkStore();
+const userStore = useUsersStore();
+
 let auth;
 
 onMounted(() => {
@@ -15,34 +18,20 @@ onMounted(() => {
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
 			isLoggedIn.value = true;
-		} else {
-			isLoggedIn.value = false;
+			return;
 		}
+		isLoggedIn.value = false;
+		router.push({ name: "Login" });
 	});
 });
 
 const handleSignOut = () => {
 	signOut(auth).then(() => {
+		userStore.user.usu_fk_sts_identification = 1;
+		userStore.updateUser();
 		router.push({ name: "Login" });
 	});
 };
-
-async function goOffline() {
-	const url = "http://localhost:3005/updateUser?usu_id=" + userStore.user.usu_identification;
-	await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			usu_fk_sts_identification: 4
-		})
-	})
-		.then((response) => response.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-}
 </script>
 <template>
 	<!-- Sidebar -->

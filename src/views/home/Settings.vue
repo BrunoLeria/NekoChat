@@ -7,7 +7,7 @@ import DatePicker from "/src/components/inputs/DatePicker.vue";
 import PhotoPicker from "/src/components/inputs/PhotoPicker.vue";
 import PasswordInput from "/src/components/inputs/PasswordInput.vue";
 import Spinner from "/src/components/animations/Spinner.vue";
-import { useAddressStore } from "/src/services/stores/address.js";
+import { useAddressStore, findCitiesWithState } from "/src/services/stores/address.js";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import zxcvbn from "zxcvbn";
@@ -34,160 +34,65 @@ function update() {
 	}
 
 	userStore.user = person;
-	updateUser();
-}
-
-async function updateUser() {
-	const url =
-		"http://localhost:3005/updateUser?id=" +
-		userStore.user.usu_identification;
-	await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify(userStore.user)
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log("Success:", data);
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-		});
+	userStore.updateUser();
 }
 
 watch(
 	() => person.value.usu_state,
 	(newAddress) => {
 		addressStore.cities = [];
-		const found = addressStore.states.find(
-			(state) => state.name === newAddress
-		);
+		const found = addressStore.states.find((state) => state.name === newAddress);
 		if (found) {
 			loading.value = true;
-			const res = fetch(
-				`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${found.sigla}/distritos`
-			)
-				.then((response) => response.json())
-				.then((data) =>
-					data.forEach((city, index) => {
-						let obj = {
-							id: index,
-							name: city.nome
-						};
-						addressStore.cities.push(obj);
-					})
-				)
-				.catch((err) => console.log(err))
-				.finally(() => {
-					loading.value = false;
-				});
+			findCitiesWithState(found);
 		}
+		loading.value = false;
 	}
 );
 </script>
 
 <template>
-	<div
-		class="
-			bg-neutral-100
-			p-14
-			flex flex-col flex-wrap
-			justify-between
-			overflow-y
-		">
-		<form
-			class="space-y-6 border-slate-200 border-2 rounded-xl shadow-xl"
-			action="#"
-			method="POST">
+	<div class="bg-neutral-100 p-14 flex flex-col flex-wrap justify-between overflow-y">
+		<form class="space-y-6 border-slate-200 border-2 rounded-xl shadow-xl" action="#" method="POST">
 			<div class="shadow overflow-hidden sm:rounded-md">
 				<div class="px-4 py-5 bg-white sm:p-6">
 					<div class="grid grid-cols-6 gap-6">
 						<div class="col-span-3">
-							<TextInput
-								label="Nome"
-								type="text"
-								id="name"
-								:required="true"
-								v-model="person.usu_name" />
+							<TextInput label="Nome" type="text" id="name" :required="true" v-model="person.usu_name" />
 						</div>
 						<div class="col-span-3">
-							<TextInput
-								label="E-mail"
-								type="email"
-								id="email"
-								:required="true"
-								v-model="person.usu_email" />
+							<TextInput label="E-mail" type="email" id="email" :required="true" v-model="person.usu_email" />
 						</div>
 						<div class="col-span-1">
-							<DatePicker
-								label="Data de nascimento"
-								id="birthDate"
-								v-model="person.usu_birthday" />
+							<DatePicker label="Data de nascimento" id="birthDate" v-model="person.usu_birthday" />
 						</div>
 						<div class="col-span-1">
-							<TextInput
-								label="Telefone"
-								type="phone"
-								id="phone"
-								v-model="person.usu_phone" />
+							<TextInput label="Telefone" type="phone" id="phone" v-model="person.usu_phone" />
 						</div>
 						<div class="col-span-3">
-							<PhotoPicker
-								label="Foto"
-								id="photo"
-								:text="'Selecionar foto'"
-								v-model="person.usu_photo" />
+							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.usu_photo" />
 						</div>
 						<div class="col-span-1"></div>
 						<div class="col-span-2">
-							<PasswordInput
-								label="Senha"
-								type="password"
-								id="password"
-								v-model="person.usu_password" />
+							<PasswordInput label="Senha" type="password" id="password" v-model="person.usu_password" />
 						</div>
 						<div class="col-span-2">
-							<TextInput
-								label="Confirmar senha"
-								type="password"
-								id="passwordConfirm"
-								v-model="confirmPassword" />
+							<TextInput label="Confirmar senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
 						</div>
 						<div class="col-span-3">
-							<TextInput
-								label="Endereço"
-								type="text"
-								id="street"
-								v-model="person.usu_address" />
+							<TextInput label="Endereço" type="text" id="street" v-model="person.usu_address" />
 						</div>
 						<div class="col-span-1">
-							<TextInput
-								label="Número"
-								type="text"
-								id="number"
-								v-model="person.usu_street_number" />
+							<TextInput label="Número" type="text" id="number" v-model="person.usu_street_number" />
 						</div>
 						<div class="col-span-2">
-							<TextInput
-								label="Complemento"
-								type="text"
-								id="complement"
-								v-model="person.usu_complement" />
+							<TextInput label="Complemento" type="text" id="complement" v-model="person.usu_complement" />
 						</div>
 						<div class="col-span-2">
-							<TextInput
-								label="Bairro"
-								type="text"
-								id="neighborhood"
-								v-model="person.usu_neighborhood" />
+							<TextInput label="Bairro" type="text" id="neighborhood" v-model="person.usu_neighborhood" />
 						</div>
 						<div class="col-span-1">
-							<Checkbox
-								:id="'foreingCheckBox'"
-								:label="'Estrangeiro'"
-								v-model="person.usu_estrangeiro" />
+							<Checkbox :id="'foreingCheckBox'" :label="'Estrangeiro'" v-model="person.usu_estrangeiro" />
 						</div>
 						<div class="col-span-1 flex items-center">
 							<Combobox
@@ -227,10 +132,7 @@ watch(
 							text-white
 							bg-indigo-600
 							hover:bg-indigo-700
-							focus:outline-none
-							focus:ring-2
-							focus:ring-offset-2
-							focus:ring-indigo-500
+							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
 						"
 						@click="update()">
 						Salvar

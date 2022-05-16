@@ -15,7 +15,7 @@ const router = useRouter();
 
 const userStore = useUsersStore();
 
-const login = () => {
+const signInWithEmail = () => {
 	if (email.value === "") {
 		errMsg.value = "Informe o e-mail";
 		return;
@@ -27,11 +27,7 @@ const login = () => {
 	const auth = getAuth();
 	signInWithEmailAndPassword(auth, email.value, password.value)
 		.then((data) => {
-			if (!fetchUserByEmail(data.user.email)) {
-				recordExternalUser(data);
-			}
-			goOnline();
-			router.push({ name: "Home" });
+			login(data);
 		})
 		.catch((error) => {
 			switch (error.code) {
@@ -51,90 +47,29 @@ const login = () => {
 		});
 };
 
-async function fetchUserByEmail(email) {
-	const url = "http://localhost:3005/findOneUserByEmail?email=" + email;
-	await fetch(url, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json"
-		}
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			if (data.message === undefined) {
-				userStore.user = data;
-				for (const [key, value] of Object.entries(userStore.user)) {
-					if (value === null) {
-						userStore.user[key] = "";
-					}
-				}
-				return true;
-			}
-			return false;
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
-
-async function recordExternalUser(data) {
-	const url = "http://localhost:3005/createUser";
-	await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			usu_email: data.user.email,
-			usu_name: data.user.displayName,
-			usu_photo: data.user.photoURL
-		})
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			userStore.user = data;
-			for (const [key, value] of Object.entries(userStore.user)) {
-				if (value === null) {
-					userStore.user[key] = "";
-				}
-			}
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-}
-
-async function goOnline() {
-	const url = "http://localhost:3005/updateUser?usu_id=" + userStore.user.usu_identification;
-	await fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			usu_fk_sts_identification: 1
-		})
-	})
-		.then((response) => response.json())
-		.catch((error) => {
-			console.error("Error:", error);
-		});
-}
-
 const signInWithGoogle = () => {
 	const provider = new GoogleAuthProvider();
 	signInWithPopup(getAuth(), provider)
 		.then((data) => {
-			if (!fetchUserByEmail(data.user.email)) {
-				recordExternalUser(data);
-			}
-			goOnline();
-			router.push({ name: "Home" });
+			login(data);
 		})
 		.catch((error) => {
 			console.log(error);
 		});
 };
+
+async function login(data) {
+	if (await !userStore.findOneUserByEmail(data.user.email)) {
+		userStore.user.usu_name = data.user.displayName;
+		userStore.user.usu_email = data.user.email;
+		userStore.user.usu_photo = data.user.photoURL;
+		await userStore.createUser();
+	}
+	userStore.user.usu_fk_sts_identification = 1;
+
+	userStore.updateUser();
+	router.push({ name: "Home" });
+}
 </script>
 
 <template>
@@ -179,7 +114,7 @@ const signInWithGoogle = () => {
 							ease-in-out
 							duration-500
 						"
-						@click="login">
+						@click="signInWithEmail">
 						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
 							<!-- Heroicon name: solid/lock-closed -->
 							<svg
