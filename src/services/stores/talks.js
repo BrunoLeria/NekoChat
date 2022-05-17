@@ -33,7 +33,7 @@ export const useTalkStore = defineStore("talkID", () => {
             });
     }
 
-    async function findAllTalk(req, res) {
+    async function findAllTalk() {
         const url = apiURL + "findAllTalk";
         await fetch(url, {
             method: "GET",
@@ -57,7 +57,29 @@ export const useTalkStore = defineStore("talkID", () => {
             });
     }
     async function findOneTalk(req, res) {}
-    async function findAllTalkByUser(req, res) {}
+    async function findAllTalkByUser() {
+        const url = apiURL + "findAllTalkByUser?tlk_fk_usu_identification=" + userStore.user.usu_identification;
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data) {
+                    data.forEach((talk) => {
+                        if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
+                            talks[talk.tlk_chat_id] = [];
+                        }
+                        talks[talk.tlk_chat_id].push(talk);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
     async function updateTalk(req, res) {}
     async function deleteTalk(req, res) {}
     async function deleteAllTalk(req, res) {}
@@ -69,5 +91,17 @@ export const useTalkStore = defineStore("talkID", () => {
         userStore.user.usu_is_admin ? findAllTalk() : findAllTalkByUser();
     }
 
-    return { talks, selected, createTalk, findAllTalk, findOneTalk, updateTalk, deleteTalk, deleteAllTalk, sendMessage, fetchTalks };
+    return {
+        talks,
+        selected,
+        createTalk,
+        findAllTalk,
+        findOneTalk,
+        findAllTalkByUser,
+        updateTalk,
+        deleteTalk,
+        deleteAllTalk,
+        sendMessage,
+        fetchTalks
+    };
 });

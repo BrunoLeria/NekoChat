@@ -65,9 +65,11 @@ async function login(data) {
 		userStore.user.usu_photo = data.user.photoURL;
 		await userStore.createUser();
 	}
-	userStore.user.usu_fk_sts_identification = 1;
+	if (userStore.user.usu_fk_sts_identification !== 1) {
+		userStore.user.usu_fk_sts_identification = 1;
+		userStore.updateUser();
+	}
 
-	userStore.updateUser();
 	router.push({ name: "Home" });
 }
 </script>

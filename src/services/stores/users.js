@@ -71,14 +71,14 @@ export const useUsersStore = defineStore("userID", () => {
             });
     }
 
-    async function updateUser() {
+    async function updateUser(req) {
         const url = apiURL + "updateUser?id=" + user.value.usu_identification;
         await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(user.value)
+            body: JSON.stringify(req)
         })
             .then((response) => response.json())
             .then((data) => {

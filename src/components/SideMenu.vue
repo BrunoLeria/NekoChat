@@ -27,8 +27,10 @@ onMounted(() => {
 
 const handleSignOut = () => {
 	signOut(auth).then(() => {
-		userStore.user.usu_fk_sts_identification = 1;
-		userStore.updateUser();
+		if (userStore.user.usu_fk_sts_identification !== 4) {
+			userStore.user.usu_fk_sts_identification = 4;
+			userStore.updateUser();
+		}
 		router.push({ name: "Login" });
 	});
 };
