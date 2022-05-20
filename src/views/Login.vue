@@ -65,7 +65,8 @@ async function login(data) {
 		userStore.user.usu_photo = data.user.photoURL;
 		await userStore.createUser();
 	}
-	if (userStore.user.usu_fk_sts_identification !== 1) {
+
+	if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
 		userStore.user.usu_fk_sts_identification = 1;
 		userStore.updateUser();
 	}
