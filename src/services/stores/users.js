@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useLocalStorage } from "@vueuse/core";
 
-export const useUsersStore = defineStore("userID", () => {
+export const useUsersStore = defineStore("user", () => {
     const apiURL = "http://localhost:3005/";
-    const user = ref({});
+    const user = ref(useLocalStorage("userNeko", {}));
 
     async function createUser() {
         const url = apiURL + "createUser";
