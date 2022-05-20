@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 import { useUsersStore } from "./users";
 import { ref } from "vue";
 
-export const useTalkStore = defineStore("talkID", () => {
+export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
     const apiURL = "http://localhost:3005/";
-    const talks = ref(0);
+    const talks = ref([]);
     const selected = ref("");
 
     async function createTalk(message) {
@@ -18,9 +18,9 @@ export const useTalkStore = defineStore("talkID", () => {
             body: JSON.stringify({
                 tlk_message: message,
                 tlk_fk_usu_identification: userStore.user.usu_identification,
-                tlk_client: talks[selected][0].tlk_client,
-                tlk_chat_id: talks[selected][0].tlk_chat_id,
-                tlk_chat_name: talks[selected][0].tlk_chat_name,
+                tlk_client: talks.value[selected][0].tlk_client,
+                tlk_chat_id: talks.value[selected][0].tlk_chat_id,
+                tlk_chat_name: talks.value[selected][0].tlk_chat_name,
                 tlk_from_me: true
             })
         })
@@ -46,9 +46,9 @@ export const useTalkStore = defineStore("talkID", () => {
                 if (data) {
                     data.forEach((talk) => {
                         if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
-                            talks[talk.tlk_chat_id] = [];
+                            talks.value[talk.tlk_chat_id] = [];
                         }
-                        talks[talk.tlk_chat_id].push(talk);
+                        talks.value[talk.tlk_chat_id].push(talk);
                     });
                 }
             })
@@ -67,12 +67,13 @@ export const useTalkStore = defineStore("talkID", () => {
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 if (data) {
                     data.forEach((talk) => {
                         if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
-                            talks[talk.tlk_chat_id] = [];
+                            talks.value[talk.tlk_chat_id] = [];
                         }
-                        talks[talk.tlk_chat_id].push(talk);
+                        talks.value[talk.tlk_chat_id].push(talk);
                     });
                 }
             })
