@@ -5,7 +5,7 @@ import { ref } from "vue";
 export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
     const apiURL = "http://localhost:3005/";
-    const talks = ref([]);
+    const talks = ref({});
     const selected = ref("");
 
     async function createTalk(message) {
@@ -45,7 +45,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 if (data) {
                     data.forEach((talk) => {
-                        if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
+                        if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
                             talks.value[talk.tlk_chat_id] = [];
                         }
                         talks.value[talk.tlk_chat_id].push(talk);
@@ -67,10 +67,9 @@ export const useTalkStore = defineStore("talks", () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 if (data) {
                     data.forEach((talk) => {
-                        if (!Object.keys(talks).includes(talk.tlk_chat_id)) {
+                        if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
                             talks.value[talk.tlk_chat_id] = [];
                         }
                         talks.value[talk.tlk_chat_id].push(talk);
