@@ -48,7 +48,7 @@ export const useUsersStore = defineStore("user", () => {
 
     async function findOneUserByEmail(email) {
         const url = apiURL + "findOneUserByEmail?email=" + email;
-        await fetch(url, {
+        const retorno = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -70,6 +70,7 @@ export const useUsersStore = defineStore("user", () => {
             .catch((error) => {
                 console.log(error);
             });
+        return retorno;
     }
 
     async function updateUser(req) {
