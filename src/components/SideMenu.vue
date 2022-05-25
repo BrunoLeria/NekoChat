@@ -31,8 +31,16 @@ const handleSignOut = () => {
 			userStore.user.usu_fk_sts_identification = 4;
 			userStore.updateUser();
 		}
+		userStore.user = {};
 		router.push({ name: "Login" });
 	});
+};
+
+const updateYourRegister = () => {
+	if (userStore.user.usu_name === "") {
+		return true;
+	}
+	return false;
 };
 </script>
 <template>

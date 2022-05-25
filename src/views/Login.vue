@@ -2,7 +2,7 @@
 import TextInput from "/src/components/inputs/TextInput.vue";
 import Sublink from "/src/components/buttons/Sublink.vue";
 import logo from "/src/assets/logo.svg";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
@@ -12,8 +12,13 @@ const password = ref("");
 const errMsg = ref("");
 const remember = false;
 const router = useRouter();
-
 const userStore = useUsersStore();
+
+onBeforeMount(() => {
+	if (userStore.user.usu_email != undefined) {
+		router.push({ name: "Home" });
+	}
+});
 
 const signInWithEmail = () => {
 	if (email.value === "") {
