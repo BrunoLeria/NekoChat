@@ -1,15 +1,23 @@
 <script setup>
 import TextInput from "/src/components/inputs/TextInput.vue";
 import { useTalkStore } from "../../services/stores/talks";
-import { ref } from "vue";
+import { useUsersStore } from "../../services/stores/users";
+import { ref, onMounted } from "vue";
 
 const myMessage = ref("");
 const talkStore = useTalkStore();
+const userStore = useUsersStore();
 
 const time = (message) => {
 	const date = new Date(message.tlk_date_time);
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
+
+onMounted(() => {
+	if (!userStore.user.usu_is_admin && talkStore.talks[talkStore.selected].tlk_fk_usu_identification != userStore.user.usu_identification) {
+		talkStore.updateTalkToSignInUser(talkStore.selected);
+	}
+});
 </script>
 
 <template>

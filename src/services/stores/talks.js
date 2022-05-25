@@ -81,6 +81,25 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function updateTalk(req, res) {}
+    async function updateTalkToSignInUser(tlk_chat_id) {
+        const url = apiURL + "updateTalkToSignInUser?tlk_chat_id=" + tlk_chat_id;
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                tlk_fk_usu_identification: userStore.user.usu_identification
+            })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
     async function deleteTalk(req, res) {}
     async function deleteAllTalk(req, res) {}
     async function sendMessage(message) {
@@ -99,6 +118,7 @@ export const useTalkStore = defineStore("talks", () => {
         findOneTalk,
         findAllTalkByUser,
         updateTalk,
+        updateTalkToSignInUser,
         deleteTalk,
         deleteAllTalk,
         sendMessage,
