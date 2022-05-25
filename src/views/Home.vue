@@ -20,11 +20,11 @@ const activeComponent = ref("Dashboard");
 const talkStore = useTalkStore();
 
 onMounted(() => {
-	talkStore.fetchTalks();
+	talkStore.findAllTalkByUser();
 });
 
 Socket.on("newTalk", () => {
-	talkStore.fetchTalks();
+	talkStore.findAllTalkByUser();
 });
 </script>
 

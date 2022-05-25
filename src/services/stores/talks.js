@@ -58,6 +58,7 @@ export const useTalkStore = defineStore("talks", () => {
     }
     async function findOneTalk(req, res) {}
     async function findAllTalkByUser() {
+        talks.value = {};
         const url = apiURL + "findAllTalkByUser?tlk_fk_usu_identification=" + userStore.user.usu_identification;
         await fetch(url, {
             method: "GET",
