@@ -14,7 +14,11 @@ const time = (message) => {
 };
 
 onMounted(async () => {
-	await talkStore.findOneTalkByChatID().then(() => {});
+	await talkStore.findOneTalkByChatID().then(() => {
+		if (!userStore.user.usu_is_admin && talkStore.activeChat.tlk_fk_usu_identification != userStore.user.usu_identification) {
+			talkStore.updateTalkToSignInUser(true);
+		}
+	});
 });
 </script>
 
@@ -45,35 +49,37 @@ onMounted(async () => {
 		</div>
 		<div class="w-full flex items-center">
 			<TextInput label="Digite sua mensagem aqui" v-model="myMessage" type="text" id="myMessage" autoComplete="myMessage" class="w-full" />
-			<button
-				type="button"
-				class="
-					mx-3
-					flex
-					justify-center
-					py-2
-					px-2
-					border border-transparent
-					text-sm
-					font-medium
-					rounded-full
-					text-white
-					bg-blue-900
-					hover:bg-blue-700
-					focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-					ease-in-out
-					duration-500
-					w-12
-					h-12
-				"
-				@click="myMessage.value != '' ? talkStore.sendMessage(myMessage.value) : ''">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
-					<path
-						fill-rule="evenodd"
-						d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-						clip-rule="evenodd" />
-				</svg>
-			</button>
+			<div class="flex pt-5">
+				<button
+					type="button"
+					class="
+						mx-3
+						flex
+						justify-center
+						py-2
+						px-2
+						border border-transparent
+						text-sm
+						font-medium
+						rounded-full
+						text-white
+						bg-blue-900
+						hover:bg-blue-700
+						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+						ease-in-out
+						duration-500
+						w-12
+						h-12
+					"
+					@click="myMessage.value != '' ? talkStore.sendMessage(myMessage.value) : ''">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
+						<path
+							fill-rule="evenodd"
+							d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+							clip-rule="evenodd" />
+					</svg>
+				</button>
+			</div>
 		</div>
 	</div>
 </template>
