@@ -27,7 +27,10 @@ onMounted(() => {
 });
 
 Socket.on("newTalk", () => {
-	talkStore.findAllTalkByUser();
+	if (userStore.user.usu_is_admin) talkStore.findAllTalk();
+	else talkStore.findAllTalkByUser();
+
+	if (talkStore.selected) talkStore.findOneTalkByChatID();
 });
 </script>
 
