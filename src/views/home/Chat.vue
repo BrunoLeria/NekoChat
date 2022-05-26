@@ -3,7 +3,9 @@ import TextInput from "/src/components/inputs/TextInput.vue";
 import { useTalkStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { ref, onMounted } from "vue";
+import Socket from "/src/services/socket.js";
 
+const emit = defineEmits(["update:modelValue"]);
 const myMessage = ref("");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
@@ -17,6 +19,24 @@ onMounted(async () => {
 	await talkStore.findOneTalkByChatID().then(() => {
 		if (!userStore.user.usu_is_admin && talkStore.activeChat.tlk_fk_usu_identification != userStore.user.usu_identification) {
 			talkStore.updateTalkToSignInUser(true);
+		}
+	});
+});
+
+function returnToBot(assumeChat) {
+	const updateOtherClients = "&updateOtherClients=true";
+	if (!assumeChat) talkStore.sendMessage(myMessage.value);
+	//Update the user responsible for the talk to the bot
+	talkStore.updateTalkToSignInUser(assumeChat, updateOtherClients);
+}
+
+//WebSocket chenges to the dashboard and the selected talk
+Socket.on("returnedToBot", async () => {
+	await talkStore.findOneTalkByChatID().then(() => {
+		console.log(talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification);
+		if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
+			talkStore.selected = "";
+			emit("update:modelValue", "Dashboard");
 		}
 	});
 });
@@ -50,6 +70,65 @@ onMounted(async () => {
 		<div class="w-full flex items-center">
 			<TextInput label="Digite sua mensagem aqui" v-model="myMessage" type="text" id="myMessage" autoComplete="myMessage" class="w-full" />
 			<div class="flex pt-5">
+				<button
+					v-if="userStore.user.usu_is_admin"
+					type="button"
+					class="
+						mx-3
+						flex
+						justify-center
+						py-2
+						px-2
+						border border-transparent
+						text-sm
+						font-medium
+						rounded-full
+						text-white
+						bg-red-700
+						hover:bg-red-500
+						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+						ease-in-out
+						duration-500
+						w-12
+						h-12
+					"
+					placeholder="Retornar conversa para o robô"
+					@click="returnToBot(false)">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+					</svg>
+				</button>
+				<button
+					v-if="userStore.user.usu_is_admin"
+					type="button"
+					class="
+						mx-3
+						flex
+						justify-center
+						py-2
+						px-2
+						border border-transparent
+						text-sm
+						font-medium
+						rounded-full
+						text-white
+						bg-green-900
+						hover:bg-green-700
+						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+						ease-in-out
+						duration-500
+						w-12
+						h-12
+					"
+					placeholder="Assumir conversa"
+					@click="returnToBot(true)">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+					</svg>
+				</button>
 				<button
 					type="button"
 					class="

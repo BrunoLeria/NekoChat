@@ -98,15 +98,15 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function updateTalk(req, res) {}
-    async function updateTalkToSignInUser() {
-        const url = apiURL + "updateTalkToSignInUser?id=" + selected.value;
+    async function updateTalkToSignInUser(assumeChat, updateOtherClients = "") {
+        const url = apiURL + "updateTalkToSignInUser?id=" + selected.value + updateOtherClients;
         fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                tlk_fk_usu_identification: userStore.user.usu_identification
+                tlk_fk_usu_identification: assumeChat ? userStore.user.usu_identification : 1
             })
         })
             .then((response) => response.json())
