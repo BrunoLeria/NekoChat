@@ -13,10 +13,8 @@ const time = (message) => {
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
 
-onMounted(() => {
-	if (!userStore.user.usu_is_admin && talkStore.talks[talkStore.selected].tlk_fk_usu_identification != userStore.user.usu_identification) {
-		talkStore.updateTalkToSignInUser(talkStore.selected);
-	}
+onMounted(async () => {
+	await talkStore.findOneTalkByChatID().then(() => {});
 });
 </script>
 
@@ -24,7 +22,7 @@ onMounted(() => {
 	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between">
 		<div class="flex flex-col p-5 overflow-y-auto w-full h-4/5 bg-white rounded-xl">
 			<div
-				v-for="(message, index) in talkStore.talks[talkStore.selected]"
+				v-for="(message, index) in talkStore.activeChat"
 				:key="index"
 				id="mensagens"
 				:class="

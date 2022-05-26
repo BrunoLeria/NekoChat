@@ -8,6 +8,7 @@ import Analytics from "./home/Analytics.vue";
 import Settings from "./home/Settings.vue";
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
+import { useUsersStore } from "/src/services/stores/users.js";
 
 const components = {
 	Dashboard,
@@ -18,9 +19,11 @@ const components = {
 };
 const activeComponent = ref("Dashboard");
 const talkStore = useTalkStore();
+const userStore = useUsersStore();
 
 onMounted(() => {
-	talkStore.findAllTalkByUser();
+	if (userStore.user.usu_is_admin) talkStore.findAllTalk();
+	else talkStore.findAllTalkByUser();
 });
 
 Socket.on("newTalk", () => {

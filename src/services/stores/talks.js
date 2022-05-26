@@ -7,6 +7,7 @@ export const useTalkStore = defineStore("talks", () => {
     const apiURL = "http://localhost:3005/";
     const talks = ref({});
     const selected = ref("");
+    const activeChat = ref([]);
 
     async function createTalk(message) {
         const url = apiURL + "createTalk";
@@ -56,10 +57,25 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log(error);
             });
     }
-    async function findOneTalk(req, res) {}
+    async function findOneTalkByChatID() {
+        const url = apiURL + "findOneTalkByChatId?id=" + selected.value;
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data) activeChat.value = data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
     async function findAllTalkByUser() {
         talks.value = {};
-        const url = apiURL + "findAllTalkByUser?tlk_fk_usu_identification=" + userStore.user.usu_identification;
+        const url = apiURL + "findAllTalkByUser?id=" + userStore.user.usu_identification;
         await fetch(url, {
             method: "GET",
             headers: {
@@ -82,8 +98,8 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function updateTalk(req, res) {}
-    async function updateTalkToSignInUser(tlk_chat_id) {
-        const url = apiURL + "updateTalkToSignInUser?tlk_chat_id=" + tlk_chat_id;
+    async function updateTalkToSignInUser() {
+        const url = apiURL + "updateTalkToSignInUser?id=" + selected.value;
         fetch(url, {
             method: "POST",
             headers: {
@@ -114,9 +130,10 @@ export const useTalkStore = defineStore("talks", () => {
     return {
         talks,
         selected,
+        activeChat,
         createTalk,
         findAllTalk,
-        findOneTalk,
+        findOneTalkByChatID,
         findAllTalkByUser,
         updateTalk,
         updateTalkToSignInUser,
