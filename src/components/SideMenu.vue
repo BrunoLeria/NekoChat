@@ -1,7 +1,7 @@
 <script setup>
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useTalkStore } from "/src/services/stores/talks";
 import { useUsersStore } from "/src/services/stores/users.js";
 
@@ -42,12 +42,41 @@ const updateYourRegister = () => {
 	}
 	return false;
 };
+
+const statusColor = computed(() => {
+	switch (userStore.user.usu_fk_sts_identification) {
+		case 1:
+			return "bg-green-400";
+		case 2:
+			return "bg-red-400";
+		case 3:
+			return "bg-yellow-400";
+		default:
+			return "bg-gray-400";
+	}
+});
+
+const imageSource = computed(() => {
+	// if (userStore.user.usu_photo.includes("http")) return userStore.user.usu_photo;
+	// else if (userStore.user.usu_photo.includes("data:image/png;base64,")) return userStore.user.usu_photo;
+	return "data:image/png;base64," + userStore.user.usu_photo;
+});
 </script>
 <template>
 	<!-- Sidebar -->
 	<div class="flex-none xl:w-1/6 w-1/8 h-full min-w-min bg-indigo-700 auto-rows-max flex-none flex flex-col z-10">
-		<div class="py-6 w-full bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500">
-			<h3 class="text-white text-2xl text-left ml-4 font-bold rounded-xl">NekoChat</h3>
+		<div class="py-5 px-4 w-full bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500 flex justify-between">
+			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NekoChat</h3>
+			<div class="flex items-end">
+				<img :src="imageSource" v-if="userStore.user.usu_photo" class="inline-block h-10 w-10 rounded-full overflow-hidden" alt="" />
+				<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
+					<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+						<path
+							d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+					</svg>
+				</span>
+				<div class="rounded-full h-3 w-3 fixed" :class="statusColor"></div>
+			</div>
 		</div>
 		<div class="py-5 text-white text-xl flex flex-col flex-1 content-start">
 			<div
