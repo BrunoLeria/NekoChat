@@ -65,6 +65,7 @@ const signInWithGoogle = () => {
 
 async function login(data) {
 	const userFound = await userStore.findOneUserByEmail(data.user.email);
+	userStore.findAllStatuses();
 
 	if (!userFound) {
 		userStore.user.usu_name = data.user.displayName;

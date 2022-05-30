@@ -3,8 +3,9 @@ import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 
 export const useUsersStore = defineStore("user", () => {
-    const apiURL = "http://localhost:3005/";
+    const apiURL = "http://192.168.12.178:3005/";
     const user = ref(useLocalStorage("userNeko", {}));
+    const statuses = ref(useLocalStorage("statusesNeko", {}));
 
     async function createUser() {
         const url = apiURL + "createUser";
@@ -72,6 +73,23 @@ export const useUsersStore = defineStore("user", () => {
             });
         return retorno;
     }
+    async function findAllStatuses() {
+        const url = apiURL + "findAllStatuses";
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data) statuses.value = data;
+                console.log(statuses.value);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     async function updateUser(req) {
         const url = apiURL + "updateUser?id=" + user.value.usu_identification;
@@ -96,5 +114,5 @@ export const useUsersStore = defineStore("user", () => {
 
     async function deleteAllUser(req, res) {}
 
-    return { user, createUser, findAllUser, findOneUser, findOneUserByEmail, updateUser, deleteUser, deleteAllUser };
+    return { user, statuses, createUser, findAllUser, findOneUser, findOneUserByEmail, findAllStatuses, updateUser, deleteUser, deleteAllUser };
 });

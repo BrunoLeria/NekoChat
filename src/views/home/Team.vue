@@ -41,7 +41,7 @@ const statusColor = (status) => {
 					</div>
 					<p class="text-gray-500">{{ member.office }}</p>
 				</div>
-				<div class="flex items-end m-4">
+				<div class="flex items-end justify-end m-4">
 					<img :src="member.photo" v-if="member.photo" :alt="member.name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
 					<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
 						<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">

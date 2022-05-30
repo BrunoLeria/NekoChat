@@ -10,6 +10,7 @@ const router = useRouter();
 const isLoggedIn = ref(false);
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
+const changeStatus = ref(false);
 
 let auth;
 
@@ -27,10 +28,7 @@ onMounted(() => {
 
 const handleSignOut = () => {
 	signOut(auth).then(() => {
-		if (userStore.user.usu_fk_sts_identification !== 4) {
-			userStore.user.usu_fk_sts_identification = 4;
-			userStore.updateUser();
-		}
+		updateStatus(4);
 		userStore.user = {};
 		router.push({ name: "Login" });
 	});
@@ -44,16 +42,7 @@ const updateYourRegister = () => {
 };
 
 const statusColor = computed(() => {
-	switch (userStore.user.usu_fk_sts_identification) {
-		case 1:
-			return "bg-green-400";
-		case 2:
-			return "bg-red-400";
-		case 3:
-			return "bg-yellow-400";
-		default:
-			return "bg-gray-400";
-	}
+	return userStore.statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
 });
 
 const imageSource = computed(() => {
@@ -61,21 +50,44 @@ const imageSource = computed(() => {
 	// else if (userStore.user.usu_photo.includes("data:image/png;base64,")) return userStore.user.usu_photo;
 	return "data:image/png;base64," + userStore.user.usu_photo;
 });
+
+function updateStatus(sts_identification) {
+	if (sts_identification !== userStore.user.usu_fk_sts_identification) {
+		userStore.user.usu_fk_sts_identification = sts_identification;
+		userStore.updateUser();
+	}
+}
 </script>
 <template>
 	<!-- Sidebar -->
 	<div class="flex-none xl:w-1/6 w-1/8 h-full min-w-min bg-indigo-700 auto-rows-max flex-none flex flex-col z-10">
-		<div class="py-5 px-4 w-full bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500 flex justify-between">
+		<div class="py-5 px-4 w-full h-20 bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500 flex justify-between">
 			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NekoChat</h3>
-			<div class="flex items-end">
-				<img :src="imageSource" v-if="userStore.user.usu_photo" class="inline-block h-10 w-10 rounded-full overflow-hidden" alt="" />
-				<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
-					<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-					</svg>
-				</span>
-				<div class="rounded-full h-3 w-3 fixed" :class="statusColor"></div>
+			<div class="flex flex-col place-content-start">
+				<div class="flex items-end justify-end" syle data-dropdown-toggle="dropdown">
+					<button id="dropdownDefault" @click="changeStatus = !changeStatus" type="button">
+						<img :src="imageSource" v-if="userStore.user.usu_photo" class="inline-block h-10 w-10 rounded-full overflow-hidden" alt="" />
+						<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
+							<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+							</svg>
+						</span>
+					</button>
+					<div class="rounded-full h-4 w-4 fixed" :class="statusColor"></div>
+				</div>
+				<transition name="slide-fade" :duration="{ enter: 500, leave: 300 }">
+					<div id="dropdown" class="z-10 bg-gray-100 w-28 rounded-lg" v-show="changeStatus">
+						<li
+							@click="updateStatus(status.sts_identification)"
+							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
+							:class="'text-' + status.sts_color.replace('bg-', '')"
+							aria-labelledby="dropdownDefault"
+							v-for="status in userStore.statuses">
+							<a class="bg-whtie">{{ status.sts_description }}</a>
+						</li>
+					</div>
+				</transition>
 			</div>
 		</div>
 		<div class="py-5 text-white text-xl flex flex-col flex-1 content-start">
