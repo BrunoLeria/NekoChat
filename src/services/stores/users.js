@@ -159,6 +159,7 @@ export const useUsersStore = defineStore("user", () => {
     return {
         user,
         statuses,
+        offices,
         configUser,
         createUser,
         findAllUser,

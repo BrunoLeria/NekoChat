@@ -14,10 +14,11 @@ import zxcvbn from "zxcvbn";
 
 const addressStore = useAddressStore();
 const userStore = useUsersStore();
-
-const person = ref(userStore.configUser ? userStore.configUser : userStore.user);
+const person = ref(userStore.configUser.value && Object.keys(userStore.configUser.value).length !== 0 ? userStore.configUser : userStore.user);
 let confirmPassword = "";
 let loading = ref(false);
+
+if (userStore.offices == undefined) userStore.findAllOffices();
 
 function update() {
 	loading.value = true;
@@ -81,7 +82,7 @@ watch(
 							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.usu_photo" />
 						</div>
 						<div class="col-span-1">
-							<Checkbox :id="'foreingCheckBox'" :label="'Admin'" v-model="person.usu_is_admin" v-if="userStore.user.usu_is_admin" />
+							<Checkbox :id="'isAdminCheckBox'" :label="'Admin'" v-model="person.usu_is_admin" v-if="userStore.user.usu_is_admin" />
 						</div>
 						<div class="col-span-2">
 							<PasswordInput label="Senha" type="password" id="password" v-model="person.usu_password" />
@@ -95,6 +96,7 @@ watch(
 								class="flex-1"
 								:alternatives="userStore.offices"
 								:label="'Cargo'"
+								:idInstead="true"
 								v-model="person.usu_fk_ofc_identification"
 								v-if="userStore.user.usu_is_admin"></Combobox>
 						</div>
