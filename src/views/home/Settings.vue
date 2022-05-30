@@ -15,7 +15,7 @@ import zxcvbn from "zxcvbn";
 const addressStore = useAddressStore();
 const userStore = useUsersStore();
 
-const person = ref(userStore.user);
+const person = ref(userStore.configUser ? userStore.configUser : userStore.user);
 let confirmPassword = "";
 let loading = ref(false);
 
@@ -33,8 +33,7 @@ function update() {
 		createUserWithEmailAndPassword(auth, email.value, password.value);
 	}
 
-	userStore.user = person;
-	userStore.updateUser();
+	userStore.updateUser(person);
 }
 
 watch(
@@ -57,10 +56,19 @@ watch(
 			<div class="shadow overflow-hidden sm:rounded-md">
 				<div class="px-4 py-5 bg-white sm:p-6">
 					<div class="grid grid-cols-6 gap-6">
+						<div class="col-span-1">
+							<TextInput
+								label="ID"
+								type="text"
+								id="identification"
+								:required="true"
+								:disabled="true"
+								v-model="person.usu_identification" />
+						</div>
 						<div class="col-span-3">
 							<TextInput label="Nome" type="text" id="name" :required="true" v-model="person.usu_name" />
 						</div>
-						<div class="col-span-3">
+						<div class="col-span-2">
 							<TextInput label="E-mail" type="email" id="email" :required="true" v-model="person.usu_email" />
 						</div>
 						<div class="col-span-1">
@@ -72,12 +80,23 @@ watch(
 						<div class="col-span-3">
 							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.usu_photo" />
 						</div>
-						<div class="col-span-1"></div>
+						<div class="col-span-1">
+							<Checkbox :id="'foreingCheckBox'" :label="'Admin'" v-model="person.usu_is_admin" v-if="userStore.user.usu_is_admin" />
+						</div>
 						<div class="col-span-2">
 							<PasswordInput label="Senha" type="password" id="password" v-model="person.usu_password" />
 						</div>
 						<div class="col-span-2">
 							<TextInput label="Confirmar senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
+						</div>
+						<div class="col-span-2 flex items-center">
+							<Combobox
+								:id="'officeIdentification'"
+								class="flex-1"
+								:alternatives="userStore.offices"
+								:label="'Cargo'"
+								v-model="person.usu_fk_ofc_identification"
+								v-if="userStore.user.usu_is_admin"></Combobox>
 						</div>
 						<div class="col-span-3">
 							<TextInput label="Endereço" type="text" id="street" v-model="person.usu_address" />
@@ -85,21 +104,24 @@ watch(
 						<div class="col-span-1">
 							<TextInput label="Número" type="text" id="number" v-model="person.usu_street_number" />
 						</div>
-						<div class="col-span-2">
+						<div class="col-span-1">
+							<TextInput label="CEP" type="text" id="postal_code" v-model="person.usu_postal_code" />
+						</div>
+						<div class="col-span-1">
 							<TextInput label="Complemento" type="text" id="complement" v-model="person.usu_complement" />
 						</div>
 						<div class="col-span-2">
 							<TextInput label="Bairro" type="text" id="neighborhood" v-model="person.usu_neighborhood" />
 						</div>
 						<div class="col-span-1">
-							<Checkbox :id="'foreingCheckBox'" :label="'Estrangeiro'" v-model="person.usu_estrangeiro" />
+							<Checkbox :id="'foreingCheckBox'" :label="'foreign'" v-model="person.usu_foreign" />
 						</div>
 						<div class="col-span-1 flex items-center">
 							<Combobox
 								:id="'statesComboBox'"
 								class="flex-1"
 								:alternatives="addressStore.states"
-								:disabled="person.usu_estrangeiro"
+								:disabled="person.usu_foreign"
 								:label="'Estado'"
 								v-model="person.usu_state"></Combobox>
 						</div>
@@ -108,7 +130,7 @@ watch(
 								:id="'cityComboBox'"
 								class="w-full"
 								:alternatives="addressStore.cities"
-								:disabled="person.usu_estrangeiro"
+								:disabled="person.usu_foreign"
 								:label="'Cidade'"
 								:loading="loading"
 								v-model="person.usu_city"></Combobox>

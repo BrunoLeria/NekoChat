@@ -5,7 +5,9 @@ import { useLocalStorage } from "@vueuse/core";
 export const useUsersStore = defineStore("user", () => {
     const apiURL = "http://192.168.12.178:3005/";
     const user = ref(useLocalStorage("userNeko", {}));
-    const statuses = ref(useLocalStorage("statusesNeko", {}));
+    const statuses = ref(useLocalStorage("statusesNeko", []));
+    const offices = ref(useLocalStorage("officesNeko", []));
+    const configUser = ref({});
 
     async function createUser() {
         const url = apiURL + "createUser";
@@ -45,7 +47,31 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function findOneUser(req, res) {}
+    async function findOneUser(id) {
+        const url = apiURL + "findOneUserBy?id=" + id;
+        const retorno = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.message === undefined) {
+                    user.value = data;
+                    for (const [key, value] of Object.entries(user.value)) {
+                        if (value === null) {
+                            user.value[key] = "";
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     async function findOneUserByEmail(email) {
         const url = apiURL + "findOneUserByEmail?email=" + email;
@@ -90,9 +116,26 @@ export const useUsersStore = defineStore("user", () => {
                 console.log(error);
             });
     }
+    async function findAllOffices() {
+        const url = apiURL + "findAllOffices";
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data) offices.value = data;
+                console.log(offices.value);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     async function updateUser(req) {
-        const url = apiURL + "updateUser?id=" + user.value.usu_identification;
+        const url = apiURL + "updateUser?id=" + req.usu_identification;
         await fetch(url, {
             method: "POST",
             headers: {
@@ -114,5 +157,18 @@ export const useUsersStore = defineStore("user", () => {
 
     async function deleteAllUser(req, res) {}
 
-    return { user, statuses, createUser, findAllUser, findOneUser, findOneUserByEmail, findAllStatuses, updateUser, deleteUser, deleteAllUser };
+    return {
+        user,
+        statuses,
+        configUser,
+        createUser,
+        findAllUser,
+        findOneUser,
+        findOneUserByEmail,
+        findAllStatuses,
+        findAllOffices,
+        updateUser,
+        deleteUser,
+        deleteAllUser
+    };
 });

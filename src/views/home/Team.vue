@@ -1,20 +1,24 @@
 <script setup>
 import { useTeamStore } from "../../services/stores/team";
+import { useUsersStore } from "/src/services/stores/users.js";
+import { ref, onMounted, computed } from "vue";
 
 const teamStore = useTeamStore();
+const usersStore = useUsersStore();
+const emit = defineEmits(["update:modelValue"]);
 
-const statusColor = (status) => {
-	switch (status) {
-		case 1:
-			return "bg-green-400";
-		case 2:
-			return "bg-red-400";
-		case 3:
-			return "bg-yellow-400";
-		default:
-			return "bg-gray-400";
-	}
+const statusColor = (id) => {
+	return userStore.statuses[id - 1].sts_color;
 };
+
+const officeName = (id) => {
+	return usersStore.offices[id - 1].ofc_name;
+};
+
+function openUserConfig(id) {
+	usersStore.findOneUser(id);
+	emit("update:modelValue", "Chat");
+}
 </script>
 <template>
 	<div class="bg-neutral-100 p-14 grid grid-cols-3 gap-5 overflow-auto">
@@ -32,28 +36,29 @@ const statusColor = (status) => {
 				ease-in-out
 				duration-500
 			"
-			:key="member.id">
+			:key="member.usu_identification">
 			<div class="flex p-3 justify-between">
 				<div class="flex flex-col p-3">
 					<div class="flex">
-						<h4 class="font-semibold text-lg">{{ member.name }}</h4>
-						<p v-if="member.isAdmin" class="mx-6 bg-green-100 text-emerald-700 rounded-full px-2 font-semibold text-base">Admin</p>
+						<h4 class="font-semibold text-lg">{{ member.usu_name }}</h4>
+						<p v-if="member.usu_is_admin" class="mx-6 bg-green-100 text-emerald-700 rounded-full px-2 font-semibold text-base">Admin</p>
 					</div>
-					<p class="text-gray-500">{{ member.office }}</p>
+					<p class="text-gray-500">{{ officeName(member.usu_fk_ofc_identification) }}</p>
 				</div>
 				<div class="flex items-end justify-end m-4">
-					<img :src="member.photo" v-if="member.photo" :alt="member.name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
+					<img :src="member.usu_photo" v-if="member.usu_photo" :alt="member.usu_name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
 					<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
 						<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
 							<path
 								d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
 						</svg>
 					</span>
-					<div class="rounded-full h-3 w-3 fixed" :class="statusColor(member.status)"></div>
+					<div class="rounded-full h-3 w-3 fixed" :class="statusColor(member.usu_fk_sts_identification)"></div>
 				</div>
 			</div>
 			<div class="flex">
 				<button
+					v-if="usersStore.user.usu_is_admin"
 					class="
 						w-full
 						flex

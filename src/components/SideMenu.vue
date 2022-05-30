@@ -5,7 +5,7 @@ import { ref, onMounted, computed } from "vue";
 import { useTalkStore } from "/src/services/stores/talks";
 import { useUsersStore } from "/src/services/stores/users.js";
 
-defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
 const router = useRouter();
 const isLoggedIn = ref(false);
 const talkStore = useTalkStore();
@@ -56,6 +56,11 @@ function updateStatus(sts_identification) {
 		userStore.user.usu_fk_sts_identification = sts_identification;
 		userStore.updateUser();
 	}
+}
+
+function configLoggedUser() {
+	userStore.configUser.value = false;
+	emit("update:modelValue", "Settings");
 }
 </script>
 <template>
@@ -149,7 +154,7 @@ function updateStatus(sts_identification) {
 			<div
 				class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
 				:class="$attrs.modelValue == 'Settings' ? 'bg-indigo-600' : ''"
-				@click="$emit('update:modelValue', 'Settings')">
+				@click="configLoggedUser">
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path
 						stroke-linecap="round"
