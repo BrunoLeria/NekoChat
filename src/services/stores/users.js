@@ -110,7 +110,6 @@ export const useUsersStore = defineStore("user", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data) statuses.value = data;
-                console.log(statuses.value);
             })
             .catch((error) => {
                 console.log(error);
@@ -127,7 +126,6 @@ export const useUsersStore = defineStore("user", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data) offices.value = data;
-                console.log(offices.value);
             })
             .catch((error) => {
                 console.log(error);
