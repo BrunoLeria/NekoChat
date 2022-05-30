@@ -134,8 +134,9 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function updateUser(req) {
-        const url = apiURL + "updateUser?id=" + req.usu_identification;
+    async function updateUser(id) {
+        const req = configUser && Object.keys(configUser.value).length !== 0 ? configUser.value : user.value;
+        const url = apiURL + "updateUser?id=" + id;
         await fetch(url, {
             method: "POST",
             headers: {

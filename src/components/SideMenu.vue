@@ -42,6 +42,7 @@ const updateYourRegister = () => {
 };
 
 const statusColor = computed(() => {
+	if (userStore.statuses == undefined) userStore.findAllStatuses();
 	return userStore.statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
 });
 
@@ -54,7 +55,7 @@ const imageSource = computed(() => {
 function updateStatus(sts_identification) {
 	if (sts_identification !== userStore.user.usu_fk_sts_identification) {
 		userStore.user.usu_fk_sts_identification = sts_identification;
-		userStore.updateUser();
+		userStore.updateUser(userStore.user.usu_identification);
 	}
 }
 
@@ -79,14 +80,14 @@ function configLoggedUser() {
 							</svg>
 						</span>
 					</button>
-					<div class="rounded-full h-4 w-4 fixed" :class="statusColor"></div>
+					<div class="rounded-full h-4 w-4 fixed" :class="'bg-' + statusColor"></div>
 				</div>
 				<transition name="slide-fade" :duration="{ enter: 500, leave: 300 }">
 					<div id="dropdown" class="z-10 bg-gray-100 w-28 rounded-lg" v-show="changeStatus">
 						<li
 							@click="updateStatus(status.sts_identification)"
 							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
-							:class="'text-' + status.sts_color.replace('bg-', '')"
+							:class="'text-' + status.sts_color"
 							aria-labelledby="dropdownDefault"
 							v-for="status in userStore.statuses">
 							<a class="bg-whtie">{{ status.sts_description }}</a>
