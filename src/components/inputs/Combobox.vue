@@ -1,21 +1,15 @@
 <script setup>
-import { ref } from "@vue/runtime-core";
-const emit = defineEmits(["update:modelValue"]);
 const props = defineProps({
 	alternatives: { type: Array, required: false },
 	idInstead: { type: Boolean, default: false },
 	disabled: Boolean,
-	modelValue: { type: [String, Number, Boolean, Object, Array] },
+	modelValue: String,
 	id: String,
 	required: Boolean,
 	label: String
 });
-const valueOption = ref({});
 
-async function selectedOption(name) {
-	valueOption.value = await props.alternatives.find((option) => option.name === name);
-	emit("update:modelValue", props.idInstead ? valueOption.id : valueOption.name);
-}
+defineEmits(["update:modelValue"]);
 </script>
 
 <template>
@@ -39,10 +33,14 @@ async function selectedOption(name) {
 			"
 			:class="modelValue === '' ? 'text-gray-400' : 'text-gray-900'"
 			v-model="modelValue"
-			@change="selectedOption($event.target.value)"
+			@change="$emit('update:modelValue', $event.target.value)"
 			:placeholder="label">
 			<option value="" disabled selected>Selecione um(a) {{ label.toLowerCase() }}</option>
-			<option v-if="alternatives" v-for="alternative in alternatives" :key="alternative.id">
+			<option
+				v-if="alternatives"
+				v-for="alternative in alternatives"
+				:key="alternative.id"
+				:value="idInstead ? alternative.id : alternative.name">
 				{{ alternative.name }}
 			</option>
 		</select>
