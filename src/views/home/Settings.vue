@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch } from "vue";
 import TextInput from "/src/components/inputs/TextInput.vue";
 import Combobox from "/src/components/inputs/Combobox.vue";
 import Checkbox from "/src/components/inputs/Checkbox.vue";
@@ -7,46 +7,68 @@ import DatePicker from "/src/components/inputs/DatePicker.vue";
 import PhotoPicker from "/src/components/inputs/PhotoPicker.vue";
 import PasswordInput from "/src/components/inputs/PasswordInput.vue";
 import Spinner from "/src/components/animations/Spinner.vue";
-import { useAddressStore, findCitiesWithState } from "/src/services/stores/address.js";
+import { useAddressStore } from "/src/services/stores/address.js";
 import { useUsersStore } from "/src/services/stores/users.js";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import zxcvbn from "zxcvbn";
 
 const addressStore = useAddressStore();
 const userStore = useUsersStore();
 const person = ref(userStore.configUser.value && Object.keys(userStore.configUser.value).length !== 0 ? userStore.configUser : userStore.user);
-let confirmPassword = "";
-let loading = ref(false);
+const loading = ref(false);
+const auth = getAuth();
+const confirmPassword = ref("");
 
 if (userStore.offices == undefined) userStore.findAllOffices();
+userStore.user.usu_state;
+if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
-	loading.value = true;
-	if (zxcvbn(person.value.password).score + 1 == 5) {
-		alert("Password is too weak");
+	if (zxcvbn(person.value.usu_password).score + 1 < 4) {
+		alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
 		return;
 	}
-	if (person.value.password !== confirmPassword) {
-		alert("Passwords do not match");
+	if (person.value.usu_password != confirmPassword.value) {
+		alert("As senhas não conferem.");
 		return;
-	}
-	if (userStore.user.usu_password == null) {
-		createUserWithEmailAndPassword(auth, email.value, password.value);
 	}
 
-	userStore.updateUser(person);
+	const credential = EmailAuthProvider.credential(userStore.user.usu_email, userStore.user.usu_password);
+
+	reauthenticateWithCredential(auth.currentUser, credential);
+
+	updatePassword(auth.currentUser, person.value.usu_password)
+		.then(() => {
+			userStore.user = person.value;
+			userStore
+				.updateUser(userStore.user.usu_identification)
+				.then(() => {
+					loading.value = false;
+					alert("Dados atualizados com sucesso.");
+				})
+				.catch(() => {
+					loading.value = false;
+					alert("Não foi possível atualizar os dados.");
+				});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 }
 
+function findCitiesOptions(newAddress) {
+	addressStore.cities = [];
+	const found = addressStore.states.find((state) => state.name === newAddress);
+	if (found) {
+		loading.value = true;
+		addressStore.findCitiesWithState(found);
+	}
+	loading.value = false;
+}
 watch(
 	() => person.value.usu_state,
 	(newAddress) => {
-		addressStore.cities = [];
-		const found = addressStore.states.find((state) => state.name === newAddress);
-		if (found) {
-			loading.value = true;
-			findCitiesWithState(found);
-		}
-		loading.value = false;
+		findCitiesOptions(newAddress);
 	}
 );
 </script>
@@ -70,7 +92,7 @@ watch(
 							<TextInput label="Nome" type="text" id="name" :required="true" v-model="person.usu_name" />
 						</div>
 						<div class="col-span-2">
-							<TextInput label="E-mail" type="email" id="email" :required="true" v-model="person.usu_email" />
+							<TextInput label="E-mail" type="email" id="email" :required="true" :disabled="true" v-model="person.usu_email" />
 						</div>
 						<div class="col-span-1">
 							<DatePicker label="Data de nascimento" id="birthDate" v-model="person.usu_birthday" />
@@ -142,7 +164,7 @@ watch(
 				</div>
 				<div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
 					<button
-						type="submit"
+						type="button"
 						class="
 							inline-flex
 							justify-center
@@ -158,7 +180,7 @@ watch(
 							hover:bg-indigo-700
 							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
 						"
-						@click="update()">
+						@click="update">
 						Salvar
 					</button>
 				</div>
@@ -166,5 +188,3 @@ watch(
 		</form>
 	</div>
 </template>
-
-<style></style>

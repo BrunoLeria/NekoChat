@@ -2,8 +2,8 @@
 const props = defineProps({
 	alternatives: { type: Array, required: false },
 	idInstead: { type: Boolean, default: false },
+	modelValue: { type: [String, Number, Boolean, Object, Array, File] },
 	disabled: Boolean,
-	modelValue: String,
 	id: String,
 	required: Boolean,
 	label: String

@@ -29,15 +29,6 @@ const props = defineProps({
 });
 const emits = defineEmits(["update:modelValue"]);
 
-let base64 = null;
-let imageSrc = null;
-
-function removeImage() {
-	base64 = null;
-	imageSrc = null;
-	emits("update:modelValue", null);
-}
-
 function urlToBase64(urlStorage) {
 	function toDataURL(url, callback) {
 		const xhr = new XMLHttpRequest();
@@ -67,24 +58,15 @@ function uploadImage(event) {
 	const reader = new FileReader();
 	reader.readAsDataURL(event.target.files[0]);
 	reader.onload = () => {
-		const imageSrc = event.target.files[0];
-		emits("update:modelValue", {
-			base64: reader.result.replace(/^data:image\/[a-z]+;base64,/, ""),
-			name: imageSrc.name,
-			format: imageSrc.type.replace("image/", "")
-		});
+		emits("update:modelValue", reader.result);
 	};
 }
-
-const imageSource = computed(() => {
-	return Object.keys(props.modelValue).length > 0 ? props.modelValue.base64 : props.modelValue;
-});
 </script>
 
 <template>
 	<label class="block text-sm font-medium text-gray-700">{{ label }}:</label>
 	<div class="mt-4 flex items-center">
-		<img :src="imageSource" v-if="modelValue" class="inline-block h-16 w-16 rounded-full overflow-hidden" alt="" />
+		<img v-if="modelValue" :src="modelValue" class="inline-block h-16 w-16 rounded-full overflow-hidden" alt="" />
 		<span v-else class="inline-block h-16 w-16 rounded-full overflow-hidden bg-gray-100">
 			<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
 				<path

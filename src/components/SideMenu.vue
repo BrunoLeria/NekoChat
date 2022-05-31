@@ -46,12 +46,6 @@ const statusColor = computed(() => {
 	return userStore.statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
 });
 
-const imageSource = computed(() => {
-	// if (userStore.user.usu_photo.includes("http")) return userStore.user.usu_photo;
-	// else if (userStore.user.usu_photo.includes("data:image/png;base64,")) return userStore.user.usu_photo;
-	return "data:image/png;base64," + userStore.user.usu_photo;
-});
-
 function updateStatus(sts_identification) {
 	if (sts_identification !== userStore.user.usu_fk_sts_identification) {
 		userStore.user.usu_fk_sts_identification = sts_identification;
@@ -60,7 +54,7 @@ function updateStatus(sts_identification) {
 }
 
 function configLoggedUser() {
-	userStore.configUser.value = false;
+	userStore.configUser = false;
 	emit("update:modelValue", "Settings");
 }
 </script>
@@ -72,7 +66,11 @@ function configLoggedUser() {
 			<div class="flex flex-col place-content-start">
 				<div class="flex items-end justify-end" syle data-dropdown-toggle="dropdown">
 					<button id="dropdownDefault" @click="changeStatus = !changeStatus" type="button">
-						<img :src="imageSource" v-if="userStore.user.usu_photo" class="inline-block h-10 w-10 rounded-full overflow-hidden" alt="" />
+						<img
+							v-if="userStore.user.usu_photo"
+							:src="userStore.user.usu_photo"
+							class="inline-block h-10 w-10 rounded-full overflow-hidden"
+							alt="" />
 						<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
 							<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
 								<path
