@@ -14,7 +14,8 @@ import zxcvbn from "zxcvbn";
 
 const addressStore = useAddressStore();
 const userStore = useUsersStore();
-const person = ref(userStore.configUser.value && Object.keys(userStore.configUser.value).length !== 0 ? userStore.configUser : userStore.user);
+const configOthers = userStore.configUser && Object.keys(userStore.configUser).length != 0;
+const person = ref(configOthers ? userStore.configUser : userStore.user);
 const loading = ref(false);
 const auth = getAuth();
 const confirmPassword = ref("");
@@ -24,11 +25,11 @@ userStore.user.usu_state;
 if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
-	if (zxcvbn(person.value.usu_password).score + 1 < 4) {
+	if (zxcvbn(person.value.usu_password).score + 1 < 4 && !configOthers) {
 		alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
 		return;
 	}
-	if (person.value.usu_password != confirmPassword.value) {
+	if (person.value.usu_password != confirmPassword.value && !configOthers) {
 		alert("As senhas não conferem.");
 		return;
 	}
@@ -37,23 +38,37 @@ function update() {
 
 	reauthenticateWithCredential(auth.currentUser, credential);
 
-	updatePassword(auth.currentUser, person.value.usu_password)
-		.then(() => {
-			userStore.user = person.value;
-			userStore
-				.updateUser(userStore.user.usu_identification)
-				.then(() => {
-					loading.value = false;
-					alert("Dados atualizados com sucesso.");
-				})
-				.catch(() => {
-					loading.value = false;
-					alert("Não foi possível atualizar os dados.");
-				});
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+	if (configOthers) {
+		userStore.configUser = person.value;
+		userStore
+			.updateUser(userStore.configUser.usu_identification)
+			.then(() => {
+				loading.value = false;
+				alert("Dados atualizados com sucesso.");
+			})
+			.catch(() => {
+				loading.value = false;
+				alert("Não foi possível atualizar os dados.");
+			});
+	} else {
+		updatePassword(auth.currentUser, person.value.usu_password)
+			.then(() => {
+				userStore.user = person.value;
+				userStore
+					.updateUser(userStore.user.usu_identification)
+					.then(() => {
+						loading.value = false;
+						alert("Dados atualizados com sucesso.");
+					})
+					.catch(() => {
+						loading.value = false;
+						alert("Não foi possível atualizar os dados.");
+					});
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
 }
 
 function findCitiesOptions(newAddress) {

@@ -1,23 +1,25 @@
 <script setup>
 import { useTeamStore } from "../../services/stores/team";
-import { useUsersStore } from "/src/services/stores/users.js";
+import { useUsersStore } from "../../services/stores/users";
 import { ref, onMounted, computed } from "vue";
 
 const teamStore = useTeamStore();
-const usersStore = useUsersStore();
+const userStore = useUsersStore();
 const emit = defineEmits(["update:modelValue"]);
 
-const statusColor = (id) => {
-	return userStore.statuses[id - 1].sts_color;
-};
+teamStore.findAllTeam();
 
-const officeName = (id) => {
-	return usersStore.offices[id - 1].ofc_name;
-};
+function statusColor(id) {
+	return userStore.statuses[id - 1].sts_color;
+}
+
+function officeName(id) {
+	return userStore.offices[id - 1].name;
+}
 
 function openUserConfig(id) {
-	usersStore.findOneUser(id);
-	emit("update:modelValue", "Chat");
+	userStore.findOneUser(id, true);
+	emit("update:modelValue", "Settings");
 }
 </script>
 <template>
@@ -40,13 +42,15 @@ function openUserConfig(id) {
 			<div class="flex p-3 justify-between">
 				<div class="flex flex-col p-3">
 					<div class="flex">
-						<h4 class="font-semibold text-lg">{{ member.usu_name }}</h4>
-						<p v-if="member.usu_is_admin" class="mx-6 bg-green-100 text-emerald-700 rounded-full px-2 font-semibold text-base">Admin</p>
+						<h4 class="font-semibold text-lg">{{ member.usu_name ? member.usu_name : "Usuário " + member.usu_identification }}</h4>
+						<p v-if="member.usu_is_admin" class="mx-3 bg-green-100 text-emerald-700 rounded-full px-2 font-semibold text-base h-6 w-16">
+							Admin
+						</p>
 					</div>
 					<p class="text-gray-500">{{ officeName(member.usu_fk_ofc_identification) }}</p>
 				</div>
-				<div class="flex items-end justify-end m-4">
-					<img :src="member.usu_photo" v-if="member.usu_photo" :alt="member.usu_name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
+				<div class="flex items-center justify-end m-4">
+					<img v-if="member.usu_photo" :src="member.usu_photo" :alt="member.usu_name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
 					<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
 						<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
 							<path
@@ -58,7 +62,7 @@ function openUserConfig(id) {
 			</div>
 			<div class="flex">
 				<button
-					v-if="usersStore.user.usu_is_admin"
+					v-if="userStore.user.usu_is_admin"
 					class="
 						w-full
 						flex
@@ -70,7 +74,8 @@ function openUserConfig(id) {
 						hover:bg-indigo-500 hover:text-white
 						ease-in-out
 						duration-500
-					">
+					"
+					@click="openUserConfig(member.usu_identification)">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						class="h-6 w-6 mx-2"

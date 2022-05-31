@@ -47,8 +47,8 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function findOneUser(id) {
-        const url = apiURL + "findOneUserBy?id=" + id;
+    async function findOneUser(id, config = false) {
+        const url = apiURL + "findOneUser?id=" + id;
         const retorno = await fetch(url, {
             method: "GET",
             headers: {
@@ -58,12 +58,9 @@ export const useUsersStore = defineStore("user", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.message === undefined) {
-                    user.value = data;
-                    for (const [key, value] of Object.entries(user.value)) {
-                        if (value === null) {
-                            user.value[key] = "";
-                        }
-                    }
+                    data = fillEmptyFields(data);
+                    if (config) configUser.value = data;
+                    else user.value = data;
                     return true;
                 }
                 return false;
@@ -84,12 +81,8 @@ export const useUsersStore = defineStore("user", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data.message === undefined) {
+                    data = fillEmptyFields(data);
                     user.value = data;
-                    for (const [key, value] of Object.entries(user.value)) {
-                        if (value === null) {
-                            user.value[key] = "";
-                        }
-                    }
                     return true;
                 }
                 return false;
@@ -155,6 +148,15 @@ export const useUsersStore = defineStore("user", () => {
     async function deleteUser(req, res) {}
 
     async function deleteAllUser(req, res) {}
+
+    function fillEmptyFields(data) {
+        for (const [key, value] of Object.entries(data)) {
+            if (value === null) {
+                data[key] = "";
+            }
+        }
+        return data;
+    }
 
     return {
         user,
