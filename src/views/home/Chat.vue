@@ -49,13 +49,13 @@ Socket.on("returnedToBot", async () => {
 				:key="index"
 				id="mensagens"
 				:class="
-					message.tlk_from_me === '0'
-						? 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
-						: 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+					message.tlk_from_me === '1'
+						? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+						: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
 				">
 				<div class="flex justify-between">
 					<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-						{{ message.tlk_from_me === "0" ? message.tlk_chat_name : "Robô" }}
+						{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_chat_name }}
 					</h3>
 					<p class="ml-3">
 						{{ time(message) }}
@@ -149,7 +149,7 @@ Socket.on("returnedToBot", async () => {
 						w-12
 						h-12
 					"
-					@click="myMessage.value != '' ? talkStore.sendMessage(myMessage.value) : ''">
+					@click="myMessage.value != '' ? talkStore.sendMessage(myMessage) : ''">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
 						<path
 							fill-rule="evenodd"

@@ -120,7 +120,43 @@ export const useTalkStore = defineStore("talks", () => {
     async function deleteTalk(req, res) {}
     async function deleteAllTalk(req, res) {}
     async function sendMessage(message) {
-        console.log(message);
+        if (message != "") {
+            const urlSendMessage = "https://api.chat-api.com/instance14140/sendMessage?token=sxefyjuyqkf60mtn";
+            const urlRecordMessage = apiURL + "createTalk";
+            fetch(urlSendMessage, {
+                body: "body=" + message + "&phone=" + selected.value.replace("@c.us", ""),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: "post"
+            })
+                .then((response) => {
+                    fetch(urlRecordMessage, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            tlk_message: message,
+                            tlk_fk_usu_identification: 1,
+                            tlk_client: talks[selected].value[0].tlk_client,
+                            tlk_chat_id: talks[selected].value[0].tlk_chat_id,
+                            tlk_chat_name: talks[selected].value[0].tlk_chat_name,
+                            tlk_from_me: true
+                        })
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log("Success:", data);
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }
 
     async function fetchTalks() {

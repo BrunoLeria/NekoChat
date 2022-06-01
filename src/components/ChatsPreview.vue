@@ -8,9 +8,7 @@ const props = defineProps({
 
 const time = (message) => {
 	const date = new Date(message.tlk_date_time);
-	return date.getMinutes() < 10
-		? date.getHours() + ":0" + date.getMinutes()
-		: date.getHours() + ":" + date.getMinutes();
+	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
 </script>
 
@@ -21,17 +19,13 @@ const time = (message) => {
 			:key="index"
 			id="mensagens"
 			:class="
-				message.tlk_from_me === '0'
-					? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3'
-					: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+				message.tlk_from_me === '1'
+					? 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+					: 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3'
 			">
 			<div class="flex justify-between">
 				<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-					{{
-						message.tlk_from_me === "0"
-							? message.tlk_chat_name
-							: "Robô"
-					}}
+					{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_chat_name }}
 				</h3>
 				<p class="ml-3">
 					{{ time(message) }}
