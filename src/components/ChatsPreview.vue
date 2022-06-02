@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted, onUpdated } from "vue";
 const props = defineProps({
 	talk: {
 		type: Object,
@@ -10,10 +11,18 @@ const time = (message) => {
 	const date = new Date(message.tlk_date_time);
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
+
+onMounted(() => {
+	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
+});
+
+onUpdated(() => {
+	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
+});
 </script>
 
 <template>
-	<div class="flex flex-col p-5">
+	<div class="flex flex-col p-5" id="scrollContainer">
 		<div
 			v-for="(message, index) in talk"
 			:key="index"

@@ -21,6 +21,7 @@ onMounted(async () => {
 			talkStore.updateTalkToSignInUser(true);
 		}
 	});
+	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
 });
 
 function returnToBot(assumeChat) {
@@ -28,6 +29,13 @@ function returnToBot(assumeChat) {
 	if (!assumeChat) talkStore.sendMessage(myMessage.value);
 	//Update the user responsible for the talk to the bot
 	talkStore.updateTalkToSignInUser(assumeChat, updateOtherClients);
+}
+
+function sendMessage() {
+	if (myMessage.value != "") {
+		talkStore.sendMessage(myMessage);
+		myMessage.value = "";
+	}
 }
 
 //WebSocket chenges to the dashboard and the selected talk
@@ -38,12 +46,13 @@ Socket.on("returnedToBot", async () => {
 			emit("update:modelValue", "Dashboard");
 		}
 	});
+	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
 });
 </script>
 
 <template>
-	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between">
-		<div class="flex flex-col p-5 overflow-y-auto w-full h-4/5 bg-white rounded-xl">
+	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between" @keypress.enter="sendMessage()">
+		<div class="flex flex-col p-5 overflow-y-auto w-full h-4/5 bg-white rounded-xl" id="scrollContainer">
 			<div
 				v-for="(message, index) in talkStore.activeChat"
 				:key="index"
@@ -149,7 +158,7 @@ Socket.on("returnedToBot", async () => {
 						w-12
 						h-12
 					"
-					@click="myMessage.value != '' ? talkStore.sendMessage(myMessage) : ''">
+					@click="sendMessage()">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
 						<path
 							fill-rule="evenodd"

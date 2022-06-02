@@ -121,7 +121,7 @@ export const useTalkStore = defineStore("talks", () => {
     async function deleteAllTalk(req, res) {}
     async function sendMessage(message) {
         if (message != "") {
-            const urlSendMessage = "https://api.chat-api.com/instance14140/sendMessage?token=sxefyjuyqkf60mtn";
+            const urlSendMessage = "https://api.chat-api.com/instance407235/sendMessage?token=ta8vbkk6x82je39g";
             const urlRecordMessage = apiURL + "createTalk";
             fetch(urlSendMessage, {
                 body: "body=" + message + "&phone=" + selected.value.replace("@c.us", ""),
