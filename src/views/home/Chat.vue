@@ -21,11 +21,11 @@ onMounted(async () => {
 			talkStore.updateTalkToSignInUser(true);
 		}
 	});
-	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
+	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
 });
 
 onUpdated(() => {
-	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
+	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
 });
 
 function returnToBot(assumeChat) {

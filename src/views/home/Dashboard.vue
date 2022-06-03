@@ -1,6 +1,8 @@
 <script setup>
 import { useTalkStore } from "../../services/stores/talks";
 import ChatsPreview from "../../components/ChatsPreview.vue";
+import { onMounted, onUpdated } from "vue";
+
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
 
@@ -8,12 +10,25 @@ const selectTalk = (talk) => {
 	talkStore.selected = talk[0].tlk_chat_id;
 	emit("update:modelValue", "Chat");
 };
+
+onMounted(() => {
+	Object.keys(talkStore.talks).forEach((key) => {
+		document.getElementById(key).scrollTo(0, document.getElementById(key).scrollHeight);
+	});
+});
+
+onUpdated(() => {
+	Object.keys(talkStore.talks).forEach((key) => {
+		document.getElementById(key).scrollTo(0, document.getElementById(key).scrollHeight);
+	});
+});
 </script>
 <template>
 	<div class="bg-neutral-100 p-14 flex gap-5">
 		<div
 			v-for="(talk, index) in talkStore.talks"
 			:key="index"
+			:id="index"
 			class="
 				bg-white
 				rounded-xl
@@ -25,6 +40,7 @@ const selectTalk = (talk) => {
 				ease-in-out
 				duration-500
 				overflow-x-auto
+				scrollContainer
 			"
 			@click="selectTalk(talk)">
 			<ChatsPreview :talk="talk" />

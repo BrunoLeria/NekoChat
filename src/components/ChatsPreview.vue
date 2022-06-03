@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, onUpdated } from "vue";
+import { computed } from "vue";
+
 const props = defineProps({
 	talk: {
 		type: Object,
@@ -12,19 +13,15 @@ const time = (message) => {
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
 
-onMounted(() => {
-	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
-});
-
-onUpdated(() => {
-	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
+const messages = computed(() => {
+	return props.talk.reverse();
 });
 </script>
 
 <template>
-	<div class="flex flex-col p-5" id="scrollContainer">
+	<div class="flex flex-col p-5">
 		<div
-			v-for="(message, index) in talk"
+			v-for="(message, index) in messages"
 			:key="index"
 			id="mensagens"
 			:class="
