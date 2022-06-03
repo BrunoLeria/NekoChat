@@ -40,7 +40,6 @@ onUpdated(() => {
 				ease-in-out
 				duration-500
 				overflow-x-auto
-				scrollContainer
 			"
 			@click="selectTalk(talk)">
 			<ChatsPreview :talk="talk" />
