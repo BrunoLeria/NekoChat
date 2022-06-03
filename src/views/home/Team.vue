@@ -23,7 +23,7 @@ function openUserConfig(id) {
 }
 </script>
 <template>
-	<div class="bg-neutral-100 p-14 grid grid-cols-3 gap-5 overflow-auto">
+	<div class="bg-neutral-100 p-14 grid grid-cols-3 gap-5">
 		<div
 			v-for="member of teamStore.team"
 			class="

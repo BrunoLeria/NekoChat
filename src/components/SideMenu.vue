@@ -60,7 +60,7 @@ function configLoggedUser() {
 </script>
 <template>
 	<!-- Sidebar -->
-	<div class="flex-none xl:w-1/6 w-1/8 h-full min-w-min bg-indigo-700 auto-rows-max flex-none flex flex-col z-10">
+	<div class="flex-none xl:w-1/6 w-1/8 h-full min-w-min bg-indigo-700 auto-rows-max flex-none flex flex-col z-10 max-w-[15%]">
 		<div class="py-5 px-4 w-full h-20 bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500 flex justify-between">
 			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NekoChat</h3>
 			<div class="flex flex-col place-content-start">

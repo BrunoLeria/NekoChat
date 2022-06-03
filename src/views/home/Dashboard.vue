@@ -10,7 +10,7 @@ const selectTalk = (talk) => {
 };
 </script>
 <template>
-	<div class="bg-neutral-100 p-14 flex gap-5 overflow-auto">
+	<div class="bg-neutral-100 p-14 flex gap-5">
 		<div
 			v-for="(talk, index) in talkStore.talks"
 			:key="index"

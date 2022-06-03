@@ -37,7 +37,7 @@ Socket.on("newTalk", () => {
 <template>
 	<div class="flex h-full bg-white dark:bg-slate-90">
 		<SideMenu v-model="activeComponent" />
-		<div class="flex-1 flex flex-col">
+		<div class="flex-1 flex flex-col max-w-[85%]">
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">
 					<h3 class="text-indigo-700 text-2xl text-left ml-4 font-bold rounded-xl">
@@ -49,7 +49,7 @@ Socket.on("newTalk", () => {
 				<component
 					:is="components[activeComponent]"
 					v-model="activeComponent"
-					class="h-full m-12 border-8 z-10 shadow-xl overflow-y-auto"></component>
+					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll"></component>
 			</transition>
 			<div class="py-10 bg-indigo-100"></div>
 		</div>
