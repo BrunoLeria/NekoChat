@@ -2,7 +2,7 @@
 import TextInput from "/src/components/inputs/TextInput.vue";
 import { useTalkStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUpdated } from "vue";
 import Socket from "/src/services/socket.js";
 
 const emit = defineEmits(["update:modelValue"]);
@@ -21,6 +21,10 @@ onMounted(async () => {
 			talkStore.updateTalkToSignInUser(true);
 		}
 	});
+	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
+});
+
+onUpdated(() => {
 	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
 });
 
@@ -46,7 +50,6 @@ Socket.on("returnedToBot", async () => {
 			emit("update:modelValue", "Dashboard");
 		}
 	});
-	document.querySelector("#scrollContainer").scrollTo(0, document.querySelector("#scrollContainer").scrollHeight);
 });
 </script>
 
@@ -64,7 +67,7 @@ Socket.on("returnedToBot", async () => {
 				">
 				<div class="flex justify-between">
 					<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-						{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_chat_name }}
+						{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_client }}
 					</h3>
 					<p class="ml-3">
 						{{ time(message) }}
