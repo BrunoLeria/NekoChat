@@ -19,9 +19,9 @@ export const useTalkStore = defineStore("talks", () => {
             body: JSON.stringify({
                 tlk_message: message,
                 tlk_fk_usu_identification: userStore.user.usu_identification,
-                tlk_client: talks.value[selected][0].tlk_client,
-                tlk_chat_id: talks.value[selected][0].tlk_chat_id,
-                tlk_chat_name: talks.value[selected][0].tlk_chat_name,
+                tlk_client: talks.value[selected.value][0].tlk_client,
+                tlk_chat_id: talks.value[selected.value][0].tlk_chat_id,
+                tlk_chat_name: talks.value[selected.value][0].tlk_chat_name,
                 tlk_from_me: true
             })
         })
@@ -130,31 +130,12 @@ export const useTalkStore = defineStore("talks", () => {
                 },
                 method: "post"
             })
-                .then((response) => {
-                    fetch(urlRecordMessage, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            tlk_message: message,
-                            tlk_fk_usu_identification: 1,
-                            tlk_client: talks[selected].value[0].tlk_client,
-                            tlk_chat_id: talks[selected].value[0].tlk_chat_id,
-                            tlk_chat_name: talks[selected].value[0].tlk_chat_name,
-                            tlk_from_me: true
-                        })
-                    })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            console.log("Success:", data);
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Success:", data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error("Error:", error);
                 });
         }
     }
