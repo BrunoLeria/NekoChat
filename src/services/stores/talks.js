@@ -45,6 +45,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data) {
+                    talks.value = {};
                     data.forEach((talk) => {
                         if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
                             talks.value[talk.tlk_chat_id] = [];
@@ -85,6 +86,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data) {
+                    talks.value = {};
                     data.forEach((talk) => {
                         if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
                             talks.value[talk.tlk_chat_id] = [];
