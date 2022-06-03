@@ -9,6 +9,7 @@ import Settings from "./home/Settings.vue";
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
 import { useUsersStore } from "/src/services/stores/users.js";
+import { useTeamStore } from "/src/services/stores/team";
 
 const components = {
 	Dashboard,
@@ -20,6 +21,7 @@ const components = {
 const activeComponent = ref("Dashboard");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
+const teamStore = useTeamStore();
 
 onMounted(() => {
 	if (userStore.user.usu_is_admin) talkStore.findAllTalk();
@@ -31,6 +33,9 @@ Socket.on("newTalk", () => {
 	else talkStore.findAllTalkByUser();
 
 	if (talkStore.selected) talkStore.findOneTalkByChatID();
+});
+Socket.on("userUpdated", () => {
+	teamStore.findAllTeam();
 });
 </script>
 
