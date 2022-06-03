@@ -5,7 +5,14 @@ import { useLocalStorage } from "@vueuse/core";
 export const useUsersStore = defineStore("user", () => {
     const apiURL = "http://192.168.12.178:3005/";
     const user = ref(useLocalStorage("userNeko", {}));
-    const statuses = ref(useLocalStorage("statusesNeko", []));
+    const statuses = ref(
+        useLocalStorage("statusesNeko", [
+            { sts_identification: 1, sts_name: "Online", sts_description: "Online", sts_color: "green-400" },
+            { sts_identification: 2, sts_name: "Occupied", sts_description: "Occupied", sts_color: "red-400" },
+            { sts_identification: 3, sts_name: "Away", sts_description: "Away", sts_color: "yellow-400" },
+            { sts_identification: 4, sts_name: "Offline", sts_description: "Offline", sts_color: "gray-400" }
+        ])
+    );
     const offices = ref(useLocalStorage("officesNeko", []));
     const configUser = ref({});
 
