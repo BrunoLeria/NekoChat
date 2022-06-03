@@ -34,7 +34,7 @@ onUpdated(() => {
 			">
 			<div class="flex justify-between">
 				<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-					{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_chat_name }}
+					{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_client }}
 				</h3>
 				<p class="ml-3">
 					{{ time(message) }}
