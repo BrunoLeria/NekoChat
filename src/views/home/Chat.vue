@@ -33,7 +33,7 @@ function returnToBot(assumeChat) {
 
 function sendMessage() {
 	if (myMessage.value != "") {
-		talkStore.sendMessage(myMessage);
+		talkStore.sendMessage(myMessage.value);
 		myMessage.value = "";
 	}
 }
