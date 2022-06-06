@@ -65,7 +65,6 @@ const signInWithGoogle = () => {
 
 async function login(data) {
 	const userFound = await userStore.findOneUserByEmail(data.user.email);
-	userStore.findAllStatuses();
 	userStore.findAllOffices();
 
 	if (!userFound) {

@@ -7,10 +7,10 @@ export const useUsersStore = defineStore("user", () => {
     const user = ref(useLocalStorage("userNeko", {}));
     const statuses = ref(
         useLocalStorage("statusesNeko", [
-            { sts_identification: 1, sts_name: "Online", sts_description: "Online", sts_color: "green-400" },
-            { sts_identification: 2, sts_name: "Occupied", sts_description: "Occupied", sts_color: "red-400" },
-            { sts_identification: 3, sts_name: "Away", sts_description: "Away", sts_color: "yellow-400" },
-            { sts_identification: 4, sts_name: "Offline", sts_description: "Offline", sts_color: "gray-400" }
+            { sts_identification: 1, sts_name: "Online", sts_description: "Online", sts_color: "rgb(74 222 128)" },
+            { sts_identification: 2, sts_name: "Occupied", sts_description: "Occupied", sts_color: "rgb(248 113 113)" },
+            { sts_identification: 3, sts_name: "Away", sts_description: "Away", sts_color: "rgb(250 204 21)" },
+            { sts_identification: 4, sts_name: "Offline", sts_description: "Offline", sts_color: "rgb(156 163 175)" }
         ])
     );
     const offices = ref(useLocalStorage("officesNeko", []));
@@ -99,22 +99,7 @@ export const useUsersStore = defineStore("user", () => {
             });
         return retorno;
     }
-    async function findAllStatuses() {
-        const url = apiURL + "findAllStatuses";
-        await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data) statuses.value = data;
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+
     async function findAllOffices() {
         const url = apiURL + "findAllOffices";
         await fetch(url, {
@@ -174,7 +159,6 @@ export const useUsersStore = defineStore("user", () => {
         findAllUser,
         findOneUser,
         findOneUserByEmail,
-        findAllStatuses,
         findAllOffices,
         updateUser,
         deleteUser,
