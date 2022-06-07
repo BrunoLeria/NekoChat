@@ -22,27 +22,32 @@ onUpdated(() => {
 		document.getElementById(key).scrollTo(0, document.getElementById(key).scrollHeight);
 	});
 });
+
+function nomedoCliente(talk) {
+	const result = talk.find(({ tlk_from_me }) => tlk_from_me !== "1");
+	return result == undefined ? talk[0].tlk_chat_name : result.tlk_client;
+}
 </script>
 <template>
 	<div class="bg-neutral-100 p-14 flex gap-5">
-		<div
-			v-for="(talk, index) in talkStore.talks"
-			:key="index"
-			:id="index"
-			class="
-				bg-white
-				rounded-xl
-				h-full
-				min-w-[33%]
-				shadow-lg
-				border-gray-200 border-2
-				hover:shadow-indigo-500 hover:border-indigo-500
-				ease-in-out
-				duration-500
-				overflow-x-auto
-			"
-			@click="selectTalk(talk)">
-			<ChatsPreview :talk="talk" />
+		<div v-for="(talk, index) in talkStore.talks" class="min-w-[33%]" :key="index" @click="selectTalk(talk)">
+			<div class="w-full h-[10%] flex justify-center items-center bg-indigo-100 text-indigo-700 text-2xl font-bold rounded-t-xl">
+				{{ nomedoCliente(talk) }}
+			</div>
+			<ChatsPreview
+				:id="index"
+				class="
+					bg-white
+					rounded-b-xl
+					h-[90%]
+					shadow-lg
+					border-gray-200 border-2
+					hover:shadow-indigo-500 hover:border-indigo-500
+					ease-in-out
+					duration-500
+					overflow-x-auto
+				"
+				:talk="talk" />
 		</div>
 	</div>
 </template>
