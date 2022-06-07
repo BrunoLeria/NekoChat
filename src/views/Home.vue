@@ -1,22 +1,17 @@
 <script setup>
 import SideMenu from "../components/SideMenu.vue";
-import { ref, onMounted } from "vue";
-import Dashboard from "./home/Dashboard.vue";
-import Team from "./home/Team.vue";
-import Chat from "./home/Chat.vue";
-import Analytics from "./home/Analytics.vue";
-import Settings from "./home/Settings.vue";
+import { ref, onMounted, defineAsyncComponent } from "vue";
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { useTeamStore } from "/src/services/stores/team";
 
 const components = {
-	Dashboard,
-	Team,
-	Chat,
-	Analytics,
-	Settings
+	Dashboard: defineAsyncComponent(() => import("./home/Dashboard.vue")),
+	Team: defineAsyncComponent(() => import("./home/Team.vue")),
+	Chat: defineAsyncComponent(() => import("./home/Chat.vue")),
+	Analytics: defineAsyncComponent(() => import("./home/Analytics.vue")),
+	Settings: defineAsyncComponent(() => import("./home/Settings.vue"))
 };
 const activeComponent = ref("Dashboard");
 const talkStore = useTalkStore();

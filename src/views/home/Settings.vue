@@ -1,12 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
-import TextInput from "/src/components/inputs/TextInput.vue";
-import Combobox from "/src/components/inputs/Combobox.vue";
-import Checkbox from "/src/components/inputs/Checkbox.vue";
-import DatePicker from "/src/components/inputs/DatePicker.vue";
-import PhotoPicker from "/src/components/inputs/PhotoPicker.vue";
-import PasswordInput from "/src/components/inputs/PasswordInput.vue";
-import Spinner from "/src/components/animations/Spinner.vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 import { useAddressStore } from "/src/services/stores/address.js";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
@@ -19,6 +12,14 @@ const person = ref(configOthers ? userStore.configUser : userStore.user);
 const loading = ref(false);
 const auth = getAuth();
 const confirmPassword = ref("");
+
+const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
+const Combobox = defineAsyncComponent(() => import("/src/components/inputs/Combobox.vue"));
+const Checkbox = defineAsyncComponent(() => import("/src/components/inputs/Checkbox.vue"));
+const DatePicker = defineAsyncComponent(() => import("/src/components/inputs/DatePicker.vue"));
+const PhotoPicker = defineAsyncComponent(() => import("/src/components/inputs/PhotoPicker.vue"));
+const PasswordInput = defineAsyncComponent(() => import("/src/components/inputs/PasswordInput.vue"));
+const Spinner = defineAsyncComponent(() => import("/src/components/animations/Spinner.vue"));
 
 if (userStore.offices == undefined) userStore.findAllOffices();
 userStore.user.usu_state;
