@@ -6,6 +6,7 @@ import { ref } from "vue";
 export const useTeamStore = defineStore("teamID", () => {
     const apiURL = "http://192.168.12.178:3005/";
     const team = ref(useLocalStorage("teamNeko", []));
+    const teamOptions = ref(useLocalStorage("teamOptionsNeko", []));
     const userStore = useUsersStore();
 
     async function findAllTeam() {
@@ -20,6 +21,13 @@ export const useTeamStore = defineStore("teamID", () => {
             .then((data) => {
                 if (data) {
                     team.value = data;
+                    teamOptions.value = [];
+                    data.forEach((element) => {
+                        teamOptions.value.push({
+                            id: element.usu_identification,
+                            name: element.usu_name ? element.usu_name : "Usuário " + element.usu_identification
+                        });
+                    });
                 }
             })
             .catch((error) => {
@@ -29,6 +37,7 @@ export const useTeamStore = defineStore("teamID", () => {
 
     return {
         team,
+        teamOptions,
         findAllTeam
     };
 });

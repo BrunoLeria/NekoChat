@@ -26,6 +26,7 @@ const teamStore = useTeamStore();
 onMounted(() => {
 	if (userStore.user.usu_is_admin) talkStore.findAllTalk();
 	else talkStore.findAllTalkByUser();
+	teamStore.findAllTeam();
 });
 
 Socket.on("newTalk", () => {

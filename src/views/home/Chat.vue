@@ -1,14 +1,18 @@
 <script setup>
 import TextInput from "/src/components/inputs/TextInput.vue";
+import Combobox from "/src/components/inputs/Combobox.vue";
 import { useTalkStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { ref, onMounted, onUpdated } from "vue";
+import { useTeamStore } from "../../services/stores/team";
+import { ref, onMounted, onUpdated, computed, watch } from "vue";
 import Socket from "/src/services/socket.js";
 
 const emit = defineEmits(["update:modelValue"]);
 const myMessage = ref("");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
+const teamStore = useTeamStore();
+const usedIdToTransfer = ref("");
 
 const time = (message) => {
 	const date = new Date(message.tlk_date_time);
@@ -29,10 +33,7 @@ onUpdated(() => {
 });
 
 function returnToBot(assumeChat) {
-	const updateOtherClients = "&updateOtherClients=true";
-	if (!assumeChat) talkStore.sendMessage(myMessage.value);
-	//Update the user responsible for the talk to the bot
-	talkStore.updateTalkToSignInUser(assumeChat, updateOtherClients);
+	talkStore.updateTalkToSignInUser(assumeChat, true);
 }
 
 function sendMessage() {
@@ -51,6 +52,13 @@ Socket.on("returnedToBot", async () => {
 		}
 	});
 });
+
+watch(
+	() => usedIdToTransfer.value,
+	(newUser) => {
+		returnToBot(newUser, true);
+	}
+);
 </script>
 
 <template>
@@ -80,6 +88,21 @@ Socket.on("returnedToBot", async () => {
 		</div>
 		<div class="w-full flex items-center">
 			<TextInput label="Digite sua mensagem aqui" v-model="myMessage" type="text" id="myMessage" autoComplete="myMessage" class="w-full" />
+			<Combobox
+				v-if="userStore.user.usu_is_admin"
+				:id="'usersComboBox'"
+				:idInstead="true"
+				class="w-56 h-12 py-2 px-2"
+				:alternatives="teamStore.teamOptions"
+				:backgroundColor="'bg-yellow-700 hover:bg-yellow-500 '"
+				:padding="'p-1'"
+				:border="'border border-transparent'"
+				:focusRing="'focus:ring-transparent'"
+				:focusBorder="'focus:border-transparent'"
+				:textColorProp="'text-white'"
+				:label="'Usuário para transferir'"
+				title="Transferir para outro usuário"
+				v-model="usedIdToTransfer"></Combobox>
 			<div class="flex pt-5">
 				<button
 					v-if="userStore.user.usu_is_admin"
@@ -88,6 +111,7 @@ Socket.on("returnedToBot", async () => {
 						mx-3
 						flex
 						justify-center
+						items-center
 						py-2
 						px-2
 						border border-transparent
@@ -95,16 +119,16 @@ Socket.on("returnedToBot", async () => {
 						font-medium
 						rounded-full
 						text-white
-						bg-red-700
-						hover:bg-red-500
-						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+						bg-red-900
+						hover:bg-red-700
+						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500
 						ease-in-out
 						duration-500
 						w-12
 						h-12
 					"
 					title="Retornar conversa para o robô"
-					@click="returnToBot(false)">
+					@click="returnToBot(1)">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
 					</svg>
@@ -116,6 +140,7 @@ Socket.on("returnedToBot", async () => {
 						mx-3
 						flex
 						justify-center
+						items-center
 						py-2
 						px-2
 						border border-transparent
@@ -125,14 +150,14 @@ Socket.on("returnedToBot", async () => {
 						text-white
 						bg-green-900
 						hover:bg-green-700
-						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+						focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500
 						ease-in-out
 						duration-500
 						w-12
 						h-12
 					"
 					title="Assumir conversa"
-					@click="returnToBot(true)">
+					@click="returnToBot(userStore.user.usu_identification)">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 						<path
 							stroke-linecap="round"
