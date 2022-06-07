@@ -49,7 +49,7 @@ function openUserConfig(id) {
 					</div>
 					<p class="text-gray-500">{{ officeName(member.usu_fk_ofc_identification) }}</p>
 				</div>
-				<div class="flex items-center justify-end m-4">
+				<div class="flex items-end justify-end m-4">
 					<img v-if="member.usu_photo" :src="member.usu_photo" :alt="member.usu_name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
 					<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
 						<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
@@ -90,7 +90,7 @@ function openUserConfig(id) {
 					</svg>
 					Configurações
 				</button>
-				<button
+				<!-- <button
 					class="
 						w-full
 						flex
@@ -116,7 +116,7 @@ function openUserConfig(id) {
 							d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
 					</svg>
 					Chat
-				</button>
+				</button> -->
 			</div>
 		</div>
 	</div>
