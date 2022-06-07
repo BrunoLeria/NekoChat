@@ -64,11 +64,11 @@ function configLoggedUser() {
 			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NekoChat</h3>
 			<div class="flex flex-col place-content-start">
 				<div class="flex items-end justify-end" syle data-dropdown-toggle="dropdown">
-					<button id="dropdownDefault" @click="changeStatus = !changeStatus" type="button">
+					<button id="dropdownDefault" @click="changeStatus = !changeStatus" title="Mudar status?" type="button">
 						<img
 							v-if="userStore.user.usu_photo"
 							:src="userStore.user.usu_photo"
-							class="inline-block h-10 w-10 rounded-full overflow-hidden"
+							class="inline-block h-10 rounded-full overflow-hidden"
 							alt="" />
 						<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
 							<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@ function configLoggedUser() {
 							:style="{ color: status.sts_color }"
 							aria-labelledby="dropdownDefault"
 							v-for="status in userStore.statuses">
-							<a class="bg-whtie">{{ status.sts_description }}</a>
+							{{ status.sts_description }}
 						</li>
 					</div>
 				</transition>
