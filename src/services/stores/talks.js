@@ -100,7 +100,7 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function updateTalk(req, res) {}
-    async function updateTalkToSignInUser(idQuemAssumeChat, updateOtherClients) {
+    async function updateTalkToSignInUser(idQuemAssumeChat, updateOtherClients = false) {
         const url = apiURL + "updateTalkToSignInUser?id=" + selected.value + "&updateOtherClients=" + updateOtherClients;
         fetch(url, {
             method: "POST",
@@ -129,7 +129,7 @@ export const useTalkStore = defineStore("talks", () => {
                 message: message
             }),
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
             method: "post"
         })
@@ -151,7 +151,7 @@ export const useTalkStore = defineStore("talks", () => {
                 contactBusinessDescription: contact.description
             }),
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
             method: "post"
         })
@@ -171,7 +171,7 @@ export const useTalkStore = defineStore("talks", () => {
                 image: image
             }),
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
             method: "post"
         })
@@ -191,7 +191,7 @@ export const useTalkStore = defineStore("talks", () => {
                 audio: audio
             }),
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
             method: "post"
         })
@@ -211,7 +211,7 @@ export const useTalkStore = defineStore("talks", () => {
                 video: video
             }),
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
             method: "post"
         })
@@ -232,7 +232,7 @@ export const useTalkStore = defineStore("talks", () => {
                 document: document
             }),
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
             method: "post"
         })
