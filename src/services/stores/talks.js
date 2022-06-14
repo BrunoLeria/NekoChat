@@ -122,24 +122,127 @@ export const useTalkStore = defineStore("talks", () => {
     async function deleteTalk(req, res) {}
     async function deleteAllTalk(req, res) {}
     async function sendMessage(message) {
-        if (message != "") {
-            const urlSendMessage = "https://api.chat-api.com/instance407235/sendMessage?token=ta8vbkk6x82je39g";
-            const urlRecordMessage = apiURL + "createTalk";
-            fetch(urlSendMessage, {
-                body: "body=" + message + "&phone=" + selected.value.replace("@c.us", ""),
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                method: "post"
+        const urlSendMessage = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-text";
+        fetch(urlSendMessage, {
+            body: JSON.stringify({
+                phone: selected.value.replace("@c.us", ""),
+                message: message
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post"
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        }
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    async function sendContact(contact) {
+        const urlSendContact = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-contact";
+        fetch(urlSendContact, {
+            body: JSON.stringify({
+                phone: selected.value.replace("@c.us", ""),
+                contactName: contact.name,
+                contactPhone: contact.phone,
+                contactBusinessDescription: contact.description
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post"
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    async function sendImage(image) {
+        const urlSendImage = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-image";
+        fetch(urlSendImage, {
+            body: JSON.stringify({
+                phone: selected.value.replace("@c.us", ""),
+                image: image
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post"
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    async function sendAudio(audio) {
+        const urlSendAudio = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-audio";
+        fetch(urlSendAudio, {
+            body: JSON.stringify({
+                phone: selected.value.replace("@c.us", ""),
+                audio: audio
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post"
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    async function sendVideo(video) {
+        const urlSendVideo = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-video";
+        fetch(urlSendVideo, {
+            body: JSON.stringify({
+                phone: selected.value.replace("@c.us", ""),
+                video: video
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post"
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    async function sendDocument(document, extensions) {
+        const urlSendDocument =
+            "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-document/" + extensions;
+        fetch(urlSendDocument, {
+            body: JSON.stringify({
+                phone: selected.value.replace("@c.us", ""),
+                document: document
+            }),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "post"
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     }
 
     async function fetchTalks() {
@@ -159,6 +262,11 @@ export const useTalkStore = defineStore("talks", () => {
         deleteTalk,
         deleteAllTalk,
         sendMessage,
+        sendContact,
+        sendImage,
+        sendAudio,
+        sendVideo,
+        sendDocument,
         fetchTalks
     };
 });
