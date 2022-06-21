@@ -14,7 +14,8 @@ const time = (message) => {
 };
 
 const messages = computed(() => {
-	return props.talk.reverse();
+	if (props.talk[1] && props.talk[0].tlk_date_time > props.talk[1].tlk_date_time) return props.talk.reverse();
+	return props.talk;
 });
 </script>
 
