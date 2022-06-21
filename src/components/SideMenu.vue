@@ -42,6 +42,14 @@ const updateYourRegister = () => {
 };
 
 const statusColor = computed(() => {
+	if (
+		userStore == undefined ||
+		userStore.statuses[userStore.user.usu_fk_sts_identification - 1] == undefined ||
+		userStore.statuses[userStore.user.usu_fk_sts_identification - 1].sts_color == undefined
+	) {
+		userStore.user = {};
+		router.push({ name: "Login" });
+	}
 	return userStore.statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
 });
 
@@ -61,7 +69,7 @@ function configLoggedUser() {
 	<!-- Sidebar -->
 	<div class="flex-none xl:w-1/6 w-1/8 h-full min-w-min bg-indigo-700 auto-rows-max flex-none flex flex-col z-10 max-w-[15%]">
 		<div class="py-5 px-4 w-full h-20 bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500 flex justify-between">
-			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NekoChat</h3>
+			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NChat</h3>
 			<div class="flex flex-col place-content-start">
 				<div class="flex items-end justify-end" syle data-dropdown-toggle="dropdown">
 					<button id="dropdownDefault" @click="changeStatus = !changeStatus" title="Mudar status?" type="button">
