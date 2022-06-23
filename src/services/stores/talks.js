@@ -4,7 +4,7 @@ import { ref } from "vue";
 
 export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
-    const apiURL = "http://localhost:3005/";
+    const apiURL = "http://napi.aquicob.com.br:3005/";
     const talks = ref({});
     const selected = ref("");
     const activeChat = ref([]);
