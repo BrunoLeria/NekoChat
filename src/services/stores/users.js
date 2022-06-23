@@ -117,7 +117,7 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function updateUser(id) {
+    async function updateUser(id = user.value.usu_identification) {
         const req = configUser.value && Object.keys(configUser.value).length !== 0 ? configUser.value : user.value;
         const url = apiURL + "updateUser?id=" + id;
         await fetch(url, {

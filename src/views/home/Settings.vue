@@ -56,7 +56,7 @@ function update() {
 			.then(() => {
 				userStore.user = person.value;
 				userStore
-					.updateUser(userStore.user.usu_identification)
+					.updateUser()
 					.then(() => {
 						loading.value = false;
 						alert("Dados atualizados com sucesso.");

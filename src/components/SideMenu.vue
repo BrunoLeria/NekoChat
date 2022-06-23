@@ -56,7 +56,7 @@ const statusColor = computed(() => {
 function updateStatus(sts_identification) {
 	if (sts_identification !== userStore.user.usu_fk_sts_identification) {
 		userStore.user.usu_fk_sts_identification = sts_identification;
-		userStore.updateUser(userStore.user.usu_identification);
+		userStore.updateUser();
 	}
 }
 
