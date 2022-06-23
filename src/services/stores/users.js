@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 
 export const useUsersStore = defineStore("user", () => {
-    const apiURL = "http://napi.aquicob.com.br:3005/";
+    const apiURL = "https://napi.aquicob.com.br:3006/";
     const user = ref(useLocalStorage("userNeko", {}));
     const statuses = ref(
         useLocalStorage("statusesNeko", [
