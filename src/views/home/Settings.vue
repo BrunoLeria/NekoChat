@@ -116,17 +116,11 @@ watch(
 						<div class="col-span-1">
 							<TextInput label="Telefone" type="phone" id="phone" v-model="person.usu_phone" />
 						</div>
-						<div class="col-span-3">
+						<div class="col-span-1">
 							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.usu_photo" />
 						</div>
 						<div class="col-span-1">
 							<Checkbox :id="'isAdminCheckBox'" :label="'Admin'" v-model="person.usu_is_admin" v-if="userStore.user.usu_is_admin" />
-						</div>
-						<div class="col-span-2">
-							<PasswordInput label="Senha" type="password" id="password" v-model="person.usu_password" />
-						</div>
-						<div class="col-span-2">
-							<TextInput label="Confirmar senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
 						</div>
 						<div class="col-span-2 flex items-center">
 							<Combobox
@@ -138,6 +132,13 @@ watch(
 								v-model="person.usu_fk_ofc_identification"
 								v-if="userStore.user.usu_is_admin"></Combobox>
 						</div>
+						<div class="col-span-2">
+							<PasswordInput label="Senha" type="password" id="password" v-model="person.usu_password" />
+						</div>
+						<div class="col-span-2">
+							<TextInput label="Confirmar senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
+						</div>
+
 						<div class="col-span-3">
 							<TextInput label="Endereço" type="text" id="street" v-model="person.usu_address" />
 						</div>
