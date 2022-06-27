@@ -281,6 +281,7 @@ export const useTalkStore = defineStore("talks", () => {
         findAllTalkByUser,
         updateTalk,
         updateTalkToSignInUser,
+        updateRobot,
         deleteTalk,
         deleteAllTalk,
         sendMessage,
