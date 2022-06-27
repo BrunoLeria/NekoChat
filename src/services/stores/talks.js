@@ -120,7 +120,7 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function updateRobot(assumir) {
-        const url = "https://app.aquicob.com.br/api.php?a=robo&b=transfere_chat";
+        const url = "http://app.aquicob.com.br/api.php?a=robo&b=transfere_chat";
         fetch(url, {
             method: "POST",
             headers: {
@@ -144,7 +144,10 @@ export const useTalkStore = defineStore("talks", () => {
     async function deleteTalk(req, res) {}
     async function deleteAllTalk(req, res) {}
     async function sendMessage(message) {
-        const urlSendMessage = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-text";
+        const last = talks.value.lenght - 1;
+        const instance = talks.value[selected.value][last].tlk_robot_instance;
+        const token = talks.value[selected.value][last].tlk_robot_token;
+        const urlSendMessage = "https://api.z-api.io/instances/" + instance + "/token/" + token + "/send-text";
         fetch(urlSendMessage, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
@@ -164,7 +167,10 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function sendContact(contact) {
-        const urlSendContact = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-contact";
+        const last = talks.value.lenght - 1;
+        const instance = talks.value[selected.value][last].tlk_robot_instance;
+        const token = talks.value[selected.value][last].tlk_robot_token;
+        const urlSendContact = "https://api.z-api.io/instances/" + instance + "/token/" + token + "/send-contact";
         fetch(urlSendContact, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
@@ -186,7 +192,10 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function sendImage(image) {
-        const urlSendImage = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-image";
+        const last = talks.value.lenght - 1;
+        const instance = talks.value[selected.value][last].tlk_robot_instance;
+        const token = talks.value[selected.value][last].tlk_robot_token;
+        const urlSendImage = "https://api.z-api.io/instances/" + instance + "/token/" + token + "/send-image";
         fetch(urlSendImage, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
@@ -206,7 +215,10 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function sendAudio(audio) {
-        const urlSendAudio = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-audio";
+        const last = talks.value.lenght - 1;
+        const instance = talks.value[selected.value][last].tlk_robot_instance;
+        const token = talks.value[selected.value][last].tlk_robot_token;
+        const urlSendAudio = "https://api.z-api.io/instances/" + instance + "/token/" + token + "/send-audio";
         fetch(urlSendAudio, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
@@ -226,7 +238,10 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function sendVideo(video) {
-        const urlSendVideo = "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-video";
+        const last = talks.value.lenght - 1;
+        const instance = talks.value[selected.value][last].tlk_robot_instance;
+        const token = talks.value[selected.value][last].tlk_robot_token;
+        const urlSendVideo = "https://api.z-api.io/instances/" + instance + "/token/" + token + "/send-video";
         fetch(urlSendVideo, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
@@ -246,8 +261,10 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function sendDocument(document, extensions) {
-        const urlSendDocument =
-            "https://api.z-api.io/instances/3AC8C37BA3D35099B0C726CD21F273CD/token/A36485D188106831C7E523FB/send-document/" + extensions;
+        const last = talks.value.lenght - 1;
+        const instance = talks.value[selected.value][last].tlk_robot_instance;
+        const token = talks.value[selected.value][last].tlk_robot_token;
+        const urlSendDocument = "https://api.z-api.io/instances/" + instance + "/token/" + token + "/send-document/" + extensions;
         fetch(urlSendDocument, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
