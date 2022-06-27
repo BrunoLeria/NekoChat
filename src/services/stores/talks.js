@@ -120,7 +120,7 @@ export const useTalkStore = defineStore("talks", () => {
             });
     }
     async function updateRobot(assumir) {
-        const url = "http://app.aquicob.com.br/api.php?a=robo&b=transfere_chat";
+        const url = "https://app.aquicob.com.br/api.php?a=robo&b=transfere_chat";
         fetch(url, {
             method: "POST",
             headers: {
