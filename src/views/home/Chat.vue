@@ -18,6 +18,7 @@ onMounted(async () => {
 	await talkStore.findOneTalkByChatID().then(() => {
 		if (!userStore.user.usu_is_admin && talkStore.activeChat.tlk_fk_usu_identification != userStore.user.usu_identification) {
 			talkStore.updateTalkToSignInUser(userStore.user.usu_identification, true);
+			talkStore.updateRobot(false);
 		}
 	});
 	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);

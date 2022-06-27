@@ -14,6 +14,11 @@ const usedIdToTransfer = ref("");
 
 function returnToBot(assumeChat) {
 	talkStore.updateTalkToSignInUser(assumeChat, true);
+	if (assumeChat == "1") {
+		talkStore.updateRobot(true);
+	} else {
+		talkStore.updateRobot(false);
+	}
 }
 
 function sendMessage() {
@@ -70,7 +75,6 @@ watch(
 			v-model="usedIdToTransfer"></Combobox>
 		<div class="flex pt-5">
 			<button
-				v-if="userStore.user.usu_is_admin"
 				type="button"
 				class="
 					mx-3

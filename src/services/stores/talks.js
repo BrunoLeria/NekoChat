@@ -119,6 +119,28 @@ export const useTalkStore = defineStore("talks", () => {
                 console.error("Error:", error);
             });
     }
+    async function updateRobot(assumir) {
+        const url = "https://app.aquicob.com.br/api.php?a=robo&b=transfere_chat";
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                instance: talks.value[selected.value][0].tlk_robot_instance,
+                chat_id: talks.value[selected.value][0].tlk_chat_id,
+                token: "661F2EC9C06E8A7AC84561CD206196AEE3D3962C35F1148302EDA31E71D37D91",
+                responde: assumir
+            })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
     async function deleteTalk(req, res) {}
     async function deleteAllTalk(req, res) {}
     async function sendMessage(message) {
