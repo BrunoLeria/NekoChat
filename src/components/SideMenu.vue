@@ -92,7 +92,7 @@ function configLoggedUser() {
 							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
 							:style="{ color: status.sts_color }"
 							aria-labelledby="dropdownDefault"
-							v-for="status in userStore.statuses">
+							v-for="status in statuses">
 							{{ status.sts_description }}
 						</li>
 					</div>
