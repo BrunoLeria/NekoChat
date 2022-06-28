@@ -24,8 +24,9 @@ onUpdated(() => {
 });
 
 function nomedoCliente(talk) {
-	const result = talk.find(({ tlk_from_me }) => tlk_from_me !== "1");
-	return result == undefined ? talk[0].tlk_chat_name : result.tlk_client;
+	const last = talk.length - 1;
+	const firstName = talk[last].tlk_chat_name.split(" ")[0];
+	return firstName + " - (" + talk[last].tlk_chat_id + ")";
 }
 </script>
 <template>
