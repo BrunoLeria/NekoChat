@@ -5,14 +5,6 @@ import { useLocalStorage } from "@vueuse/core";
 export const useUsersStore = defineStore("user", () => {
     const apiURL = "https://napi.aquicob.com.br:3006/";
     const user = ref(useLocalStorage("userNeko", {}));
-    const statuses = ref(
-        useLocalStorage("statusesNeko", [
-            { sts_identification: 1, sts_name: "Online", sts_description: "Online", sts_color: "rgb(74 222 128)" },
-            { sts_identification: 2, sts_name: "Occupied", sts_description: "Occupied", sts_color: "rgb(248 113 113)" },
-            { sts_identification: 3, sts_name: "Away", sts_description: "Away", sts_color: "rgb(250 204 21)" },
-            { sts_identification: 4, sts_name: "Offline", sts_description: "Offline", sts_color: "rgb(156 163 175)" }
-        ])
-    );
     const offices = ref(useLocalStorage("officesNeko", []));
     const configUser = ref({});
 
@@ -152,7 +144,6 @@ export const useUsersStore = defineStore("user", () => {
 
     return {
         user,
-        statuses,
         offices,
         configUser,
         createUser,
