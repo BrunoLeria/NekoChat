@@ -48,7 +48,9 @@ const updateYourRegister = () => {
 };
 
 const statusColor = computed(() => {
-	return statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
+	return userStore.user.usu_fk_sts_identification == undefined
+		? "rgb(74 222 128)"
+		: statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
 });
 
 function updateStatus(sts_identification) {
