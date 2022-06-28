@@ -27,7 +27,7 @@ export const useUsersStore = defineStore("user", () => {
                 }
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada createUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 
@@ -42,13 +42,13 @@ export const useUsersStore = defineStore("user", () => {
             .then((response) => response.json())
             .then((data) => {})
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findAllUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 
     async function findOneUser(id, config = false) {
         const url = apiURL + "findOneUser?id=" + id;
-        const retorno = await fetch(url, {
+        await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -65,7 +65,7 @@ export const useUsersStore = defineStore("user", () => {
                 return false;
             })
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findOneUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 
@@ -87,7 +87,7 @@ export const useUsersStore = defineStore("user", () => {
                 return false;
             })
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findOneUserByEmail. Por favor verifique com o suporte sobre o erro: " + error);
             });
         return retorno;
     }
@@ -105,7 +105,7 @@ export const useUsersStore = defineStore("user", () => {
                 if (data) offices.value = data;
             })
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findAllOffices. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 
@@ -124,8 +124,7 @@ export const useUsersStore = defineStore("user", () => {
                 return data;
             })
             .catch((error) => {
-                console.error("Error:", error);
-                return error;
+                alert("Tivemos algum problema na chamada updateUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 

@@ -81,6 +81,11 @@ async function login(data) {
 		userStore.updateUser();
 	}
 
+	if (userStore.user.usu_identification == undefined) {
+		alert("Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.");
+		router.push({ name: "Login" });
+	}
+
 	router.push({ name: "Home" });
 }
 </script>

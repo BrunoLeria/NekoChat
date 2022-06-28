@@ -30,7 +30,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada updateTalkToSignInUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 
@@ -55,7 +55,7 @@ export const useTalkStore = defineStore("talks", () => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findAllTalk. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function findOneTalkByChatID() {
@@ -71,7 +71,7 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) activeChat.value = data;
             })
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findOneTalkByChatID. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function findAllTalkByUser() {
@@ -96,7 +96,7 @@ export const useTalkStore = defineStore("talks", () => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                alert("Tivemos algum problema na chamada findAllTalkByUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function updateTalk(req, res) {}
@@ -112,11 +112,9 @@ export const useTalkStore = defineStore("talks", () => {
             })
         })
             .then((response) => response.json())
-            .then((data) => {
-                console.log("Success:", data);
-            })
+            .then((data) => {})
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada updateTalkToSignInUser. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function updateRobot(assumir) {
@@ -134,11 +132,9 @@ export const useTalkStore = defineStore("talks", () => {
             })
         })
             .then((response) => response.json())
-            .then((data) => {
-                console.log("Success:", data);
-            })
+            .then((data) => {})
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada updateRobot. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function deleteTalk(req, res) {}
@@ -163,7 +159,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada sendMessage. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function sendContact(contact) {
@@ -188,7 +184,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada sendContact. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function sendImage(image) {
@@ -211,7 +207,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada sendImage. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function sendAudio(audio) {
@@ -234,7 +230,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada sendAudio. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function sendVideo(video) {
@@ -257,7 +253,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada sendVideo. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
     async function sendDocument(document, extensions) {
@@ -280,7 +276,7 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                console.error("Error:", error);
+                alert("Tivemos algum problema na chamada sendDocument. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
 
