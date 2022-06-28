@@ -123,7 +123,7 @@ export const useTalkStore = defineStore("talks", () => {
         await fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                "Content-Type": "application/x-www-form-urlencoded"
             },
             body: JSON.stringify({
                 instance: activeChat.value[last].tlk_robot_instance,
