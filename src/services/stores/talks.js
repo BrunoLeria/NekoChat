@@ -131,7 +131,7 @@ export const useTalkStore = defineStore("talks", () => {
     }
     async function updateRobot(assumir) {
         const last = activeChat.value.length - 1;
-        const url = "https://app.aquicob.com.br/api.php?a=robo&b=transfere_chat";
+        const url = "https://app.acerteaqui.com/api.php?a=robo&b=transfere_chat";
         await fetch(url, {
             method: "POST",
             headers: {
