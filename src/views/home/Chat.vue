@@ -45,12 +45,14 @@ function getText(message) {
 
 //WebSocket chenges to the dashboard and the selected talk
 Socket.on("returnedToBot", async () => {
-	await talkStore.findOneTalkByChatID().then(() => {
-		if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
-			talkStore.selected = "";
-			emit("update:modelValue", "Dashboard");
-		}
-	});
+	if (userStore.user.usu_identification) {
+		await talkStore.findOneTalkByChatID().then(() => {
+			if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
+				talkStore.selected = "";
+				emit("update:modelValue", "Dashboard");
+			}
+		});
+	}
 });
 </script>
 

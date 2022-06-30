@@ -56,35 +56,40 @@ const signInWithGoogle = () => {
 	const provider = new GoogleAuthProvider();
 	signInWithPopup(getAuth(), provider)
 		.then((data) => {
-			login(data);
+			login(data, true);
 		})
 		.catch((error) => {
 			console.log(error);
 		});
 };
 
-async function login(data) {
+async function login(data, google = false) {
 	const userFound = await userStore.findOneUserByEmail(data.user.email);
 	userStore.findAllOffices();
 
-	if (!userFound) {
-		userStore.user.usu_name = data.user.displayName;
-		userStore.user.usu_email = data.user.email;
-		userStore.user.usu_photo = data.user.photoURL;
-		userStore.user.usu_fk_sts_identification = 1;
-		userStore.user.usu_fk_ofc_identification = 1;
-		userStore.user.usu_fk_cpn_identification = 37;
-		await userStore.createUser();
+	if (google) {
+		if (!userFound) {
+			userStore.user.usu_name = data.user.displayName;
+			userStore.user.usu_email = data.user.email;
+			userStore.user.usu_photo = data.user.photoURL;
+			userStore.user.usu_fk_sts_identification = 1;
+			userStore.user.usu_fk_ofc_identification = 1;
+			userStore.user.usu_fk_cpn_identification = 37;
+			await userStore.createUser();
+		}
 	}
 
-	if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
-		userStore.user.usu_fk_sts_identification = 1;
-		userStore.updateUser();
+	if (userFound) {
+		if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
+			userStore.user.usu_fk_sts_identification = 1;
+			userStore.updateUser();
+		}
 	}
 
 	if (userStore.user.usu_identification == undefined) {
 		alert("Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.");
 		router.push({ name: "Login" });
+		return;
 	}
 
 	router.push({ name: "Home" });

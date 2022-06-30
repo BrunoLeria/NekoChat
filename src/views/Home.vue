@@ -25,10 +25,12 @@ onMounted(() => {
 });
 
 Socket.on("newTalk", () => {
-	if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
-	else talkStore.findAllTalkByUser();
+	if (userStore.user.usu_identification) {
+		if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
+		else talkStore.findAllTalkByUser();
 
-	if (talkStore.selected) talkStore.findOneTalkByChatID();
+		if (talkStore.selected) talkStore.findOneTalkByChatID();
+	}
 });
 Socket.on("userUpdated", () => {
 	teamStore.findAllTeam();
