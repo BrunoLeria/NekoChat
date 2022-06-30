@@ -19,6 +19,7 @@ export const useTalkStore = defineStore("talks", () => {
             body: JSON.stringify({
                 tlk_message: message,
                 tlk_fk_usu_identification: userStore.user.usu_identification,
+                tlk_fk_cpn_identification: activeChat.value[0].tlk_fk_cpn_identification,
                 tlk_client: activeChat.value[0].tlk_client,
                 tlk_chat_id: activeChat.value[0].tlk_chat_id,
                 tlk_chat_name: activeChat.value[0].tlk_chat_name,
