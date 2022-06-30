@@ -65,6 +65,36 @@ export const useTalkStore = defineStore("talks", () => {
                 alert("Tivemos algum problema na chamada findAllTalk. Por favor verifique com o suporte sobre o erro: " + error);
             });
     }
+    async function findAllTalkByCompany() {
+        const url = apiURL + "findAllTalkByCompany?idCompany=" + userStore.user.usu_fk_cpn_identification;
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data) {
+                    talks.value = {};
+                    data.forEach((talk) => {
+                        if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
+                            talks.value[talk.tlk_chat_id] = [];
+                        }
+                        talks.value[talk.tlk_chat_id].push(talk);
+                    });
+                    Object.entries(talks.value).forEach(([key, value]) => {
+                        const found = value.find((element) => element.tlk_from_me == "0");
+                        if (found == undefined) {
+                            delete talks.value[key];
+                        }
+                    });
+                }
+            })
+            .catch((error) => {
+                alert("Tivemos algum problema na chamada findAllTalkByCompany. Por favor verifique com o suporte sobre o erro: " + error);
+            });
+    }
     async function findOneTalkByChatID() {
         const url = apiURL + "findOneTalkByChatId?id=" + selected.value;
         await fetch(url, {
@@ -83,7 +113,7 @@ export const useTalkStore = defineStore("talks", () => {
     }
     async function findAllTalkByUser() {
         talks.value = {};
-        const url = apiURL + "findAllTalkByUser?id=" + userStore.user.usu_identification;
+        const url = apiURL + "findAllTalkByUser?id=" + userStore.user.usu_identification + "?idCompany=" + userStore.user.usu_fk_cpn_identification;
         await fetch(url, {
             method: "GET",
             headers: {
@@ -304,6 +334,7 @@ export const useTalkStore = defineStore("talks", () => {
         activeChat,
         createTalk,
         findAllTalk,
+        findAllTalkByCompany,
         findOneTalkByChatID,
         findAllTalkByUser,
         updateTalk,

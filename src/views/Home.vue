@@ -19,13 +19,13 @@ const userStore = useUsersStore();
 const teamStore = useTeamStore();
 
 onMounted(() => {
-	if (userStore.user.usu_is_admin) talkStore.findAllTalk();
+	if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
 	else talkStore.findAllTalkByUser();
 	teamStore.findAllTeam();
 });
 
 Socket.on("newTalk", () => {
-	if (userStore.user.usu_is_admin) talkStore.findAllTalk();
+	if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
 	else talkStore.findAllTalkByUser();
 
 	if (talkStore.selected) talkStore.findOneTalkByChatID();
