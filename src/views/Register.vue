@@ -15,7 +15,8 @@ const router = useRouter();
 const userStore = useUsersStore();
 const logging = ref(false);
 
-const register = () => {
+const register = (e) => {
+	e.preventDefault();
 	logging.value = true;
 	if (password.value !== confirmPassword.value) {
 		alert("Passwords do not match");
@@ -65,7 +66,7 @@ async function login(data) {
 					<Sublink text="Possui uma conta, entre aqui." route="Login" />
 				</p>
 			</div>
-			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST">
+			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST" @submit="register">
 				<input type="hidden" name="remember" value="true" />
 				<div class="rounded-md shadow-sm -space-y-px">
 					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
@@ -74,7 +75,7 @@ async function login(data) {
 				</div>
 				<div>
 					<button
-						type="button"
+						type="submit"
 						class="
 							group
 							relative
@@ -94,7 +95,6 @@ async function login(data) {
 							ease-in-out
 							duration-500
 						"
-						@click="register()"
 						:disabled="logging">
 						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
 							<svg
