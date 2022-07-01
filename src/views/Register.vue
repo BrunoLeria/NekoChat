@@ -13,8 +13,10 @@ let password = ref("");
 let confirmPassword = ref("");
 const router = useRouter();
 const userStore = useUsersStore();
+const logging = ref(false);
 
 const register = () => {
+	logging.value = true;
 	if (password.value !== confirmPassword.value) {
 		alert("Passwords do not match");
 		return;
@@ -48,6 +50,7 @@ async function login(data) {
 	}
 
 	router.push({ name: "Home" });
+	logging.value = false;
 }
 </script>
 
@@ -91,7 +94,8 @@ async function login(data) {
 							ease-in-out
 							duration-500
 						"
-						@click="register()">
+						@click="register()"
+						:disabled="logging">
 						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
