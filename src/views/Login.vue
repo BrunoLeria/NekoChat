@@ -155,7 +155,7 @@ async function login(data, google = false) {
 						</span>
 						Entrar
 					</button>
-					<button
+					<!-- <button
 						type="button"
 						class="
 							group
@@ -179,7 +179,6 @@ async function login(data, google = false) {
 						"
 						@click="signInWithGoogle">
 						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
-							<!-- Heroicon name: solid/lock-closed -->
 							<svg
 								class="lock-closed h-5 w-5 text-red-400 group-hover:text-red-200"
 								xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +190,7 @@ async function login(data, google = false) {
 							</svg>
 						</span>
 						Entrar com o Google
-					</button>
+					</button> -->
 				</div>
 			</form>
 		</div>
