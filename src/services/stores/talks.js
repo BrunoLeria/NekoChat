@@ -113,7 +113,7 @@ export const useTalkStore = defineStore("talks", () => {
     }
     async function findAllTalkByUser() {
         talks.value = {};
-        const url = apiURL + "findAllTalkByUser?id=" + userStore.user.usu_identification + "?idCompany=" + userStore.user.usu_fk_cpn_identification;
+        const url = apiURL + "findAllTalkByUser?id=" + userStore.user.usu_identification + "&idCompany=" + userStore.user.usu_fk_cpn_identification;
         await fetch(url, {
             method: "GET",
             headers: {
