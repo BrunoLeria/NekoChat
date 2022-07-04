@@ -27,7 +27,10 @@ export const useUsersStore = defineStore("user", () => {
                 }
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada createUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada criar um novo usuário" }
+                });
             });
     }
 
@@ -42,7 +45,10 @@ export const useUsersStore = defineStore("user", () => {
             .then((response) => response.json())
             .then((data) => {})
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findAllUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar todos os usuários" }
+                });
             });
     }
 
@@ -65,7 +71,10 @@ export const useUsersStore = defineStore("user", () => {
                 return false;
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findOneUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar um usuário" }
+                });
             });
     }
 
@@ -87,7 +96,10 @@ export const useUsersStore = defineStore("user", () => {
                 return false;
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findOneUserByEmail. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar um usuário por e-mail" }
+                });
             });
         return retorno;
     }
@@ -105,7 +117,10 @@ export const useUsersStore = defineStore("user", () => {
                 if (data) offices.value = data;
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findAllOffices. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar todos os cargos" }
+                });
             });
     }
 
@@ -124,7 +139,10 @@ export const useUsersStore = defineStore("user", () => {
                 return data;
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada updateUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada atualizar um usuário" }
+                });
             });
     }
 

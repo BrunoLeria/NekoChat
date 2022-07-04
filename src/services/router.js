@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Register from "../views/Register.vue";
-import NotFound from "../views/NotFound.vue";
 import About from "../views/About.vue";
-import NetworkError from "../views/NetworkError.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
+import NotFound from "../views/NotFound.vue";
+import NetworkError from "../views/NetworkError.vue";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 
 const routes = [
@@ -32,6 +32,11 @@ const routes = [
         alias: "/about"
     },
     {
+        path: "/:catchAll(.*)*",
+        name: "NotFound",
+        component: NotFound
+    },
+    {
         path: "/404/:resource",
         name: "404Resource",
         component: NotFound,
@@ -40,7 +45,7 @@ const routes = [
     {
         path: "/network-error",
         name: "NetworkError",
-        component: NetworkError
+        component: Login
     }
 ];
 
@@ -73,6 +78,11 @@ router.beforeEach(async (to, from) => {
         return { name: "Login" };
     }
     NProgress.done();
+});
+router.onError((error) => {
+    console.log(error);
+    alert("Ocorreu um erro ao carregar a página: " + error.message);
+    return { name: "Login" };
 });
 
 export default router;

@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import { useUsersStore } from "./users";
 import { ref } from "vue";
+import router from "../router";
 
 export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
-    const apiURL = "https://napi.aquicob.com.br:3006/";
+    const apiURL = "https://napi.aquicob.com.br";
     const talks = ref({});
     const selected = ref("");
     const activeChat = ref([]);
@@ -31,7 +32,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada updateTalkToSignInUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada criar conversa", redirect: "Home" }
+                });
             });
     }
 
@@ -62,7 +66,10 @@ export const useTalkStore = defineStore("talks", () => {
                 }
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findAllTalk. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar conversa" }
+                });
             });
     }
     async function findAllTalkByCompany() {
@@ -92,7 +99,10 @@ export const useTalkStore = defineStore("talks", () => {
                 }
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findAllTalkByCompany. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar conversa por empresa" }
+                });
             });
     }
     async function findOneTalkByChatID() {
@@ -108,7 +118,10 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) activeChat.value = data;
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findOneTalkByChatID. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar conversa por id" }
+                });
             });
     }
     async function findAllTalkByUser() {
@@ -139,7 +152,10 @@ export const useTalkStore = defineStore("talks", () => {
                 }
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada findAllTalkByUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar conversa por usuário" }
+                });
             });
     }
     async function updateTalk(req, res) {}
@@ -157,7 +173,10 @@ export const useTalkStore = defineStore("talks", () => {
             .then((response) => response.json())
             .then((data) => {})
             .catch((error) => {
-                alert("Tivemos algum problema na chamada updateTalkToSignInUser. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada atualizar conversa para usuário", redirect: "Home" }
+                });
             });
     }
     async function updateRobot(assumir) {
@@ -178,7 +197,10 @@ export const useTalkStore = defineStore("talks", () => {
             .then((response) => response.json())
             .then((data) => {})
             .catch((error) => {
-                alert("Tivemos algum problema na chamada updateRobot. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada atuaizar robô", redirect: "Home" }
+                });
             });
     }
     async function deleteTalk(req, res) {}
@@ -203,7 +225,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada sendMessage. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada enviar mensagem", redirect: "Home" }
+                });
             });
     }
     async function sendContact(contact) {
@@ -228,7 +253,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada sendContact. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada enviar contato", redirect: "Home" }
+                });
             });
     }
     async function sendImage(image) {
@@ -251,7 +279,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada sendImage. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada enviar imagem", redirect: "Home" }
+                });
             });
     }
     async function sendAudio(audio) {
@@ -274,7 +305,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada sendAudio. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada enviar áudio", redirect: "Home" }
+                });
             });
     }
     async function sendVideo(video) {
@@ -297,7 +331,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada sendVideo. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada enviar vídeo", redirect: "Home" }
+                });
             });
     }
     async function sendDocument(document, extensions) {
@@ -320,7 +357,10 @@ export const useTalkStore = defineStore("talks", () => {
                 console.log("Success:", data);
             })
             .catch((error) => {
-                alert("Tivemos algum problema na chamada sendDocument. Por favor verifique com o suporte sobre o erro: " + error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada enviar documento", redirect: "Home" }
+                });
             });
     }
 

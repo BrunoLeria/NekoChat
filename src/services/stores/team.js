@@ -31,7 +31,10 @@ export const useTeamStore = defineStore("teamID", () => {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar todos os usuários do time" }
+                });
             });
     }
 
