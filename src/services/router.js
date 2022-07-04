@@ -80,9 +80,9 @@ router.beforeEach(async (to, from) => {
     NProgress.done();
 });
 router.onError((error) => {
-    console.log(error);
-    alert("Ocorreu um erro ao carregar a página: " + error.message);
-    return { name: "Login" };
+    if (error.response && error.response.status != 404) {
+        this.$router.push({ name: "NetworkError" });
+    }
 });
 
 export default router;
