@@ -4,7 +4,7 @@ import { useUsersStore } from "./users";
 import { ref } from "vue";
 
 export const useTeamStore = defineStore("teamID", () => {
-    const apiURL = "https://napi.aquicob.com.br:443/";
+    const apiURL = "https://napi.aquicob.com.br:8080/";
     const team = ref(useLocalStorage("teamNeko", []));
     const teamOptions = ref(useLocalStorage("teamOptionsNeko", []));
     const userStore = useUsersStore();
