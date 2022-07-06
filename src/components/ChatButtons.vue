@@ -42,7 +42,8 @@ function uploadFile(event) {
 			talkStore.sendVideo(reader.result);
 		} else {
 			let extension = event.target.files[0].name.match(/\.[0-9a-z]+$/i);
-			talkStore.sendDocument(reader.result, extension[0]);
+			let name = event.target.files[0].name.replace(extension, "");
+			talkStore.sendDocument(reader.result, extension[0].replace(".", ""), name);
 		}
 	};
 }

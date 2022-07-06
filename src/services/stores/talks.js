@@ -337,7 +337,7 @@ export const useTalkStore = defineStore("talks", () => {
                 });
             });
     }
-    async function sendDocument(document, extensions) {
+    async function sendDocument(document, extensions, name) {
         const last = activeChat.value.length - 1;
         const instance = activeChat.value[last].tlk_robot_instance;
         const token = activeChat.value[last].tlk_robot_token;
@@ -345,7 +345,8 @@ export const useTalkStore = defineStore("talks", () => {
         fetch(urlSendDocument, {
             body: JSON.stringify({
                 phone: selected.value.replace("@c.us", ""),
-                document: document
+                document: document,
+                fileName: name
             }),
             headers: {
                 "Content-Type": "application/json"
