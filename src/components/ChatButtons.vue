@@ -91,7 +91,6 @@ watch(
 					text-white
 					bg-red-900
 					hover:bg-red-700
-					focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500
 					ease-in-out
 					duration-500
 					w-12
@@ -120,7 +119,6 @@ watch(
 					text-white
 					bg-green-900
 					hover:bg-green-700
-					focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500
 					ease-in-out
 					duration-500
 					w-12
@@ -150,7 +148,6 @@ watch(
 					text-white
 					bg-blue-900
 					hover:bg-blue-700
-					focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
 					ease-in-out
 					duration-500
 					w-12
@@ -180,7 +177,6 @@ watch(
 					text-white
 					bg-blue-900
 					hover:bg-blue-700
-					focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
 					ease-in-out
 					duration-500
 					w-12
