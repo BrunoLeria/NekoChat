@@ -103,7 +103,6 @@ watch(
 				</svg>
 			</button>
 			<button
-				v-if="userStore.user.usu_is_admin"
 				type="button"
 				class="
 					mx-3

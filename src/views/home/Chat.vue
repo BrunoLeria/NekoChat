@@ -15,12 +15,7 @@ const time = (message) => {
 };
 
 onMounted(async () => {
-	await talkStore.findOneTalkByChatID().then(() => {
-		if (!userStore.user.usu_is_admin && talkStore.activeChat.tlk_fk_usu_identification != userStore.user.usu_identification) {
-			talkStore.updateTalkToSignInUser(userStore.user.usu_identification, true);
-			talkStore.updateRobot(false);
-		}
-	});
+	await talkStore.findOneTalkByChatID();
 	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
 });
 
@@ -49,6 +44,7 @@ Socket.on("returnedToBot", async () => {
 		await talkStore.findOneTalkByChatID().then(() => {
 			if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
 				talkStore.selected = "";
+				alert("Usuário responsável pelo chat modificado.");
 				emit("update:modelValue", "Dashboard");
 			}
 		});
