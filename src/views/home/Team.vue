@@ -7,10 +7,10 @@ const teamStore = useTeamStore();
 const userStore = useUsersStore();
 const emit = defineEmits(["update:modelValue"]);
 const statuses = [
-	{ sts_identification: 1, sts_name: "Online", sts_description: "Online", sts_color: "rgb(74 222 128)" },
-	{ sts_identification: 2, sts_name: "Occupied", sts_description: "Occupied", sts_color: "rgb(248 113 113)" },
-	{ sts_identification: 3, sts_name: "Away", sts_description: "Away", sts_color: "rgb(250 204 21)" },
-	{ sts_identification: 4, sts_name: "Offline", sts_description: "Offline", sts_color: "rgb(156 163 175)" }
+	{ sts_identification: 1, sts_name: "Online", sts_description: "Disponível", sts_color: "rgb(74 222 128)" },
+	{ sts_identification: 2, sts_name: "Occupied", sts_description: "Ocupado", sts_color: "rgb(248 113 113)" },
+	{ sts_identification: 3, sts_name: "Away", sts_description: "Ausente", sts_color: "rgb(250 204 21)" },
+	{ sts_identification: 4, sts_name: "Offline", sts_description: "Desconectado", sts_color: "rgb(156 163 175)" }
 ];
 
 teamStore.findAllTeam();
