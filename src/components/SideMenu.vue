@@ -12,10 +12,10 @@ const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const changeStatus = ref(false);
 const statuses = [
-	{ sts_identification: 1, sts_name: "Online", sts_description: "Online", sts_color: "rgb(74 222 128)" },
-	{ sts_identification: 2, sts_name: "Occupied", sts_description: "Occupied", sts_color: "rgb(248 113 113)" },
-	{ sts_identification: 3, sts_name: "Away", sts_description: "Away", sts_color: "rgb(250 204 21)" },
-	{ sts_identification: 4, sts_name: "Offline", sts_description: "Offline", sts_color: "rgb(156 163 175)" }
+	{ sts_identification: 1, sts_name: "Online", sts_description: "Disponível", sts_color: "rgb(74 222 128)" },
+	{ sts_identification: 2, sts_name: "Occupied", sts_description: "Ocupado", sts_color: "rgb(248 113 113)" },
+	{ sts_identification: 3, sts_name: "Away", sts_description: "Ausente", sts_color: "rgb(250 204 21)" },
+	{ sts_identification: 4, sts_name: "Offline", sts_description: "Desconectado", sts_color: "rgb(156 163 175)" }
 ];
 
 let auth;
@@ -72,7 +72,12 @@ function configLoggedUser() {
 			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NChat</h3>
 			<div class="flex flex-col place-content-start">
 				<div class="flex items-end justify-end" syle data-dropdown-toggle="dropdown">
-					<button id="dropdownDefault" @click="changeStatus = !changeStatus" title="Mudar status?" type="button">
+					<button
+						id="dropdownDefault"
+						@click="changeStatus = !changeStatus"
+						@focusout="changeStatus = false"
+						title="Mudar status?"
+						type="button">
 						<img
 							v-if="userStore.user.usu_photo"
 							:src="userStore.user.usu_photo"
@@ -87,8 +92,8 @@ function configLoggedUser() {
 					</button>
 					<div class="rounded-full h-4 w-4 fixed" :style="{ backgroundColor: statusColor }"></div>
 				</div>
-				<transition name="slide-fade" :duration="{ enter: 500, leave: 300 }">
-					<div id="dropdown" class="z-10 bg-gray-100 w-28 rounded-lg" v-show="changeStatus">
+				<transition name="slide-fade" :duration="{ enter: 500, leave: 500 }">
+					<div id="dropdown" class="z-10 bg-gray-100 w-36 rounded-lg" v-show="changeStatus">
 						<li
 							@click="updateStatus(status.sts_identification)"
 							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
