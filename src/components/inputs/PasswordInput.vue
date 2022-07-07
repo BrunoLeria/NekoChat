@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, defineProps, defineEmits } from "vue";
 import zxcvbn from "zxcvbn";
 const props = defineProps({
 	label: {

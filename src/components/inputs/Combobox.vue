@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "@vue/runtime-core";
+import { defineProps, defineEmits, computed } from "vue";
 
 const props = defineProps({
 	alternatives: { type: Array, required: false },
