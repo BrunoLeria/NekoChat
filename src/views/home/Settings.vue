@@ -26,37 +26,23 @@ userStore.user.usu_state;
 if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
-	if (zxcvbn(person.value.usu_password).score + 1 < 4 && !configOthers) {
+	if (zxcvbn(person.value.usu_new_password).score + 1 < 4 && !configOthers) {
 		alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
 		return;
 	}
-	if (person.value.usu_password != confirmPassword.value && !configOthers) {
+	if (person.value.usu_new_password != confirmPassword.value && !configOthers) {
 		alert("As senhas não conferem.");
 		return;
 	}
 
 	const credential = EmailAuthProvider.credential(userStore.user.usu_email, userStore.user.usu_password);
 
-	reauthenticateWithCredential(auth.currentUser, credential);
-
-	if (configOthers) {
-		userStore.configUser = person.value;
-		userStore
-			.updateUser(userStore.configUser.usu_identification)
-			.then(() => {
-				loading.value = false;
-				alert("Dados atualizados com sucesso.");
-			})
-			.catch(() => {
-				loading.value = false;
-				alert("Não foi possível atualizar os dados.");
-			});
-	} else {
-		updatePassword(auth.currentUser, person.value.usu_password)
-			.then(() => {
-				userStore.user = person.value;
+	reauthenticateWithCredential(auth.currentUser, credential)
+		.then(() => {
+			if (configOthers) {
+				userStore.configUser = person.value;
 				userStore
-					.updateUser()
+					.updateUser(userStore.configUser.usu_identification)
 					.then(() => {
 						loading.value = false;
 						alert("Dados atualizados com sucesso.");
@@ -65,11 +51,61 @@ function update() {
 						loading.value = false;
 						alert("Não foi possível atualizar os dados.");
 					});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}
+			} else {
+				updatePassword(auth.currentUser, person.value.usu_new_password)
+					.then(() => {
+						userStore.user = person.value;
+						userStore
+							.updateUser()
+							.then(() => {
+								loading.value = false;
+								alert("Dados atualizados com sucesso.");
+							})
+							.catch(() => {
+								loading.value = false;
+								alert("Não foi possível atualizar os dados.");
+							});
+					})
+					.catch((error) => {
+						switch (error) {
+							case "auth/requires-recent-login":
+								alert("É necessário fazer login novamente.");
+								break;
+							case "auth/weak-password":
+								alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
+								break;
+							default:
+								alert("Não foi possível atualizar a senha.");
+								break;
+						}
+					});
+			}
+		})
+		.catch((error) => {
+			switch (error) {
+				case "auth/user-mismatch":
+					alert("As credenciais não conferem. Por favor, contate o nosso suporte para confirmar os seus dados.");
+					break;
+				case "auth/user-not-found":
+					alert("Usuário não encontrado. Por favor, contate o nosso suporte para confirmar os seus dados.");
+					break;
+				case "auth/invalid-credential":
+					alert("Credenciais inválidas. Por favor, contate o nosso suporte para confirmar os seus dados.");
+					break;
+				case "auth/invalid-email":
+					alert("E-mail inválido. Por favor, contate o nosso suporte para confirmar os seus dados.");
+					break;
+				case "auth/wrong-password":
+					alert("Senha antiga informada inválida. Por favor, tente novamento ou contate o nosso suporte para confirmar os seus dados.");
+					break;
+				case "auth/invalid-verification-code":
+					alert("Código de verificação inválido. Por favor, contate o nosso suporte para confirmar os seus dados.");
+					break;
+				case "auth/invalid-verification-id":
+					alert("ID de verificação inválido. Por favor, contate o nosso suporte para confirmar os seus dados.");
+					break;
+			}
+		});
 }
 
 function findCitiesOptions(newAddress) {
@@ -133,10 +169,13 @@ watch(
 								v-if="userStore.user.usu_is_admin"></Combobox>
 						</div>
 						<div class="col-span-2">
-							<PasswordInput label="Senha" type="password" id="password" v-model="person.usu_password" />
+							<PasswordInput label="Senha antiga" type="password" id="password" v-model="person.usu_password" />
 						</div>
 						<div class="col-span-2">
-							<TextInput label="Confirmar senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
+							<PasswordInput label="Nova senha" type="password" id="password" v-model="person.usu_new_password" />
+						</div>
+						<div class="col-span-2">
+							<TextInput label="Confirmar nova senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
 						</div>
 
 						<div class="col-span-3">
