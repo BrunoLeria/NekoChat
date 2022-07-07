@@ -53,7 +53,7 @@ Socket.on("returnedToBot", async () => {
 </script>
 
 <template>
-	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between" @keypress.enter="sendMessage()">
+	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between">
 		<div class="flex flex-col p-5 overflow-y-auto w-full h-4/5 bg-white rounded-xl" id="scrollContainer">
 			<div
 				v-for="(message, index) in talkStore.activeChat"

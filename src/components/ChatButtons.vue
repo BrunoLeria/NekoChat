@@ -58,7 +58,14 @@ watch(
 
 <template>
 	<div class="w-full flex items-center">
-		<TextInput label="Digite sua mensagem aqui" v-model="myMessage" type="text" id="myMessage" autoComplete="myMessage" class="w-full" />
+		<TextInput
+			label="Digite sua mensagem aqui"
+			v-model="myMessage"
+			type="text"
+			id="myMessage"
+			autoComplete="myMessage"
+			class="w-full"
+			@keypress.enter="sendMessage()" />
 		<Combobox
 			v-if="userStore.user.usu_is_admin"
 			:id="'usersComboBox'"
