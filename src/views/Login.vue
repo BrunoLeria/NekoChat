@@ -45,6 +45,10 @@ const signInWithEmail = () => {
 				case "auth/wrong-password":
 					errMsg.value = "Senha incorreta";
 					break;
+				case "auth/too-many-requests":
+					errMsg.value =
+						"Muitas tentativas de login. Essa conta foi desativada por motivos de muitas tentativas de login inválidas. Por favor, tente novamente mais tarde ou crie uma nova senha pelo recuperar a sua senha.";
+					break;
 				default:
 					errMsg.value = error.message;
 					break;
