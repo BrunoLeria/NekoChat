@@ -55,15 +55,17 @@ function openUserConfig(id) {
 					</div>
 					<p class="text-gray-500">{{ officeName(member.usu_fk_ofc_identification) }}</p>
 				</div>
-				<div class="flex items-end justify-end m-4">
+				<div class="inline-block relative">
 					<img v-if="member.usu_photo" :src="member.usu_photo" :alt="member.usu_name + ' avatar'" class="rounded-full h-12 w-12 border-2" />
-					<span v-else class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
+					<span v-else class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
 						<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
 							<path
 								d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
 						</svg>
 					</span>
-					<div :style="{ backgroundColor: statusColor(member.usu_fk_sts_identification) }" class="rounded-full h-3 w-3 fixed z-10"></div>
+					<div
+						:style="{ backgroundColor: statusColor(member.usu_fk_sts_identification) }"
+						class="absolute top-8 left-8 z-10 p-2 rounded-full"></div>
 				</div>
 			</div>
 			<div class="flex">
