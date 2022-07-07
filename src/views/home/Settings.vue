@@ -172,7 +172,7 @@ watch(
 							<PasswordInput label="Senha antiga" type="password" id="password" v-model="person.usu_password" />
 						</div>
 						<div class="col-span-2">
-							<PasswordInput label="Nova senha" type="password" id="password" v-model="person.usu_new_password" />
+							<PasswordInput label="Nova senha" type="password" id="newPassword" v-model="person.usu_new_password" />
 						</div>
 						<div class="col-span-2">
 							<TextInput label="Confirmar nova senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
