@@ -7,10 +7,12 @@ import { ref } from "vue";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
+import zxcvbn from "zxcvbn";
 
-let email = ref("");
-let password = ref("");
-let confirmPassword = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const errMsg = ref("");
 const router = useRouter();
 const userStore = useUsersStore();
 const logging = ref(false);
@@ -18,8 +20,12 @@ const logging = ref(false);
 const register = (e) => {
 	e.preventDefault();
 	logging.value = true;
-	if (password.value !== confirmPassword.value) {
-		alert("Passwords do not match");
+	if (zxcvbn(password.value).score + 1 < 4) {
+		errMsg.value = "A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.";
+		return;
+	}
+	if (password.value != confirmPassword.value) {
+		errMsg.value = "As senhas não conferem.";
 		return;
 	}
 	const auth = getAuth();
@@ -28,30 +34,48 @@ const register = (e) => {
 			login(data);
 		})
 		.catch((error) => {
-			alert(error.message);
+			switch (error.code) {
+				case "auth/email-already-in-use":
+					errMsg.value = "Este email já está em uso.";
+					break;
+
+				case "auth/invalid-email":
+					errMsg.value = "Este email não é válido.";
+					break;
+
+				case "auth/operation-not-allowed":
+					errMsg.value = "Não é possível criar usuários.";
+					break;
+
+				case "auth/weak-password":
+					errMsg.value = "A senha é muito fraca.";
+					break;
+				default:
+					errMsg.value = error.message;
+					break;
+			}
 		});
 };
 
 async function login(data) {
-	const userFound = await userStore.findOneUserByEmail(data.user.email);
-
-	if (!userFound) {
-		userStore.user.usu_name = data.user.displayName;
-		userStore.user.usu_email = data.user.email;
-		userStore.user.usu_photo = data.user.photoURL;
-		userStore.user.usu_fk_sts_identification = 1;
-		userStore.user.usu_fk_ofc_identification = 1;
-		userStore.user.usu_fk_cpn_identification = 37;
-		await userStore.createUser();
-	}
-
-	if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
-		userStore.user.usu_fk_sts_identification = 1;
-		userStore.updateUser();
-	}
-
-	router.push({ name: "Home" });
-	logging.value = false;
+	userStore.user.usu_name = data.user.displayName;
+	userStore.user.usu_email = data.user.email;
+	userStore.user.usu_photo = data.user.photoURL;
+	userStore.user.usu_password = password.value;
+	userStore.user.usu_fk_sts_identification = 1;
+	userStore.user.usu_fk_ofc_identification = 1;
+	userStore.user.usu_fk_cpn_identification = 37;
+	await userStore
+		.createUser()
+		.then(() => {
+			router.push({ name: "Home" });
+		})
+		.catch((error) => {
+			errMsg.value = "Ocorreu um erro ao tentar criar um novo usuário. Por favor, contate o nosso suporte:" + error.message;
+		})
+		.finally(() => {
+			logging.value = false;
+		});
 }
 </script>
 
@@ -69,6 +93,9 @@ async function login(data) {
 			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST" @submit="register">
 				<input type="hidden" name="remember" value="true" />
 				<div class="rounded-md shadow-sm -space-y-px">
+					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
+						{{ errMsg }}
+					</p>
 					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
 					<PasswordInput label="Senha" type="password" id="password" v-model="password" />
 					<TextInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" />
