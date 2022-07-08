@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import _ from "lodash";
 
 export const useAddressStore = defineStore("adress", () => {
     const states = ref([
@@ -143,15 +144,13 @@ export const useAddressStore = defineStore("adress", () => {
     async function findCitiesWithState(state) {
         fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${state.sigla}/distritos`)
             .then((response) => response.json())
-            .then((data) =>
-                data.forEach((city, index) => {
-                    let obj = {
-                        id: index,
-                        name: city.nome
-                    };
-                    cities.value.push(obj);
-                })
-            )
+            .then((data) => {
+                cities.value = data.map((city) => ({
+                    id: city.id,
+                    name: city.nome
+                }));
+                cities.value.sort((a, b) => a.name.localeCompare(b.name));
+            })
             .catch((err) => console.log(err));
     }
 
