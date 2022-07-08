@@ -20,6 +20,10 @@ const props = defineProps({
 	required: {
 		type: Boolean,
 		default: false
+	},
+	passwordScoreShow: {
+		type: Boolean,
+		default: true
 	}
 });
 defineEmits(["update:modelValue"]);
@@ -90,7 +94,7 @@ const passwordScore = computed(() => {
 				</div>
 			</button>
 		</div>
-		<div class="flex py-1">
+		<div class="flex py-1" v-if="passwordScoreShow">
 			<div
 				v-for="(v, i) in 5"
 				class="w-1/5 px-1 h-2 rounded-xl transition-colors"
