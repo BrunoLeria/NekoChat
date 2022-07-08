@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import Register from "../views/Register.vue";
+import Register from "../views/login/Register.vue";
+import ForgotPassword from "../views/login/ForgotPassword.vue";
 import About from "../views/About.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
@@ -21,9 +22,14 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/register",
+        path: "/registro",
         name: "Register",
         component: Register
+    },
+    {
+        path: "/esqueceu-senha",
+        name: "ForgotPassword",
+        component: ForgotPassword
     },
     {
         path: "/about-us",
