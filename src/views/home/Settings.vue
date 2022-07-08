@@ -59,7 +59,6 @@ function update() {
 								alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
 								break;
 							default:
-								alert("Não foi possível atualizar a senha.");
 								break;
 						}
 					});
