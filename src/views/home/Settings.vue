@@ -26,46 +26,28 @@ userStore.user.usu_state;
 if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
-	if (zxcvbn(person.value.usu_new_password).score + 1 < 4 && !configOthers) {
-		alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
+	if (person.value.usu_password == undefined || person.value.usu_password == "") {
+		alert("Precisa informar a senha para atualizar os dados.");
 		return;
 	}
-	if (person.value.usu_new_password != confirmPassword.value && !configOthers) {
-		alert("As senhas não conferem.");
-		return;
+	if (person.value.usu_new_password != undefined && person.value.usu_new_password != "") {
+		if (zxcvbn(person.value.usu_new_password).score + 1 < 4 && !configOthers) {
+			alert("A senha deve conter pelo menos 4 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 número.");
+			return;
+		}
+		if (person.value.usu_new_password != confirmPassword.value && !configOthers) {
+			alert("As senhas não conferem.");
+			return;
+		}
 	}
 
 	const credential = EmailAuthProvider.credential(userStore.user.usu_email, userStore.user.usu_password);
 
 	reauthenticateWithCredential(auth.currentUser, credential)
 		.then(() => {
-			if (configOthers) {
-				userStore.configUser = person.value;
-				userStore
-					.updateUser(userStore.configUser.usu_identification)
-					.then(() => {
-						loading.value = false;
-						alert("Dados atualizados com sucesso.");
-					})
-					.catch(() => {
-						loading.value = false;
-						alert("Não foi possível atualizar os dados.");
-					});
-			} else {
+			if (person.value.usu_new_password != undefined && person.value.usu_new_password != "") {
 				updatePassword(auth.currentUser, person.value.usu_new_password)
-					.then(() => {
-						userStore.user = person.value;
-						userStore
-							.updateUser()
-							.then(() => {
-								loading.value = false;
-								alert("Dados atualizados com sucesso.");
-							})
-							.catch(() => {
-								loading.value = false;
-								alert("Não foi possível atualizar os dados.");
-							});
-					})
+					.then((response) => response.json())
 					.catch((error) => {
 						switch (error) {
 							case "auth/requires-recent-login":
@@ -80,6 +62,18 @@ function update() {
 						}
 					});
 			}
+
+			userStore.user = person.value;
+			userStore
+				.updateUser(configOthers)
+				.then(() => {
+					loading.value = false;
+					alert("Dados atualizados com sucesso.");
+				})
+				.catch(() => {
+					loading.value = false;
+					alert("Não foi possível atualizar os dados. Verifique se");
+				});
 		})
 		.catch((error) => {
 			switch (error) {
@@ -169,15 +163,14 @@ watch(
 								v-if="userStore.user.usu_is_admin"></Combobox>
 						</div>
 						<div class="col-span-2">
-							<PasswordInput label="Senha antiga" type="password" id="password" v-model="person.usu_password" />
+							<PasswordInput label="Senha atual" type="password" id="password" v-model="person.usu_password" />
 						</div>
 						<div class="col-span-2">
 							<PasswordInput label="Nova senha" type="password" id="newPassword" v-model="person.usu_new_password" />
 						</div>
 						<div class="col-span-2">
-							<TextInput label="Confirmar nova senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
+							<PasswordInput label="Confirmar nova senha" type="password" id="passwordConfirm" v-model="confirmPassword" />
 						</div>
-
 						<div class="col-span-3">
 							<TextInput label="Endereço" type="text" id="street" v-model="person.usu_address" />
 						</div>

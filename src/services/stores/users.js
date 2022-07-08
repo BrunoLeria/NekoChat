@@ -124,15 +124,21 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function updateUser(id = user.value.usu_identification) {
-        const req = configUser.value && Object.keys(configUser.value).length !== 0 ? configUser.value : user.value;
+    async function updateUser(configOthers = false) {
+        const req = configUser.value && Object.keys(configUser.value).length !== 0 ? ref(configUser.value) : ref(user.value);
+        const id = configOthers ? configUser.value.usu_identification : user.value.usu_identification;
         const url = apiURL + "updateUser?id=" + id;
+        Object.keys(req.value).forEach((key) => {
+            if (req.value[key] === "") {
+                delete req.value[key];
+            }
+        });
         await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(req)
+            body: JSON.stringify(req.value)
         })
             .then((response) => response.json())
             .then((data) => {
