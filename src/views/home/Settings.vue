@@ -10,6 +10,7 @@ const userStore = useUsersStore();
 const configOthers = userStore.configUser && Object.keys(userStore.configUser).length != 0;
 const person = ref(configOthers ? userStore.configUser : userStore.user);
 const loading = ref(false);
+const sending = ref(false);
 const auth = getAuth();
 const confirmPassword = ref("");
 
@@ -26,6 +27,7 @@ userStore.user.usu_state;
 if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
+	sending.value = true;
 	if (person.value.usu_password == undefined || person.value.usu_password == "") {
 		alert("Precisa informar a senha para atualizar os dados.");
 		return;
@@ -67,11 +69,9 @@ function update() {
 			userStore
 				.updateUser(configOthers)
 				.then(() => {
-					loading.value = false;
 					alert("Dados atualizados com sucesso.");
 				})
 				.catch(() => {
-					loading.value = false;
 					alert("Não foi possível atualizar os dados. Verifique se");
 				});
 		})
@@ -99,6 +99,9 @@ function update() {
 					alert("ID de verificação inválido. Por favor, contate o nosso suporte para confirmar os seus dados.");
 					break;
 			}
+		})
+		.finally(() => {
+			sending.value = false;
 		});
 }
 
@@ -229,6 +232,7 @@ watch(
 							hover:bg-indigo-700
 							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
 						"
+						:disabled="sending"
 						@click="update">
 						Salvar
 					</button>
