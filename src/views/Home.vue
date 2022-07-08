@@ -1,6 +1,6 @@
 <script setup>
 import SideMenu from "../components/SideMenu.vue";
-import { ref, onMounted, defineAsyncComponent } from "vue";
+import { ref, onMounted, defineAsyncComponent, computed } from "vue";
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
 import { useUsersStore } from "/src/services/stores/users.js";
@@ -17,6 +17,14 @@ const activeComponent = ref("Dashboard");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
+const translatedTitle = computed(() => {
+	document.title = "Dashboard";
+	if (activeComponent.value == "Team") document.title = "Equipe";
+	if (activeComponent.value == "Chat") document.title = "Chat";
+	if (activeComponent.value == "Analytics") document.title = "Análise";
+	if (activeComponent.value == "Settings") document.title = "Configurações";
+	return document.title;
+});
 
 onMounted(() => {
 	if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
@@ -44,7 +52,7 @@ Socket.on("userUpdated", () => {
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">
 					<h3 class="text-indigo-700 text-2xl text-left ml-4 font-bold rounded-xl">
-						{{ activeComponent }}
+						{{ translatedTitle }}
 					</h3>
 				</transition>
 			</div>
