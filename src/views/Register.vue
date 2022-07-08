@@ -98,7 +98,7 @@ async function login(data) {
 					</p>
 					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
 					<PasswordInput label="Senha" type="password" id="password" v-model="password" />
-					<TextInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" />
+					<PasswordInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" />
 				</div>
 				<div>
 					<button
