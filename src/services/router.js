@@ -13,7 +13,8 @@ const routes = [
     {
         path: "/",
         name: "Login",
-        component: Login
+        component: Login,
+        meta: { requiresAuth: false }
     },
     {
         path: "/home",
@@ -24,12 +25,14 @@ const routes = [
     {
         path: "/registro",
         name: "Register",
-        component: Register
+        component: Register,
+        meta: { requiresAuth: false }
     },
     {
         path: "/esqueceu-senha",
         name: "ForgotPassword",
-        component: ForgotPassword
+        component: ForgotPassword,
+        meta: { requiresAuth: false }
     },
     {
         path: "/about-us",
@@ -40,18 +43,21 @@ const routes = [
     {
         path: "/:catchAll(.*)*",
         name: "NotFound",
-        component: NotFound
+        component: NotFound,
+        meta: { requiresAuth: false }
     },
     {
         path: "/404/:resource",
         name: "404Resource",
         component: NotFound,
+        meta: { requiresAuth: false },
         props: true
     },
     {
         path: "/network-error",
         name: "NetworkError",
-        component: Login
+        component: Login,
+        meta: { requiresAuth: false }
     }
 ];
 
@@ -80,6 +86,7 @@ router.beforeEach(async (to, from) => {
     NProgress.start();
     const user = await getCurrentUser();
     if (to.meta.requiresAuth && !user) {
+        console.log(to.meta.requiresAuth);
         alert("Você precisa estar logado para acessar esta página");
         return { name: "Login" };
     }
