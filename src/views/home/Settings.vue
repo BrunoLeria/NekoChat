@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, watch } from "vue";
 import { useAddressStore } from "/src/services/stores/address.js";
 import { useUsersStore } from "/src/services/stores/users.js";
-import { getAuth } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const addressStore = useAddressStore();
 const userStore = useUsersStore();
