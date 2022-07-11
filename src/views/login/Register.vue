@@ -61,7 +61,6 @@ async function login(data) {
 	userStore.user.usu_name = data.user.displayName;
 	userStore.user.usu_email = data.user.email;
 	userStore.user.usu_photo = data.user.photoURL;
-	userStore.user.usu_password = password.value;
 	userStore.user.usu_fk_sts_identification = 1;
 	userStore.user.usu_fk_ofc_identification = 1;
 	userStore.user.usu_fk_cpn_identification = 37;

@@ -48,7 +48,7 @@ const signInWithEmail = () => {
 					break;
 				case "auth/too-many-requests":
 					errMsg.value =
-						"Muitas tentativas de login. Essa conta foi desativada por motivos de muitas tentativas de login inválidas. Por favor, tente novamente mais tarde ou crie uma nova senha pelo recuperar a sua senha.";
+						"Muitas tentativas de login. Essa conta foi desativada por motivos de muitas tentativas de login inválidas. Por favor, tente novamente mais tarde ou crie uma nova senha pelo 'Esqueceu a sua senha?' .";
 					break;
 				default:
 					errMsg.value = error.message;
@@ -68,21 +68,9 @@ const signInWithGoogle = () => {
 		});
 };
 
-async function login(data, google = false) {
+async function login(data) {
 	const userFound = await userStore.findOneUserByEmail(data.user.email);
 	userStore.findAllOffices();
-
-	if (google) {
-		if (!userFound) {
-			userStore.user.usu_name = data.user.displayName;
-			userStore.user.usu_email = data.user.email;
-			userStore.user.usu_photo = data.user.photoURL;
-			userStore.user.usu_fk_sts_identification = 1;
-			userStore.user.usu_fk_ofc_identification = 1;
-			userStore.user.usu_fk_cpn_identification = 37;
-			await userStore.createUser();
-		}
-	}
 
 	if (userFound) {
 		if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
@@ -92,12 +80,10 @@ async function login(data, google = false) {
 	}
 
 	if (userStore.user.usu_identification == undefined) {
-		alert("Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.");
-		router.push({ name: "Login" });
-		return;
+		errMsg.value = "Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.";
+	} else {
+		router.push({ name: "Home" });
 	}
-
-	router.push({ name: "Home" });
 }
 </script>
 

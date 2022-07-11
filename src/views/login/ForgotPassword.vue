@@ -3,26 +3,31 @@ import TextInput from "/src/components/inputs/TextInput.vue";
 import PasswordInput from "/src/components/inputs/PasswordInput.vue";
 import Sublink from "/src/components/buttons/Sublink.vue";
 import logo from "/src/assets/logo.svg";
-import { getAuth } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { ref } from "vue";
 
-const errMsg = ref("");
+const infoMsg = ref("");
 const email = ref("");
+const sucess = ref(false);
 
 function sendEmailPasswordRecovery() {
 	const auth = getAuth();
-	auth.sendPasswordResetEmail(email.value)
-		.then()
+	sendPasswordResetEmail(auth, email.value)
+		.then(() => {
+			sucess.value = true;
+			infoMsg.value = "E-mail enviado com sucesso. Por favor, verifique sua caixa de entrada.";
+		})
 		.catch((error) => {
+			sucess.value = false;
 			switch (error.code) {
 				case "auth/invalid-email":
-					errMsg.value = "Este email não é válido.";
+					infoMsg.value = "Este email não é válido.";
 					break;
 				case "auth/user-not-found":
-					errMsg.value = "Este email não está cadastrado.";
+					infoMsg.value = "Este email não está cadastrado.";
 					break;
 				default:
-					errMsg.value = "Ocorreu um erro ao enviar o email. Contate o suporte sobre o erro: " + error.message;
+					infoMsg.value = "Ocorreu um erro ao enviar o email. Contate o suporte sobre o erro: " + error.message;
 					break;
 			}
 		});
@@ -40,17 +45,17 @@ function sendEmailPasswordRecovery() {
 					<Sublink text="Voltar para tela de login" route="Login" />
 				</p>
 			</div>
-			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST" @submit="register">
+			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST">
 				<input type="hidden" name="remember" value="true" />
 				<div class="rounded-md shadow-sm -space-y-px">
-					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
-						{{ errMsg }}
+					<p class="mt-2 text-center text-sm" :class="sucess ? 'text-green-600' : 'text-red-600'" v-show="infoMsg != ''">
+						{{ infoMsg }}
 					</p>
 					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
 				</div>
 				<div>
 					<button
-						type="submit"
+						type="button"
 						class="
 							group
 							relative
@@ -69,7 +74,8 @@ function sendEmailPasswordRecovery() {
 							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
 							ease-in-out
 							duration-500
-						">
+						"
+						@click="sendEmailPasswordRecovery">
 						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
