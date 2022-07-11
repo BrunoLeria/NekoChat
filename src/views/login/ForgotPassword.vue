@@ -5,17 +5,22 @@ import Sublink from "/src/components/buttons/Sublink.vue";
 import logo from "/src/assets/logo.svg";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const infoMsg = ref("");
 const email = ref("");
 const sucess = ref(false);
+const router = useRouter();
 
 function sendEmailPasswordRecovery() {
 	const auth = getAuth();
 	sendPasswordResetEmail(auth, email.value)
 		.then(() => {
 			sucess.value = true;
-			infoMsg.value = "E-mail enviado com sucesso. Por favor, verifique sua caixa de entrada.";
+			infoMsg.value = "E-mail enviado com sucesso. Por favor, verifique sua caixa de entrada. Redirecionando para tela de login em 5 segundos.";
+			setTimeout(() => {
+				router.push({ name: "Login" });
+			}, 5000);
 		})
 		.catch((error) => {
 			sucess.value = false;
@@ -25,6 +30,9 @@ function sendEmailPasswordRecovery() {
 					break;
 				case "auth/user-not-found":
 					infoMsg.value = "Este email não está cadastrado.";
+					break;
+				case "auth/missing-email":
+					infoMsg.value = "Por favor, informe seu e-mail.";
 					break;
 				default:
 					infoMsg.value = "Ocorreu um erro ao enviar o email. Contate o suporte sobre o erro: " + error.message;
