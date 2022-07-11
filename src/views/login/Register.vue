@@ -63,7 +63,7 @@ async function login(data) {
 	userStore.user.usu_photo = data.user.photoURL;
 	userStore.user.usu_fk_sts_identification = 1;
 	userStore.user.usu_fk_ofc_identification = 1;
-	userStore.user.usu_fk_cpn_identification = 37;
+	userStore.user.usu_fk_cpn_identification = 120;
 	await userStore
 		.createUser()
 		.then(() => {
