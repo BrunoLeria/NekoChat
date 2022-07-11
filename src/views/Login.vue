@@ -76,6 +76,7 @@ async function login(data) {
 		userStore.findOneCompany(userStore.user.usu_fk_cpn_identification);
 		if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
 			userStore.user.usu_fk_sts_identification = 1;
+			userStore.user.usu_fk_cpn_identification = 120;
 			userStore.updateUser();
 		}
 	}
