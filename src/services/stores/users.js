@@ -7,6 +7,7 @@ export const useUsersStore = defineStore("user", () => {
     const user = ref(useLocalStorage("userNeko", {}));
     const offices = ref(useLocalStorage("officesNeko", []));
     const configUser = ref({});
+    const company = ref({});
 
     async function createUser() {
         const url = apiURL + "createUser";
@@ -152,6 +153,29 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
+    async function findOneCompany(id) {
+        const url = apiURL + "findOneCompany?id=" + id;
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.message === undefined) {
+                    data = fillEmptyFields(data);
+                    company.value = data;
+                }
+            })
+            .catch((error) => {
+                router.push({
+                    name: "404Resource",
+                    params: { resource: "chamada encontrar uma empresa" }
+                });
+            });
+    }
+
     async function deleteUser(req, res) {}
 
     async function deleteAllUser(req, res) {}
@@ -169,11 +193,13 @@ export const useUsersStore = defineStore("user", () => {
         user,
         offices,
         configUser,
+        company,
         createUser,
         findAllUser,
         findOneUser,
         findOneUserByEmail,
         findAllOffices,
+        findOneCompany,
         updateUser,
         deleteUser,
         deleteAllUser
