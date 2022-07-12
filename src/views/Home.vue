@@ -30,6 +30,7 @@ onMounted(() => {
 	if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
 	else talkStore.findAllTalkByUser();
 	teamStore.findAllTeam();
+	userStore.findOneCompany(userStore.user.usu_fk_cpn_identification);
 });
 
 Socket.on("newTalk", () => {
