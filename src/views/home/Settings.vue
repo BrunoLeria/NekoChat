@@ -26,8 +26,12 @@ if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
 	sending.value = true;
+	if (configOthers) {
+		userStore.configUser = person.value;
+	} else {
+		userStore.user = person.value;
+	}
 
-	userStore.user = person.value;
 	userStore
 		.updateUser(configOthers)
 		.then(() => {
