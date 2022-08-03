@@ -24,10 +24,10 @@ defineProps({
 
 <template>
 	<div class="text-sm">
-		<a v-if="route" class="font-medium text-blue-600 hover:text-blue-500" @click="router.push({ name: route })">
+		<a v-if="route" class="font-medium text-blue-600 hover:text-blue-500 cursor-pointer" @click="router.push({ name: route })">
 			{{ text }}
 		</a>
-		<a v-else :href="link" class="font-medium text-blue-600 hover:text-blue-500">
+		<a v-else :href="link" class="font-medium text-blue-600 hover:text-blue-500 cursor-pointer">
 			{{ text }}
 		</a>
 	</div>
