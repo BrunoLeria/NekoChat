@@ -49,7 +49,7 @@ Socket.on("userUpdated", () => {
 <template>
 	<div class="flex h-full bg-white dark:bg-slate-90">
 		<SideMenu v-model="activeComponent" />
-		<div class="flex-1 flex flex-col max-w-[85%]">
+		<div class="flex-1 flex flex-col max-w-[75%]">
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">
 					<h3 class="text-indigo-700 text-2xl text-left ml-4 font-bold rounded-xl">
