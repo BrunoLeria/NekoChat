@@ -1,6 +1,6 @@
 <script setup>
 import SideMenu from "../components/SideMenu.vue";
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useUsersStore } from "../services/stores/users";
 import { useRouter } from "vue-router";

@@ -61,7 +61,7 @@ const signInWithGoogle = () => {
 	const provider = new GoogleAuthProvider();
 	signInWithPopup(getAuth(), provider)
 		.then((data) => {
-			login(data, true);
+			login(data);
 		})
 		.catch((error) => {
 			console.log(error);

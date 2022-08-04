@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps, defineEmits } from "vue";
-
 const props = defineProps({
 	label: {
 		type: String,
@@ -45,7 +43,6 @@ function urlToBase64(urlStorage) {
 	}
 
 	toDataURL(urlStorage, function (dataUrl) {
-		base64 = dataUrl;
 		emits("update:value", {
 			base64: dataUrl,
 			name: null,

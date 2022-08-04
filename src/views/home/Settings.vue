@@ -21,7 +21,6 @@ const PasswordInput = defineAsyncComponent(() => import("/src/components/inputs/
 const Spinner = defineAsyncComponent(() => import("/src/components/animations/Spinner.vue"));
 
 if (userStore.offices == undefined) userStore.findAllOffices();
-userStore.user.usu_state;
 if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
@@ -56,7 +55,6 @@ function findCitiesOptions(newAddress) {
 }
 
 function sendEmailPasswordRecovery() {
-	const auth = getAuth();
 	sendPasswordResetEmail(auth, person.value.usu_email)
 		.then(() => {
 			alert("E-mail enviado com sucesso. Por favor, verifique sua caixa de entrada.");

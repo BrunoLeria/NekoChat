@@ -12,16 +12,18 @@ const selectTalk = (talk) => {
 };
 
 onMounted(() => {
-	Object.keys(talkStore.talks).forEach((key) => {
-		document.getElementById(key).scrollTo(0, document.getElementById(key).scrollHeight);
-	});
+	scrollToBottom();
 });
 
 onUpdated(() => {
+	scrollToBottom();
+});
+
+function scrollToBottom() {
 	Object.keys(talkStore.talks).forEach((key) => {
 		document.getElementById(key).scrollTo(0, document.getElementById(key).scrollHeight);
 	});
-});
+}
 
 function nomedoCliente(talk) {
 	const last = talk.length - 1;

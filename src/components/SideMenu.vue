@@ -41,10 +41,7 @@ const handleSignOut = () => {
 };
 
 const updateYourRegister = () => {
-	if (userStore.user.usu_name === "") {
-		return true;
-	}
-	return false;
+	return userStore.user.usu_name === "";
 };
 
 const statusColor = computed(() => {
@@ -97,14 +94,16 @@ function configLoggedUser() {
 				</div>
 				<transition name="slide-fade" :duration="{ enter: 500, leave: 500 }">
 					<div id="dropdown" class="z-10 bg-gray-100 w-36 rounded-lg" v-show="changeStatus">
-						<li
-							@click="updateStatus(status.sts_identification)"
-							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
-							:style="{ color: status.sts_color }"
-							aria-labelledby="dropdownDefault"
-							v-for="status in statuses">
-							{{ status.sts_description }}
-						</li>
+						<ul>
+							<li
+								@click="updateStatus(status.sts_identification)"
+								class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
+								:style="{ color: status.sts_color }"
+								aria-labelledby="dropdownDefault"
+								v-for="status in statuses">
+								{{ status.sts_description }}
+							</li>
+						</ul>
 					</div>
 				</transition>
 			</div>
@@ -147,24 +146,6 @@ function configLoggedUser() {
 				</svg>
 				<h4 class="ml-4 text-center">Chat</h4>
 			</div>
-			<!-- <div
-                class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
-                :class="$attrs.modelValue == 'Analytics' ? 'bg-indigo-600' : ''"
-                @click="$emit('update:modelValue', 'Analytics')">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-7 w-7"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2">
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <h4 class="ml-4 text-center">Relatórios</h4>
-            </div> -->
 			<div
 				class="p-4 flex items hover:bg-indigo-600 ease-in-out duration-500"
 				:class="$attrs.modelValue == 'Settings' ? 'bg-indigo-600' : ''"
