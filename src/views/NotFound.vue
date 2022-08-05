@@ -1,5 +1,5 @@
 <script setup>
-import SideMenu from "../components/SideMenu.vue";
+import SideMenu from "../components/side_menu/SideMenu.vue";
 import { ref } from "vue";
 import { getAuth, signOut } from "firebase/auth";
 import { useUsersStore } from "../services/stores/users";

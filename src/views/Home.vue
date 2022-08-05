@@ -1,5 +1,5 @@
 <script setup>
-import SideMenu from "../components/SideMenu.vue";
+import SideMenu from "../components/side_menu/SideMenu.vue";
 import { ref, onMounted, defineAsyncComponent, computed } from "vue";
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
@@ -18,12 +18,12 @@ const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const translatedTitle = computed(() => {
-	document.title = "Dashboard";
-	if (activeComponent.value == "Team") document.title = "Equipe";
-	if (activeComponent.value == "Chat") document.title = "Chat";
-	if (activeComponent.value == "Analytics") document.title = "Análise";
-	if (activeComponent.value == "Settings") document.title = "Configurações";
-	return document.title;
+	document.title = "NChat - Dashboard";
+	if (activeComponent.value == "Team") document.title = "NChat - Equipe";
+	if (activeComponent.value == "Chat") document.title = "NChat - Chat";
+	if (activeComponent.value == "Analytics") document.title = "NChat - Análise";
+	if (activeComponent.value == "Settings") document.title = "NChat - Configurações";
+	return document.title.replace("NChat - ", "");
 });
 
 onMounted(() => {

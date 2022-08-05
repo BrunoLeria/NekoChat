@@ -3,7 +3,7 @@ import TextInput from "/src/components/inputs/TextInput.vue";
 import Sublink from "/src/components/buttons/Sublink.vue";
 import PasswordInput from "../components/inputs/PasswordInput.vue";
 import logo from "/src/assets/logo.svg";
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, onMounted } from "vue";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
@@ -19,6 +19,9 @@ onBeforeMount(() => {
 	if (userStore.user.usu_email != undefined) {
 		router.push({ name: "Home" });
 	}
+});
+onMounted(() => {
+	document.title = "NChat - Login";
 });
 
 const signInWithEmail = () => {
