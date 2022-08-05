@@ -7,18 +7,18 @@ import { useUsersStore } from "/src/services/stores/users.js";
 import { useTeamStore } from "/src/services/stores/team";
 
 const components = {
-	Dashboard: defineAsyncComponent(() => import("./home/Dashboard.vue")),
+	Welcome: defineAsyncComponent(() => import("./home/Welcome.vue")),
 	Team: defineAsyncComponent(() => import("./home/Team.vue")),
 	Chat: defineAsyncComponent(() => import("./home/Chat.vue")),
 	Analytics: defineAsyncComponent(() => import("./home/Analytics.vue")),
 	Settings: defineAsyncComponent(() => import("./home/Settings.vue"))
 };
-const activeComponent = ref("Dashboard");
+const activeComponent = ref("Welcome");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const translatedTitle = computed(() => {
-	document.title = "NChat - Dashboard";
+	document.title = "NChat - Bem-vindo";
 	if (activeComponent.value == "Team") document.title = "NChat - Equipe";
 	if (activeComponent.value == "Chat") document.title = "NChat - Chat";
 	if (activeComponent.value == "Analytics") document.title = "NChat - Análise";
@@ -63,7 +63,6 @@ Socket.on("userUpdated", () => {
 					v-model="activeComponent"
 					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll"></component>
 			</transition>
-			<div class="py-10 bg-indigo-100"></div>
 		</div>
 	</div>
 </template>

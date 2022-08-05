@@ -20,7 +20,7 @@ const props = defineProps({
 const router = useRouter();
 const auth = getAuth();
 const userStore = useUsersStore();
-const activeComponent = ref("Dashboard");
+const activeComponent = ref("Welcome");
 
 const handleSignOut = () => {
 	signOut(auth).then(() => {

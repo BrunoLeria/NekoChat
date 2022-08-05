@@ -85,16 +85,7 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) {
                     talks.value = {};
                     data.forEach((talk) => {
-                        if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
-                            talks.value[talk.tlk_chat_id] = [];
-                        }
-                        talks.value[talk.tlk_chat_id].push(talk);
-                    });
-                    Object.entries(talks.value).forEach(([key, value]) => {
-                        const found = value.find((element) => element.tlk_from_me == "0");
-                        if (found == undefined) {
-                            delete talks.value[key];
-                        }
+                        talks.value[talk.tlk_chat_id] = talk;
                     });
                 }
             })

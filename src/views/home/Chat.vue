@@ -45,7 +45,7 @@ Socket.on("returnedToBot", async () => {
 			if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
 				talkStore.selected = "";
 				alert("Usuário responsável pelo chat modificado.");
-				emit("update:modelValue", "Dashboard");
+				emit("update:modelValue", "Welcome");
 			}
 		});
 	}

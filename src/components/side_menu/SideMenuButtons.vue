@@ -31,7 +31,7 @@ function updateStatus(sts_identification) {
 </script>
 <template>
 	<div class="flex">
-		<div class="py-6 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-xl ease-in-out duration-500" @click="handleSignOut">
+		<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-xl ease-in-out duration-500" @click="handleSignOut">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 				<path
 					stroke-linecap="round"
@@ -40,7 +40,7 @@ function updateStatus(sts_identification) {
 			</svg>
 			<h4 class="mx-3">Sair</h4>
 		</div>
-		<div class="py-6 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-xl ease-in-out duration-500" @click="configLoggedUser">
+		<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-xl ease-in-out duration-500" @click="configLoggedUser">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 				<path
 					stroke-linecap="round"
@@ -51,7 +51,7 @@ function updateStatus(sts_identification) {
 			<h4 class="mx-3">Configurações</h4>
 		</div>
 		<div
-			class="py-6 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-xl ease-in-out duration-500"
+			class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-xl ease-in-out duration-500"
 			@click="$emit('update:modelValue', 'Team')">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 				<path
