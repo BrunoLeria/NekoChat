@@ -31,7 +31,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada criar conversa", redirect: "Home" }
@@ -52,20 +52,14 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) {
                     talks.value = {};
                     data.forEach((talk) => {
-                        if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
-                            talks.value[talk.tlk_chat_id] = [];
-                        }
-                        talks.value[talk.tlk_chat_id].push(talk);
-                    });
-                    Object.entries(talks.value).forEach(([key, value]) => {
-                        const found = value.find((element) => element.tlk_from_me == "0");
-                        if (found == undefined) {
-                            delete talks.value[key];
-                        }
+                        talks.value = {};
+                        data.forEach((talk) => {
+                            talks.value[talk.tlk_chat_id] = talk;
+                        });
                     });
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa" }
@@ -89,7 +83,7 @@ export const useTalkStore = defineStore("talks", () => {
                     });
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa por empresa" }
@@ -108,7 +102,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 if (data) activeChat.value = data;
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa por id" }
@@ -129,20 +123,11 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) {
                     talks.value = {};
                     data.forEach((talk) => {
-                        if (!Object.keys(talks.value).includes(talk.tlk_chat_id)) {
-                            talks.value[talk.tlk_chat_id] = [];
-                        }
-                        talks.value[talk.tlk_chat_id].push(talk);
-                    });
-                    Object.entries(talks.value).forEach(([key, value]) => {
-                        const found = value.find((element) => element.tlk_from_me == "0");
-                        if (found == undefined) {
-                            delete talks.value[key];
-                        }
+                        talks.value[talk.tlk_chat_id] = talk;
                     });
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa por usuário" }
@@ -163,7 +148,7 @@ export const useTalkStore = defineStore("talks", () => {
         })
             .then((response) => response.json())
             .then((data) => {})
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada atualizar conversa para usuário", redirect: "Home" }
@@ -187,7 +172,7 @@ export const useTalkStore = defineStore("talks", () => {
         })
             .then((response) => response.json())
             .then((data) => {})
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada atuaizar robô", redirect: "Home" }
@@ -215,7 +200,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada enviar mensagem", redirect: "Home" }
@@ -243,7 +228,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada enviar contato", redirect: "Home" }
@@ -269,7 +254,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada enviar imagem", redirect: "Home" }
@@ -295,7 +280,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada enviar áudio", redirect: "Home" }
@@ -321,7 +306,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada enviar vídeo", redirect: "Home" }
@@ -348,7 +333,7 @@ export const useTalkStore = defineStore("talks", () => {
             .then((data) => {
                 console.log("Success:", data);
             })
-            .catch((error) => {
+            .catch(() => {
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada enviar documento", redirect: "Home" }
