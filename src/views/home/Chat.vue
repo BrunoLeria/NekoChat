@@ -102,8 +102,4 @@ Socket.on("returnedToBot", async () => {
 	</div>
 </template>
 
-<script>
-export default {};
-</script>
-
 <style></style>
