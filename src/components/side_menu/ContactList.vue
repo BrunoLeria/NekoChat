@@ -2,10 +2,12 @@
 import { ref, computed } from "vue";
 import { useTalkStore } from "../../services/stores/talks";
 import ContactCard from "./ContactCard.vue";
+import Filter from "./Filter.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
 const search = ref("");
+const filter = ref(["onlyMine", "waiting", "open", "closed", "onlyTheirs"]);
 
 const selectTalk = (talk) => {
 	talkStore.selected = talk.tlk_chat_id;
@@ -17,7 +19,33 @@ const searchContact = computed(() => {
 		if (/^\d+$/.test(search.value.replace(" ", "").replace("-", ""))) {
 			return talk.tlk_chat_id.includes(search.value);
 		}
+		if (talk.tlk_chat_name == undefined) {
+			return false;
+		}
 		return talk.tlk_chat_name.toLowerCase().includes(search.value.toLowerCase());
+	});
+});
+const filteredContact = computed(() => {
+	return searchContact.value.filter((talk) => {
+		if (filter.value.includes("showAll")) {
+			return true;
+		}
+		if (filter.value.includes("onlyMine") && talk.tlk_user_id == talkStore.user.uid && talk.tlk_fk_cpn_identification == 3) {
+			return true;
+		}
+		if (filter.value.includes("waiting")  && talk.tlk_fk_cpn_identification == 2) {
+			return true;
+		}
+		if (filter.value.includes("open")  && talk.tlk_fk_cpn_identification == 1) {
+			return true;
+		}
+		if (filter.value.includes("closed")  && talk.tlk_fk_cpn_identification == 4) {
+			return true;
+		}
+		if (filter.value.includes("onlyTheirs") && talk.tlk_user_id != talkStore.user.uid  && talk.tlk_fk_cpn_identification == 3) {
+			return true;
+		}
+		return false;
 	});
 });
 </script>
@@ -25,13 +53,7 @@ const searchContact = computed(() => {
 <template>
 	<div class="text-white text-xl flex flex-col flex-1 content-start overflow-y-auto">
 		<div class="contact-list-header">
-			<div class="w-full p-5">
-				<input
-					type="text"
-					class="w-full rounded-full bg-indigo-400 text-white placeholder:text-white border-white"
-					v-model="search"
-					placeholder="Search" />
-			</div>
+			<Filter v-model:search="search" v-model:selected="filter" />
 		</div>
 		<div class="overflow-y-auto h-full">
 			<ContactCard v-for="(talk, index) in searchContact" :key="index" @click="selectTalk(talk)" :talk="talk" />

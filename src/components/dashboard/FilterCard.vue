@@ -4,26 +4,26 @@ import Checkbox from "./inputs/Checkbox.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
-const selected = ref(["onlyMine", "urgent", "active", "finished", "onlyTheirs"]);
+const selected = ref(["onlyMine", "waiting", "open", "closed", "onlyTheirs"]);
 
 const showAll = ref(true);
 const onlyMine = ref(true);
-const urgent = ref(true);
-const active = ref(true);
-const finished = ref(true);
+const waiting = ref(true);
+const open = ref(true);
+const closed = ref(true);
 const onlyTheirs = ref(true);
 
 function setSelected(addOrRemove, value) {
 	if (value == "showAll") {
 		showAll.value = addOrRemove;
 		onlyMine.value = addOrRemove;
-		urgent.value = addOrRemove;
-		active.value = addOrRemove;
-		finished.value = addOrRemove;
+		waiting.value = addOrRemove;
+		open.value = addOrRemove;
+		closed.value = addOrRemove;
 		onlyTheirs.value = addOrRemove;
 
 		if (addOrRemove) {
-			selected.value = ["onlyMine", "urgent", "active", "finished", "onlyTheirs"];
+			selected.value = ["onlyMine", "waiting", "open", "closed", "onlyTheirs"];
 		} else {
 			selected.value = [];
 		}
@@ -71,26 +71,26 @@ function setSelected(addOrRemove, value) {
 				v-model="onlyMine"
 				@update:modelValue="setSelected(onlyMine, 'onlyMine')" />
 			<Checkbox
-				:id="'urgentCheckBox'"
+				:id="'waitingCheckBox'"
 				:label="'Urgentes'"
 				class="w-full justify-between"
 				:checkmark-color="'text-red-600'"
-				v-model="urgent"
-				@update:modelValue="setSelected(urgent, 'urgent')" />
+				v-model="waiting"
+				@update:modelValue="setSelected(waiting, 'waiting')" />
 			<Checkbox
-				:id="'activeCheckBox'"
+				:id="'openCheckBox'"
 				:label="'Ativos'"
 				class="w-full justify-between"
 				:checkmark-color="'text-red-600'"
-				v-model="active"
-				@update:modelValue="setSelected(active, 'active')" />
+				v-model="open"
+				@update:modelValue="setSelected(open, 'open')" />
 			<Checkbox
-				:id="'finishedCheckBox'"
+				:id="'closedCheckBox'"
 				:label="'Finalizados'"
 				class="w-full justify-between"
 				:checkmark-color="'text-red-600'"
-				v-model="finished"
-				@update:modelValue="setSelected(finished, 'finished')" />
+				v-model="closed"
+				@update:modelValue="setSelected(closed, 'closed')" />
 			<Checkbox
 				:id="'onlyTheirsCheckBox'"
 				:label="'Com outros atendentes'"
