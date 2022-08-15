@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import _ from "lodash";
 
-export const useAddressStore = defineStore("adress", () => {
+export const useAddressStore = defineStore("address", () => {
     const states = ref([
         {
             id: 0,
