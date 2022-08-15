@@ -1,53 +1,16 @@
 <script setup>
 import { ref } from "vue";
 import Checkbox from "../inputs/Checkbox.vue";
+import { useFiltersStore } from "../../services/stores/filters";
 
 const props = defineProps({
 	search: {
 		type: String,
 		default: ""
-	},
-	selected: {
-		type: Array,
-		default: []
 	}
 });
-
-const emit = defineEmits(["update:selected", "update:search"]);
 const showFilters = ref(false);
-const showAll = ref(true);
-const onlyMine = ref(true);
-const waiting = ref(true);
-const open = ref(true);
-const closed = ref(true);
-const onlyTheirs = ref(true);
-
-function setSelected(addOrRemove, value) {
-	const aux = ref(props.selected);
-	if (value == "showAll") {
-		showAll.value = addOrRemove;
-		onlyMine.value = addOrRemove;
-		waiting.value = addOrRemove;
-		open.value = addOrRemove;
-		closed.value = addOrRemove;
-		onlyTheirs.value = addOrRemove;
-
-		if (addOrRemove) {
-			aux.value = ["onlyMine", "waiting", "open", "closed", "onlyTheirs"];
-		} else {
-			aux.value = [];
-		}
-	} else if (addOrRemove) {
-		aux.value.push(value);
-		if (aux.value.length == 5) {
-			showAll.value = true;
-		}
-	} else {
-		showAll.value = false;
-		aux.value = aux.value.filter((item) => item !== value);
-	}
-	emit("update:selected", aux.value);
-}
+const filters = useFiltersStore();
 </script>
 <template>
 	<div class="overflow-visible">
@@ -85,47 +48,13 @@ function setSelected(addOrRemove, value) {
 						items-start
 					">
 					<Checkbox
-						:id="'showAllCheckBox'"
-						:label="'Mostrar todos'"
+						v-for="option in filters.options"
+						:id="option.id"
+						:label="option.label"
 						class="w-full justify-between"
-						:checkmark-color="'text-green-600'"
-						v-model="showAll"
-						@update:modelValue="setSelected(showAll, 'showAll')" />
-					<Checkbox
-						:id="'onlyMineCheckBox'"
-						:label="'Meus chamados'"
-						class="w-full justify-between"
-						:checkmark-color="'text-blue-600'"
-						v-model="onlyMine"
-						@update:modelValue="setSelected(onlyMine, 'onlyMine')" />
-					<Checkbox
-						:id="'waitingCheckBox'"
-						:label="'Urgentes'"
-						class="w-full justify-between"
-						:checkmark-color="'text-red-600'"
-						v-model="waiting"
-						@update:modelValue="setSelected(waiting, 'waiting')" />
-					<Checkbox
-						:id="'openCheckBox'"
-						:label="'Ativos'"
-						class="w-full justify-between"
-						:checkmark-color="'text-emerald-600'"
-						v-model="open"
-						@update:modelValue="setSelected(open, 'open')" />
-					<Checkbox
-						:id="'closedCheckBox'"
-						:label="'Finalizados'"
-						class="w-full justify-between"
-						:checkmark-color="'text-gray-600'"
-						v-model="closed"
-						@update:modelValue="setSelected(closed, 'closed')" />
-					<Checkbox
-						:id="'onlyTheirsCheckBox'"
-						:label="'Com outros atendentes'"
-						class="w-full justify-between"
-						:checkmark-color="'text-yellow-600'"
-						v-model="onlyTheirs"
-						@update:modelValue="setSelected(onlyTheirs, 'onlyTheirs')" />
+						:checkmark-color="option.checkmarkColor"
+						v-model="option.value"
+						@update:modelValue="filters.setSelected(option.value, option.name)" />
 				</div>
 			</div>
 		</transition>
