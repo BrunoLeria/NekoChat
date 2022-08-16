@@ -7,9 +7,10 @@ const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
 const search = ref("");
 
-const selectTalk = (talk) => {
+const selectTalk = async (talk) => {
+	emit("update:modelValue", "Loading");
 	talkStore.selected = talk.tlk_chat_id;
-	emit("update:modelValue", "Chat");
+	await talkStore.findOneTalkByChatID().then(emit("update:modelValue", "Chat"));
 };
 
 const searchContact = computed(() => {

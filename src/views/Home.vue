@@ -61,7 +61,9 @@ Socket.on("userUpdated", () => {
 				</transition>
 			</div>
 			<transition name="component-fade" mode="out-in">
+				<Loading v-if="activeComponent == 'Loading'" />
 				<component
+					v-else
 					:is="selectComponent(activeComponent)"
 					v-model="activeComponent"
 					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll"></component>
