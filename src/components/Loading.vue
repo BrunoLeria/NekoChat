@@ -1,5 +1,14 @@
+<script setup>
+const props = defineProps({
+	backgroundColor: {
+		type: String,
+		default: "bg-indigo-700"
+	}
+});
+</script>
+
 <template>
-	<div class="flex-none h-full bg-indigo-700 auto-rows-max flex-none flex flex-col z-10 w-full">
+	<div class="flex-none h-full auto-rows-max flex-none flex flex-col z-10 w-full" :class="backgroundColor">
 		<div class="flex justify-center items-center h-full">
 			<div class="fulfilling-bouncing-circle-spinner">
 				<div class="circle"></div>
