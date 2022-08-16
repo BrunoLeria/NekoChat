@@ -1,18 +1,16 @@
 <script setup>
-import SideMenu from "../components/side_menu/SideMenu.vue";
-import { ref, onMounted, defineAsyncComponent, computed } from "vue";
+import Loading from "../components/Loading.vue";
+import { ref, defineAsyncComponent, computed } from "vue";
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { useTeamStore } from "/src/services/stores/team";
 
-const components = {
-	Welcome: defineAsyncComponent(() => import("./home/Welcome.vue")),
-	Team: defineAsyncComponent(() => import("./home/Team.vue")),
-	Chat: defineAsyncComponent(() => import("./home/Chat.vue")),
-	Analytics: defineAsyncComponent(() => import("./home/Analytics.vue")),
-	Settings: defineAsyncComponent(() => import("./home/Settings.vue"))
-};
+const SideMenu = defineAsyncComponent({
+	loader: () => import("../components/side_menu/SideMenu.vue"),
+	loadingComponent: Loading,
+	delay: 200
+});
 const activeComponent = ref("Welcome");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
@@ -25,13 +23,18 @@ const translatedTitle = computed(() => {
 	if (activeComponent.value == "Settings") document.title = "NChat - Configurações";
 	return document.title.replace("NChat - ", "");
 });
+const selectComponent = (component) => {
+	return defineAsyncComponent({
+		loader: () => import("./home/" + component + ".vue"),
+		loadingComponent: Loading,
+		delay: 200
+	});
+};
 
-onMounted(() => {
-	if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
-	else talkStore.findAllTalkByUser();
-	teamStore.findAllTeam();
-	userStore.findOneCompany(userStore.user.usu_fk_cpn_identification);
-});
+if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
+else talkStore.findAllTalkByUser();
+teamStore.findAllTeam();
+userStore.findOneCompany(userStore.user.usu_fk_cpn_identification);
 
 Socket.on("newTalk", () => {
 	if (userStore.user.usu_identification) {
@@ -59,7 +62,7 @@ Socket.on("userUpdated", () => {
 			</div>
 			<transition name="component-fade" mode="out-in">
 				<component
-					:is="components[activeComponent]"
+					:is="selectComponent(activeComponent)"
 					v-model="activeComponent"
 					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll"></component>
 			</transition>

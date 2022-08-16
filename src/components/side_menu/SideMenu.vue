@@ -1,15 +1,20 @@
 <script setup>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineAsyncComponent } from "vue";
 import SideMenuButtons from "./SideMenuButtons.vue";
 import SideMenuHeader from "./SideMenuHeader.vue";
-import ContactList from "./ContactList.vue";
+import Loading from "../Loading.vue";
 
 const router = useRouter();
 const isLoggedIn = ref(false);
 const emit = defineEmits(["update:modelValue"]);
 const selected = ref("");
+const ContactList = defineAsyncComponent({
+	loader: () => import("./ContactList.vue"),
+	loadingComponent: Loading,
+	delay: 200
+});
 
 let auth;
 
