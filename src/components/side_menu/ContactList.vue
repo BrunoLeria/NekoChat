@@ -1,14 +1,14 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useTalkStore } from "../../services/stores/talks";
-import { useUserStore } from "../../services/stores/users";
+import { useUsersStore } from "../../services/stores/users";
 import { useFiltersStore } from "../../services/stores/filters";
 import ContactCard from "./ContactCard.vue";
 import Filter from "./Filter.vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
-const usersStore = useUserStore();
+const userStore = useUsersStore();
 const search = ref("");
 const filters = useFiltersStore();
 
@@ -29,11 +29,11 @@ const searchContact = computed(() => {
 	});
 });
 const filteredContact = computed(() => {
-	const aux = searchContact.value.filter((talk) => {
+	return searchContact.value.filter((talk) => {
 		if (filters.selected.includes("showAll")) {
 			return true;
 		}
-		if (filters.selected.includes("onlyMine") && talk.tlk_fk_usu_identification == talkStore.user.id) {
+		if (filters.selected.includes("onlyMine") && talk.tlk_fk_usu_identification == userStore.user.usu_identification) {
 			return true;
 		}
 		if (filters.selected.includes("waiting") && talk.tlk_fk_cpn_identification == 2) {
@@ -45,13 +45,8 @@ const filteredContact = computed(() => {
 		if (filters.selected.includes("closed") && talk.tlk_fk_cpn_identification == 4) {
 			return true;
 		}
-		if (filters.selected.includes("onlyTheirs") && talk.tlk_user_id != talkStore.user.uid) {
-			return true;
-		}
-		return false;
+		return !!(filters.selected.includes("onlyTheirs") && talk.tlk_fk_usu_identification != userStore.user.usu_identification);
 	});
-	console.log(aux);
-	return aux;
 });
 </script>
 

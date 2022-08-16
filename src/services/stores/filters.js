@@ -61,6 +61,11 @@ export const useFiltersStore = defineStore("filters", () => {
             options.value.forEach((option) => {
                 option.value = addOrRemove;
             });
+            if (addOrRemove) {
+                selected.value = ["onlyMine", "urgent", "waiting", "open", "closed", "onlyTheirs"];
+            } else {
+                selected.value = [];
+            }
         } else if (addOrRemove) {
             selected.value.push(value);
             if (selected.value.length == options.value.length - 1) {
