@@ -12,9 +12,10 @@ const userStore = useUsersStore();
 const search = ref("");
 const filters = useFiltersStore();
 
-const selectTalk = (talk) => {
+const selectTalk = async (talk) => {
+	emit("update:modelValue", "Loading");
 	talkStore.selected = talk.tlk_chat_id;
-	emit("update:modelValue", "Chat");
+	await talkStore.findOneTalkByChatID().then(emit("update:modelValue", "Chat"));
 };
 
 const searchContact = computed(() => {
