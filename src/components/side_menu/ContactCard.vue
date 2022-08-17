@@ -22,15 +22,22 @@ const dateTime = computed(() => {
 	return moment(props.talk.tlk_date_time).format("DD/MM/YYYY");
 });
 
+const waiting = computed(() => {
+	return props.talk.tlk_fk_ftr_identification == 2 && !urgent;
+});
+
 const urgent = computed(() => {
-	return props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss");
+	return (
+		props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss") &&
+		(props.talk.tlk_fk_ftr_identification == 2 || props.talk.tlk_fk_ftr_identification == 3)
+	);
 });
 </script>
 
 <template>
 	<div
 		class="h-20 border border-indigo-900 flex items-center p-4"
-		:class="{ 'bg-red-600': urgent, 'animate-pulse': urgent, 'bg-indigo-400': !urgent }">
+		:class="{ 'bg-yellow-600': waiting, 'bg-red-600': urgent, 'animate-pulse': urgent, 'bg-indigo-400': !urgent }">
 		<div class="contact-list-body-item-avatar">
 			<!-- <img :src="contact.avatar" alt="" /> -->
 		</div>
