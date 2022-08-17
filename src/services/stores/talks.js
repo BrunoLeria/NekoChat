@@ -54,7 +54,7 @@ export const useTalkStore = defineStore("talks", () => {
                     data.forEach((talk) => {
                         talks.value = {};
                         data.forEach((talk) => {
-                            talks.value[talk.tlk_chat_id] = talk;
+                            talks.value[talk.chat_id] = talk;
                         });
                     });
                 }
@@ -79,7 +79,7 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) {
                     talks.value = {};
                     data.forEach((talk) => {
-                        talks.value[talk.tlk_chat_id] = talk;
+                        talks.value[talk.chat_id] = talk;
                     });
                 }
             })
@@ -123,7 +123,7 @@ export const useTalkStore = defineStore("talks", () => {
                 if (data) {
                     talks.value = {};
                     data.forEach((talk) => {
-                        talks.value[talk.tlk_chat_id] = talk;
+                        talks.value[talk.chat_id] = talk;
                     });
                 }
             })
@@ -165,7 +165,7 @@ export const useTalkStore = defineStore("talks", () => {
             },
             body: JSON.stringify({
                 instance: activeChat.value[last].tlk_robot_instance,
-                chat_id: activeChat.value[0].tlk_chat_id,
+                chat_id: activeChat.value[0].chat_id,
                 token: "661F2EC9C06E8A7AC84561CD206196AEE3D3962C35F1148302EDA31E71D37D91",
                 responde: assumir
             })

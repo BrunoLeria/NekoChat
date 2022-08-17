@@ -9,7 +9,7 @@ const props = defineProps({
 });
 const contactName = computed(() => {
 	const firstName = props.talk.tlk_chat_name.split(" ")[0];
-	return firstName + " - (" + props.talk.tlk_chat_id + ")";
+	return firstName + " - (" + props.talk.chat_id + ")";
 });
 
 const dateTime = computed(() => {
@@ -22,11 +22,15 @@ const dateTime = computed(() => {
 	return moment(props.talk.tlk_date_time).format("DD/MM/YYYY");
 });
 
-const time = () => {};
+const urgent = computed(() => {
+	return props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss");
+});
 </script>
 
 <template>
-	<div class="bg-indigo-400 h-20 border border-indigo-900 flex items-center p-4">
+	<div
+		class="h-20 border border-indigo-900 flex items-center p-4"
+		:class="{ 'bg-red-600': urgent, 'animate-pulse': urgent, 'bg-indigo-400': !urgent }">
 		<div class="contact-list-body-item-avatar">
 			<!-- <img :src="contact.avatar" alt="" /> -->
 		</div>

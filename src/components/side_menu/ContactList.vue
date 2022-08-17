@@ -14,14 +14,14 @@ const filters = useFiltersStore();
 
 const selectTalk = async (talk) => {
 	emit("update:modelValue", "Loading");
-	talkStore.selected = talk.tlk_chat_id;
+	talkStore.selected = talk.chat_id;
 	await talkStore.findOneTalkByChatID().then(emit("update:modelValue", "Chat"));
 };
 
 const searchContact = computed(() => {
 	return Object.values(talkStore.talks).filter((talk) => {
 		if (/^\d+$/.test(search.value.replace(" ", "").replace("-", ""))) {
-			return talk.tlk_chat_id.includes(search.value);
+			return talk.chat_id.includes(search.value);
 		}
 		if (talk.tlk_chat_name == undefined) {
 			return false;
@@ -37,13 +37,13 @@ const filteredContact = computed(() => {
 		if (filters.selected.includes("onlyMine") && talk.tlk_fk_usu_identification == userStore.user.usu_identification) {
 			return true;
 		}
-		if (filters.selected.includes("waiting") && talk.tlk_fk_cpn_identification == 2) {
+		if (filters.selected.includes("waiting") && talk.tlk_fk_frt_identification == 2) {
 			return true;
 		}
-		if (filters.selected.includes("open") && talk.tlk_fk_cpn_identification == 1) {
+		if (filters.selected.includes("open") && talk.tlk_fk_frt_identification == 1) {
 			return true;
 		}
-		if (filters.selected.includes("closed") && talk.tlk_fk_cpn_identification == 4) {
+		if (filters.selected.includes("closed") && talk.tlk_fk_frt_identification == 4) {
 			return true;
 		}
 		return !!(filters.selected.includes("onlyTheirs") && talk.tlk_fk_usu_identification != userStore.user.usu_identification);
