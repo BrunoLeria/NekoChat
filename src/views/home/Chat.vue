@@ -2,12 +2,14 @@
 import ChatButtons from "/src/components/ChatButtons.vue";
 import { useTalkStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { onMounted, onUpdated } from "vue";
+import { useTeamStore } from "../../services/stores/team";
+import { computed, onMounted, onUpdated } from "vue";
 import Socket from "/src/services/socket.js";
 
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
+const teamStore = useTeamStore();
 
 const time = (message) => {
 	const date = new Date(message.tlk_date_time);
@@ -21,6 +23,12 @@ onMounted(async () => {
 
 onUpdated(() => {
 	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
+});
+
+const userResponsable = computed(() => {
+	if(talkStore.activeChat[0].tlk_fk_usu_identification == 1) return "Robô";
+	if(talkStore.activeChat[0].tlk_fk_usu_identification == userStore.user.usu_identification) return "Você";
+	return teamStore.teamOptions.find((user) => user.id == talkStore.activeChat[0].tlk_fk_usu_identification).name;
 });
 
 function getSource(message) {
@@ -39,21 +47,24 @@ function getText(message) {
 }
 
 //WebSocket chenges to the dashboard and the selected talk
-Socket.on("returnedToBot", async () => {
-	if (userStore.user.usu_identification) {
-		await talkStore.findOneTalkByChatID().then(() => {
-			if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
-				talkStore.selected = "";
-				alert("Usuário responsável pelo chat modificado.");
-				emit("update:modelValue", "Welcome");
-			}
-		});
-	}
-});
+// Socket.on("returnedToBot", async () => {
+// 	if (userStore.user.usu_identification) {
+// 		await talkStore.findOneTalkByChatID().then(() => {
+// 			if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
+// 				talkStore.selected = "";
+// 				alert("Usuário responsável pelo chat modificado.");
+// 				emit("update:modelValue", "Welcome");
+// 			}
+// 		});
+// 	}
+// });
 </script>
 
 <template>
 	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between">
+		<div>
+			<p>Usuario responsável: {{userResponsable}}</p>
+		</div>
 		<div class="flex flex-col p-5 overflow-y-auto w-full h-4/5 bg-white rounded-xl" id="scrollContainer">
 			<div
 				v-for="(message, index) in talkStore.activeChat"

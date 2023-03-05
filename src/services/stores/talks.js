@@ -165,7 +165,7 @@ export const useTalkStore = defineStore("talks", () => {
             },
             body: JSON.stringify({
                 instance: activeChat.value[last].tlk_robot_instance,
-                chat_id: activeChat.value[0].chat_id,
+                chat_id: activeChat.value[last].tlk_chat_id,
                 token: "661F2EC9C06E8A7AC84561CD206196AEE3D3962C35F1148302EDA31E71D37D91",
                 responde: assumir
             })

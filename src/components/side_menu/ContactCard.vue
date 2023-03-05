@@ -29,7 +29,8 @@ const waiting = computed(() => {
 const urgent = computed(() => {
 	return (
 		props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss") &&
-		(props.talk.tlk_fk_ftr_identification == 2 || props.talk.tlk_fk_ftr_identification == 3)
+		(props.talk.tlk_fk_ftr_identification == 2 || props.talk.tlk_fk_ftr_identification == 3 || props.talk.tlk_fk_usu_identification != 1) &&
+		props.talk.tlk_from_me != 1
 	);
 });
 </script>

@@ -17,7 +17,7 @@ function returnToBot(assumeChat) {
 	if (assumeChat == "1") {
 		talkStore.updateRobot(true);
 	} else {
-		talkStore.updateRobot(false);
+		if(talkStore.activeChat[0].tlk_fk_usu_identification == 1)talkStore.updateRobot(false);
 	}
 }
 
