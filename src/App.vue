@@ -4,11 +4,6 @@ import firebaseMessaging from "./services/firebase";
 
 provide("messaging", firebaseMessaging);
 
-const httpsRedirect = () => {
-	if (location.protocol !== "https:") location.replace("https://" + location.href.split("//")[1]);
-};
-
-httpsRedirect();
 </script>
 <template>
 	<div id="app" class="h-full w-full fixed">
@@ -25,9 +20,12 @@ httpsRedirect();
 .component-fade-leave-active {
 	transition: opacity 0.3s ease;
 }
-.component-fade-enter, 
+
+.component-fade-enter,
 .component-fade-leave-to
-/* .component-fade-leave-active below version 2.1.8 */ {
+
+/* .component-fade-leave-active below version 2.1.8 */
+	{
 	opacity: 0;
 }
 
