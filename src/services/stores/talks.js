@@ -5,7 +5,7 @@ import router from "../router";
 
 export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
-    const apiURL = "https://napi.aquicob.com.br:8080/";
+    const apiURL = "http://localhost:80/";
     const talks = ref({});
     const selected = ref("");
     const activeChat = ref([]);
