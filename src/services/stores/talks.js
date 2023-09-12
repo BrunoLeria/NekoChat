@@ -5,7 +5,7 @@ import router from "../router";
 
 export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
-    const apiURL = "http://localhost:80/";
+    const apiURL = "http://localhost:3005/";
     const talks = ref({});
     const selected = ref("");
     const activeChat = ref([]);
