@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import Checkbox from "../inputs/Checkbox.vue";
-import { useFiltersStore } from "../../services/stores/filters";
 
 const props = defineProps({
 	search: {
@@ -10,7 +9,6 @@ const props = defineProps({
 	}
 });
 const showFilters = ref(false);
-const filters = useFiltersStore();
 </script>
 <template>
 	<div class="overflow-visible">
