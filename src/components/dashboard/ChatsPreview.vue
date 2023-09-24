@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 const time = (message) => {
-	const date = new Date(message.tlk_date_time);
+	const date = new Date(message.created_at);
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
 
@@ -36,7 +36,7 @@ function trataMensagem(message) {
 }
 
 const messages = computed(() => {
-	if (props.talk[1] && props.talk[0].tlk_date_time > props.talk[1].tlk_date_time) return props.talk.reverse();
+	if (props.talk[1] && props.talk[0].created_at > props.talk[1].created_at) return props.talk.reverse();
 	return props.talk;
 });
 </script>
@@ -48,13 +48,13 @@ const messages = computed(() => {
 			:key="index"
 			id="mensagens"
 			:class="
-				message.tlk_from_me === '1'
+				message.from_me === '1'
 					? 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
 					: 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3'
 			">
 			<div class="flex justify-between">
 				<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-					{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_client }}
+					{{ message.from_me === "1" ? "Robô" : message.tlk_client }}
 				</h3>
 				<p class="ml-3">
 					{{ time(message) }}
