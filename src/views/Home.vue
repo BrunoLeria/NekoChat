@@ -31,15 +31,13 @@ const selectComponent = (component) => {
 	});
 };
 
-if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
-else talkStore.findAllTalkByUser();
+talkStore.fetchTalks();
 teamStore.findAllTeam();
-userStore.findOneCompany(userStore.user.usu_fk_cpn_identification);
 
 Socket.on("newTalk", () => {
-	if (userStore.user.usu_identification) {
-		if (userStore.user.usu_is_admin) talkStore.findAllTalkByCompany();
-		else talkStore.findAllTalkByUser();
+	if (userStore.user.identification) {
+		if (userStore.user.is_admin) talkStore.fetchTalks();
+		else talkStore.fetchTalksByUser();
 
 		if (talkStore.selected) talkStore.findOneTalkByChatID();
 	}
