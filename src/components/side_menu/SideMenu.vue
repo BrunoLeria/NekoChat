@@ -32,7 +32,7 @@ onMounted(() => {
 </script>
 <template>
 	<!-- Sidebar -->
-	<div class="flex-none h-full bg-indigo-700 auto-rows-max flex-none flex flex-col z-10 w-1/4">
+	<div class="flex-none h-full bg-indigo-700 auto-rows-max flex flex-col z-10 w-1/4">
 		<SideMenuHeader />
 		<ContactList :chat="selected" @update:modelValue="(newValue) => emit('update:modelValue', newValue)" />
 		<SideMenuButtons @update:modelValue="(newValue) => emit('update:modelValue', newValue)" />
