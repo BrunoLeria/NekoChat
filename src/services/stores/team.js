@@ -2,15 +2,16 @@ import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 import { useUsersStore } from "./users";
 import { ref } from "vue";
+import { GCurl } from "../../config/url";
+import router from "../router";
 
 export const useTeamStore = defineStore("teamID", () => {
-    const apiURL = "http://localhost:3005/";
     const team = ref(useLocalStorage("teamNeko", []));
     const teamOptions = ref(useLocalStorage("teamOptionsNeko", []));
     const userStore = useUsersStore();
 
     async function findAllTeam() {
-        const url = apiURL + "findAllTeam?id=" + userStore.user.usu_identification;
+        const url = GCurl + "teams";
         await fetch(url, {
             method: "GET",
             headers: {
@@ -24,8 +25,8 @@ export const useTeamStore = defineStore("teamID", () => {
                     teamOptions.value = [];
                     data.forEach((element) => {
                         teamOptions.value.push({
-                            id: element.usu_identification,
-                            name: element.usu_name ? element.usu_name : "Usuário " + element.usu_identification
+                            id: element.identification,
+                            name: element.name ? element.name : "Usuário " + element.identification
                         });
                     });
                 }
