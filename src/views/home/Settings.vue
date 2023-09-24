@@ -20,8 +20,6 @@ const PhotoPicker = defineAsyncComponent(() => import("/src/components/inputs/Ph
 const PasswordInput = defineAsyncComponent(() => import("/src/components/inputs/PasswordInput.vue"));
 const Spinner = defineAsyncComponent(() => import("/src/components/animations/Spinner.vue"));
 
-if (userStore.offices == undefined) userStore.findAllOffices();
-if (userStore.user.usu_state != "") findCitiesOptions(userStore.user.usu_state);
 
 function update() {
 	sending.value = true;
@@ -55,7 +53,7 @@ function findCitiesOptions(newAddress) {
 }
 
 function sendEmailPasswordRecovery() {
-	sendPasswordResetEmail(auth, person.value.usu_email)
+	sendPasswordResetEmail(auth, person.value.email)
 		.then(() => {
 			alert("E-mail enviado com sucesso. Por favor, verifique sua caixa de entrada.");
 		})
@@ -75,7 +73,7 @@ function sendEmailPasswordRecovery() {
 }
 
 watch(
-	() => person.value.usu_state,
+	() => person.value.state,
 	(newAddress) => {
 		findCitiesOptions(newAddress);
 	}
@@ -95,35 +93,19 @@ watch(
 								id="identification"
 								:required="true"
 								:disabled="true"
-								v-model="person.usu_identification" />
+								v-model="person.identification" />
 						</div>
 						<div class="col-span-3">
-							<TextInput label="Nome" type="text" id="name" :required="true" v-model="person.usu_name" />
+							<TextInput label="Nome" type="text" id="name" :required="true" v-model="person.name" />
 						</div>
 						<div class="col-span-2">
-							<TextInput label="E-mail" type="email" id="email" :required="true" :disabled="true" v-model="person.usu_email" />
+							<TextInput label="E-mail" type="email" id="email" :required="true" :disabled="true" v-model="person.email" />
 						</div>
 						<div class="col-span-1">
-							<DatePicker label="Data de nascimento" id="birthDate" v-model="person.usu_birthday" />
+							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.photo" />
 						</div>
 						<div class="col-span-1">
-							<TextInput label="Telefone" type="phone" id="phone" v-model="person.usu_phone" />
-						</div>
-						<div class="col-span-1">
-							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.usu_photo" />
-						</div>
-						<div class="col-span-1">
-							<Checkbox :id="'isAdminCheckBox'" :label="'Admin'" v-model="person.usu_is_admin" v-if="userStore.user.usu_is_admin" />
-						</div>
-						<div class="col-span-2 flex items-center">
-							<Combobox
-								:id="'officeIdentification'"
-								class="flex-1"
-								:alternatives="userStore.offices"
-								:label="'Cargo'"
-								:idInstead="true"
-								v-model="person.usu_fk_ofc_identification"
-								v-if="userStore.user.usu_is_admin"></Combobox>
+							<Checkbox :id="'isAdminCheckBox'" :label="'Admin'" v-model="person.is_admin" v-if="userStore.user.is_admin" />
 						</div>
 						<div class="col-span-2 flex items-center">
 							<button
@@ -164,44 +146,6 @@ watch(
 								</span>
 								Enviar e-mail de recuperação de senha
 							</button>
-						</div>
-						<div class="col-span-3">
-							<TextInput label="Endereço" type="text" id="street" v-model="person.usu_address" />
-						</div>
-						<div class="col-span-1">
-							<TextInput label="Número" type="text" id="number" v-model="person.usu_street_number" />
-						</div>
-						<div class="col-span-1">
-							<TextInput label="CEP" type="text" id="postal_code" v-model="person.usu_postal_code" />
-						</div>
-						<div class="col-span-1">
-							<TextInput label="Complemento" type="text" id="complement" v-model="person.usu_complement" />
-						</div>
-						<div class="col-span-2">
-							<TextInput label="Bairro" type="text" id="neighborhood" v-model="person.usu_neighborhood" />
-						</div>
-						<div class="col-span-1">
-							<Checkbox :id="'foreingCheckBox'" :label="'foreign'" v-model="person.usu_foreign" />
-						</div>
-						<div class="col-span-1 flex items-center">
-							<Combobox
-								:id="'statesComboBox'"
-								class="flex-1"
-								:alternatives="addressStore.states"
-								:disabled="person.usu_foreign"
-								:label="'Estado'"
-								v-model="person.usu_state"></Combobox>
-						</div>
-						<div class="col-span-2 flex items-center">
-							<Combobox
-								:id="'cityComboBox'"
-								class="w-full"
-								:alternatives="addressStore.cities"
-								:disabled="person.usu_foreign"
-								:label="'Cidade'"
-								:loading="loading"
-								v-model="person.usu_city"></Combobox>
-							<Spinner v-show="loading" />
 						</div>
 					</div>
 				</div>
