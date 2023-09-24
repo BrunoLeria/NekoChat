@@ -12,12 +12,12 @@ const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const usedIdToTransfer = ref("");
 
-function returnToBot(assumeChat) {
+function returnToBot(assumeChat) { // precisa verificar se essa função é necessária
 	talkStore.updateTalkToSignInUser(assumeChat, true);
 	if (assumeChat == "1") {
 		talkStore.updateRobot(true);
 	} else {
-		if(talkStore.activeChat[0].tlk_fk_usu_identification == 1)talkStore.updateRobot(false);
+		if(talkStore.activeChat[0].fk_users_identification == 1)talkStore.updateRobot(false);
 	}
 }
 
@@ -67,7 +67,7 @@ watch(
 			class="w-full"
 			@keypress.enter="sendMessage()" />
 		<Combobox
-			v-if="userStore.user.usu_is_admin"
+			v-if="userStore.user.is_admin"
 			:id="'usersComboBox'"
 			:idInstead="true"
 			class="w-56 h-12 py-2 px-2"
@@ -131,7 +131,7 @@ watch(
 					h-12
 				"
 				title="Assumir conversa"
-				@click="returnToBot(userStore.user.usu_identification)">
+				@click="returnToBot(userStore.user.identification)">
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path
 						stroke-linecap="round"
