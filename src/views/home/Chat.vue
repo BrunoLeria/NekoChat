@@ -12,7 +12,7 @@ const userStore = useUsersStore();
 const teamStore = useTeamStore();
 
 const time = (message) => {
-	const date = new Date(message.tlk_date_time);
+	const date = new Date(message.created_at);
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
 
@@ -26,9 +26,9 @@ onUpdated(() => {
 });
 
 const userResponsable = computed(() => {
-	if(talkStore.activeChat[0].tlk_fk_usu_identification == 1) return "Robô";
-	if(talkStore.activeChat[0].tlk_fk_usu_identification == userStore.user.usu_identification) return "Você";
-	return teamStore.teamOptions.find((user) => user.id == talkStore.activeChat[0].tlk_fk_usu_identification).name;
+	if(talkStore.activeChat[0].fk_users_identification == 1) return "Administrador";
+	if(talkStore.activeChat[0].fk_users_identification == userStore.user.identification) return "Você";
+	return teamStore.teamOptions.find((user) => user.id == talkStore.activeChat[0].fk_users_identification).name;
 });
 
 function getSource(message) {
@@ -47,17 +47,17 @@ function getText(message) {
 }
 
 //WebSocket chenges to the dashboard and the selected talk
-// Socket.on("returnedToBot", async () => {
-// 	if (userStore.user.usu_identification) {
-// 		await talkStore.findOneTalkByChatID().then(() => {
-// 			if (talkStore.activeChat[0].tlk_fk_usu_identification !== userStore.user.usu_identification) {
-// 				talkStore.selected = "";
-// 				alert("Usuário responsável pelo chat modificado.");
-// 				emit("update:modelValue", "Welcome");
-// 			}
-// 		});
-// 	}
-// });
+Socket.on("returnedToBot", async () => {
+	if (userStore.user.identification) {
+		await talkStore.findOneTalkByChatID().then(() => {
+			if (talkStore.activeChat[0].fk_users_identification !== userStore.user.identification) {
+				talkStore.selected = "";
+				alert("Usuário responsável pelo chat modificado.");
+				emit("update:modelValue", "Welcome");
+			}
+		});
+	}
+});
 </script>
 
 <template>
@@ -71,13 +71,13 @@ function getText(message) {
 				:key="index"
 				id="mensagens"
 				:class="
-					message.tlk_from_me === '1'
+					message.from_me === '1'
 						? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
 						: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
 				">
 				<div class="flex justify-between">
 					<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-						{{ message.tlk_from_me === "1" ? "Robô" : message.tlk_client }}
+						{{ message.from_me === "1" ? "Administrador" : message.tlk_client }}
 					</h3>
 					<p class="ml-3">
 						{{ time(message) }}
