@@ -2,7 +2,7 @@
 import TextInput from "/src/components/inputs/TextInput.vue";
 import PasswordInput from "/src/components/inputs/PasswordInput.vue";
 import Sublink from "/src/components/buttons/Sublink.vue";
-import logo from "/src/assets/logo.svg";
+import logo from "/src/assets/nekologo.jpeg";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -46,7 +46,7 @@ function sendEmailPasswordRecovery() {
 	<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" @keypress.enter="sendEmailPasswordRecovery()">
 		<div class="max-w-md w-full space-y-8">
 			<div>
-				<img class="mx-auto h-36 w-auto" :src="logo" alt="Workflow" />
+				<img class="mx-auto h-36 w-auto rounded-full" :src="logo" alt="Workflow" />
 				<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Esqueceu a sua senha?</h2>
 				<p class="mt-2 text-center text-sm text-gray-600">
 					Ou

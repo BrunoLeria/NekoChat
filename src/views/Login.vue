@@ -5,7 +5,8 @@ import PasswordInput from "../components/inputs/PasswordInput.vue";
 import logo from "/src/assets/nekologo.jpeg";
 import { ref, onBeforeMount, onMounted } from "vue";
 import { useUsersStore } from "/src/services/stores/users.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { useStatusesStore } from "/src/services/stores/status.js";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 const email = ref("");
@@ -13,9 +14,10 @@ const password = ref("");
 const errMsg = ref("");
 const router = useRouter();
 const userStore = useUsersStore();
+const statusesStore = useStatusesStore();
 
 onBeforeMount(() => {
-	if (userStore.user.usu_email != undefined) {
+	if (userStore.user.email != undefined) {
 		router.push({ name: "Home" });
 	}
 });
@@ -59,30 +61,18 @@ const signInWithEmail = () => {
 		});
 };
 
-const signInWithGoogle = () => {
-	const provider = new GoogleAuthProvider();
-	signInWithPopup(getAuth(), provider)
-		.then((data) => {
-			login(data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-};
-
 async function login(data) {
 	const userFound = await userStore.findOneUserByEmail(data.user.email);
-	userStore.findAllOffices();
 
 	if (userFound) {
-		if (userStore.user.usu_fk_sts_identification !== 1 && userStore.user.usu_fk_sts_identification != undefined) {
-			userStore.user.usu_fk_sts_identification = 1;
-			userStore.user.usu_fk_cpn_identification = 120;
+		await statusesStore.findAllStatuses();
+		if (userStore.user.fk_statuses_identification !== 1 && userStore.user.fk_statuses_identification != undefined) {
+			userStore.user.fk_statuses_identification = 1;
 			userStore.updateUser();
 		}
 	}
 
-	if (userStore.user.usu_identification == undefined) {
+	if (userStore.user.identification == undefined) {
 		errMsg.value = "Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.";
 	} else {
 		router.push({ name: "Home" });

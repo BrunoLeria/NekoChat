@@ -2,7 +2,7 @@
 import TextInput from "/src/components/inputs/TextInput.vue";
 import PasswordInput from "/src/components/inputs/PasswordInput.vue";
 import Sublink from "/src/components/buttons/Sublink.vue";
-import logo from "/src/assets/logo.svg";
+import logo from "/src/assets/nekologo.jpeg";
 import { ref } from "vue";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -58,12 +58,12 @@ const register = (e) => {
 };
 
 async function login(data) {
-	userStore.user.usu_name = data.user.displayName;
-	userStore.user.usu_email = data.user.email;
-	userStore.user.usu_photo = data.user.photoURL;
-	userStore.user.usu_fk_sts_identification = 1;
-	userStore.user.usu_fk_ofc_identification = 1;
-	userStore.user.usu_fk_cpn_identification = 120;
+	userStore.user.name = data.user.name;
+	userStore.user.email = data.user.email;
+	userStore.user.photo = data.user.photo;
+	userStore.user.fk_statuses_identification = 1;
+	userStore.user.fk_team_identification = 1;
+	userStore.user.is_admin = 1;
 	await userStore
 		.createUser()
 		.then(() => {
@@ -82,7 +82,7 @@ async function login(data) {
 	<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" @keypress.enter="register()">
 		<div class="max-w-md w-full space-y-8">
 			<div>
-				<img class="mx-auto h-36 w-auto" :src="logo" alt="Workflow" />
+				<img class="mx-auto h-36 w-auto rounded-full" :src="logo" alt="Workflow" />
 				<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Cadastre a sua conta</h2>
 				<p class="mt-2 text-center text-sm text-gray-600">
 					Ou
