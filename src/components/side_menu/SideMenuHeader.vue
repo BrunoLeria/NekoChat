@@ -1,26 +1,21 @@
 <script setup>
 import { useUsersStore } from "/src/services/stores/users";
 import { ref, computed } from "vue";
+import { useStatusesStore } from "/src/services/stores/status";
 
 const userStore = useUsersStore();
+const statuses = useStatusesStore().statuses;
 const changeStatus = ref(false);
 
-const statuses = [
-	{ sts_identification: 1, sts_name: "Online", sts_description: "Disponível", sts_color: "rgb(74 222 128)" },
-	{ sts_identification: 2, sts_name: "Occupied", sts_description: "Ocupado", sts_color: "rgb(248 113 113)" },
-	{ sts_identification: 3, sts_name: "Away", sts_description: "Ausente", sts_color: "rgb(250 204 21)" },
-	{ sts_identification: 4, sts_name: "Offline", sts_description: "Desconectado", sts_color: "rgb(156 163 175)" }
-];
-
 const statusColor = computed(() => {
-	return userStore.user.usu_fk_sts_identification == undefined
+	return userStore.user.fk_statuses_identification == undefined
 		? "rgb(74 222 128)"
-		: statuses[userStore.user.usu_fk_sts_identification - 1].sts_color;
+		: statuses[userStore.user.fk_statuses_identification - 1].color;
 });
 
-function updateStatus(sts_identification) {
-	if (sts_identification !== userStore.user.usu_fk_sts_identification) {
-		userStore.user.usu_fk_sts_identification = sts_identification;
+function updateStatus(identification) {
+	if (identification !== userStore.user.fk_statuses_identification) {
+		userStore.user.fk_statuses_identification = identification;
 		userStore.updateUser();
 	}
 }
@@ -29,7 +24,6 @@ function updateStatus(sts_identification) {
 	<div class="py-3 px-4 w-full h-20 bg-indigo-500 hover:bg-indigo-600 ease-in-out duration-500 flex justify-between">
 		<div class="flex flex-col">
 			<h3 class="text-white text-2xl text-left font-bold rounded-xl">NChat</h3>
-			<h3 class="text-white text-xl text-left font-bold rounded-xl w-12">{{ userStore.company.cpn_name }}</h3>
 		</div>
 
 		<div class="flex flex-col place-content-start">
@@ -41,8 +35,8 @@ function updateStatus(sts_identification) {
 					title="Mudar status?"
 					type="button">
 					<img
-						v-if="userStore.user.usu_photo"
-						:src="userStore.user.usu_photo"
+						v-if="userStore.user.photo"
+						:src="userStore.user.photo"
 						class="inline-block h-12 w-12 rounded-full overflow-hidden"
 						alt="" />
 					<span v-else class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
@@ -58,12 +52,12 @@ function updateStatus(sts_identification) {
 				<div id="dropdown" class="z-10 bg-gray-100 w-36 rounded-lg" v-show="changeStatus">
 					<ul>
 						<li
-							@click="updateStatus(status.sts_identification)"
+							@click="updateStatus(status.identification)"
 							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
-							:style="{ color: status.sts_color }"
+							:style="{ color: status.color }"
 							aria-labelledby="dropdownDefault"
 							v-for="status in statuses">
-							{{ status.sts_description }}
+							{{ status.description }}
 						</li>
 					</ul>
 				</div>
