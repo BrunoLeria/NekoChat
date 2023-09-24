@@ -1,16 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
+import  { GCurl } from "/src/config/url.js";
+import router from "../router";
 
 export const useUsersStore = defineStore("user", () => {
-    const apiURL = "http://localhost:3005/";
     const user = ref(useLocalStorage("userNeko", {}));
-    const offices = ref(useLocalStorage("officesNeko", []));
     const configUser = ref({});
-    const company = ref({});
 
     async function createUser() {
-        const url = apiURL + "createUser";
+        const url = GCurl + "users";
         await fetch(url, {
             method: "POST",
             headers: {
@@ -36,7 +35,7 @@ export const useUsersStore = defineStore("user", () => {
     }
 
     async function findAllUser(req, res) {
-        const url = apiURL + "findAllUser";
+        const url = GCurl + "users";
         await fetch(url, {
             method: "GET",
             headers: {
@@ -53,34 +52,8 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function findOneUser(id, config = false) {
-        const url = apiURL + "findOneUser?id=" + id;
-        await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.message === undefined) {
-                    data = fillEmptyFields(data);
-                    if (config) configUser.value = data;
-                    else user.value = data;
-                    return true;
-                }
-                return false;
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar um usuário" }
-                });
-            });
-    }
-
     async function findOneUserByEmail(email) {
-        const url = apiURL + "findOneUserByEmail?email=" + email;
+        const url = GCurl + "users/" + email;
         const retorno = await fetch(url, {
             method: "GET",
             headers: {
@@ -105,37 +78,17 @@ export const useUsersStore = defineStore("user", () => {
         return retorno;
     }
 
-    async function findAllOffices() {
-        const url = apiURL + "findAllOffices";
-        await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data) offices.value = data;
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar todos os cargos" }
-                });
-            });
-    }
-
     async function updateUser(configOthers = false) {
         const req = configUser.value && Object.keys(configUser.value).length !== 0 ? ref(configUser.value) : ref(user.value);
-        const id = configOthers ? configUser.value.usu_identification : user.value.usu_identification;
-        const url = apiURL + "updateUser?id=" + id;
+        const id = configOthers ? configUser.value.identification : user.value.identification;
+        const url = GCurl + "users/" + id;
         Object.keys(req.value).forEach((key) => {
             if (req.value[key] === "") {
                 delete req.value[key];
             }
         });
         await fetch(url, {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -153,32 +106,25 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function findOneCompany(id) {
-        const url = apiURL + "findOneCompany?id=" + id;
+    async function deleteUser(req, res) {
+        const url = GCurl + "users/" + user.value.identification;
         await fetch(url, {
-            method: "GET",
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.message === undefined) {
-                    data = fillEmptyFields(data);
-                    company.value = data;
-                }
+                return data;
             })
             .catch((error) => {
                 router.push({
                     name: "404Resource",
-                    params: { resource: "chamada encontrar uma empresa" }
+                    params: { resource: "chamada deletar um usuário" }
                 });
             });
     }
-
-    async function deleteUser(req, res) {}
-
-    async function deleteAllUser(req, res) {}
 
     function fillEmptyFields(data) {
         for (const [key, value] of Object.entries(data)) {
@@ -191,17 +137,11 @@ export const useUsersStore = defineStore("user", () => {
 
     return {
         user,
-        offices,
         configUser,
-        company,
         createUser,
         findAllUser,
-        findOneUser,
         findOneUserByEmail,
-        findAllOffices,
-        findOneCompany,
         updateUser,
         deleteUser,
-        deleteAllUser
     };
 });
