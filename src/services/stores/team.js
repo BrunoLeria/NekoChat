@@ -6,7 +6,7 @@ import { GCurl } from "../../config/url";
 import router from "../router";
 
 export const useTeamStore = defineStore("teamID", () => {
-    const team = ref(useLocalStorage("teamNeko", []));
+    const teams = ref(useLocalStorage("teamNeko", []));
     const teamOptions = ref(useLocalStorage("teamOptionsNeko", []));
     const userStore = useUsersStore();
 
@@ -21,7 +21,7 @@ export const useTeamStore = defineStore("teamID", () => {
             .then((response) => response.json())
             .then((data) => {
                 if (data) {
-                    team.value = data;
+                    teams.value = data;
                     teamOptions.value = [];
                     data.forEach((element) => {
                         teamOptions.value.push({
@@ -40,7 +40,7 @@ export const useTeamStore = defineStore("teamID", () => {
     }
 
     return {
-        team,
+        teams,
         teamOptions,
         findAllTeam
     };
