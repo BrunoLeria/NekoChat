@@ -13,25 +13,21 @@ const contactName = computed(() => {
 });
 
 const dateTime = computed(() => {
-	if (props.talk.tlk_date_time.includes(moment().format("YYYY-MM-DD"))) {
-		return moment(props.talk.tlk_date_time).format("HH:mm");
+	if (props.talk.created_at.includes(moment().format("YYYY-MM-DD"))) {
+		return moment(props.talk.created_at).format("HH:mm");
 	}
-	if (props.talk.tlk_date_time.includes(moment().subtract(1, "days").format("YYYY-MM-DD"))) {
+	if (props.talk.created_at.includes(moment().subtract(1, "days").format("YYYY-MM-DD"))) {
 		return "Ontem";
 	}
-	return moment(props.talk.tlk_date_time).format("DD/MM/YYYY");
+	return moment(props.talk.created_at).format("DD/MM/YYYY");
 });
 
 const waiting = computed(() => {
-	return props.talk.tlk_fk_ftr_identification == 2 && !urgent;
+	return props.talk.data_ultima_resposta <= moment().subtract(7, "minutes").format("YYYY-MM-DD HH:mm:ss");
 });
 
 const urgent = computed(() => {
-	return (
-		props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss") &&
-		(props.talk.tlk_fk_ftr_identification == 2 || props.talk.tlk_fk_ftr_identification == 3 || props.talk.tlk_fk_usu_identification != 1) &&
-		props.talk.tlk_from_me != 1
-	);
+	return props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss");
 });
 </script>
 
