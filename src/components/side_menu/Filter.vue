@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from "vue";
-import Checkbox from "../inputs/Checkbox.vue";
 
 const props = defineProps({
 	search: {
@@ -28,33 +27,5 @@ const showFilters = ref(false);
 				</svg>
 			</div>
 		</div>
-		<transition name="component-fade" mode="out-in" :duration="{ enter: 500, leave: 500 }">
-			<div id="filters" v-show="showFilters" class="p-5 pt-0">
-				<div class="w-full h-[10%] flex justify-enter items-center text-white text-2xl font-bold rounded-t-xl min-w-min p-2">
-					<h3>Filtros:</h3>
-				</div>
-				<div
-					class="
-						bg-indigo-100
-						rounded-b-xl
-						shadow-lg
-						border-gray-200 border-2
-						hover:shadow-indigo-500 hover:border-indigo-500
-						ease-in-out
-						duration-500
-						flex flex-col
-						items-start
-					">
-					<Checkbox
-						v-for="option in filters.options"
-						:id="option.id"
-						:label="option.label"
-						class="w-full justify-between"
-						:checkmark-color="option.checkmarkColor"
-						v-model="option.value"
-						@update:modelValue="filters.setSelected(option.value, option.name)" />
-				</div>
-			</div>
-		</transition>
 	</div>
 </template>
