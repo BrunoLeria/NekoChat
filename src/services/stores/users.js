@@ -90,15 +90,23 @@ export const useUsersStore = defineStore("user", () => {
                 delete newUser[key];
             }
         });
-        const result = await fetch(url, {
+        await fetch(url, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(newUser)
         })
-            .then((response) => {
-                return response.json();
+            .then(async (response) => {
+                response = await response.json();
+                console.log(response)
+                if(response.message === "Usuário foi atualizado com sucesso!") {
+                    if (!configOthers) {
+                        for (const key of Object.keys(newUser)) {
+                            user.value[key] = newUser[key];
+                        }
+                    }
+                }
             })
             .catch((error) => {
                 router.push({
@@ -106,13 +114,7 @@ export const useUsersStore = defineStore("user", () => {
                     params: { resource: "chamada atualizar um usuário" }
                 });
             });
-        if(result.message === "Usuário atualizado com sucesso!") {
-            if (!configOthers) {
-                for (const key of Object.keys(newUser)) {
-                    user.value[key] = newUser[key];
-                }
-            }
-        }
+        
     }
 
     async function deleteUser(req, res) {
