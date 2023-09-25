@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import  { GCurl } from "/src/config/url.js";
+import { GCurl } from "/src/config/url.js";
 import router from "../router";
 
 export const useUsersStore = defineStore("user", () => {
@@ -34,7 +34,7 @@ export const useUsersStore = defineStore("user", () => {
             });
     }
 
-    async function findAllUser(req, res) {
+    async function findAllUsers(req, res) {
         const url = GCurl + "users";
         await fetch(url, {
             method: "GET",
@@ -42,8 +42,12 @@ export const useUsersStore = defineStore("user", () => {
                 "Content-Type": "application/json"
             }
         })
-            .then((response) => response.json())
-            .then((data) => {})
+            .then((response) => {
+                response.json();
+            })
+            .then((data) => {
+                return data;
+            })
             .catch((error) => {
                 router.push({
                     name: "404Resource",
@@ -78,25 +82,23 @@ export const useUsersStore = defineStore("user", () => {
         return retorno;
     }
 
-    async function updateUser(configOthers = false) {
-        const req = configUser.value && Object.keys(configUser.value).length !== 0 ? ref(configUser.value) : ref(user.value);
+    async function updateUser(newUser, configOthers = false) {
         const id = configOthers ? configUser.value.identification : user.value.identification;
         const url = GCurl + "users/" + id;
-        Object.keys(req.value).forEach((key) => {
-            if (req.value[key] === "") {
-                delete req.value[key];
+        Object.keys(newUser).forEach((key) => {
+            if (newUser[key] === "" || newUser[key] === "identification") {
+                delete newUser[key];
             }
         });
-        await fetch(url, {
+        const result = await fetch(url, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(req.value)
+            body: JSON.stringify(newUser)
         })
-            .then((response) => response.json())
-            .then((data) => {
-                return data;
+            .then((response) => {
+                return response.json();
             })
             .catch((error) => {
                 router.push({
@@ -104,6 +106,13 @@ export const useUsersStore = defineStore("user", () => {
                     params: { resource: "chamada atualizar um usuário" }
                 });
             });
+        if(result.message === "Usuário atualizado com sucesso!") {
+            if (!configOthers) {
+                for (const key of Object.keys(newUser)) {
+                    user.value[key] = newUser[key];
+                }
+            }
+        }
     }
 
     async function deleteUser(req, res) {
@@ -139,9 +148,9 @@ export const useUsersStore = defineStore("user", () => {
         user,
         configUser,
         createUser,
-        findAllUser,
+        findAllUsers,
         findOneUserByEmail,
         updateUser,
-        deleteUser,
+        deleteUser
     };
 });
