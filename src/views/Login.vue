@@ -67,8 +67,8 @@ async function login(data) {
 	if (userFound) {
 		await statusesStore.findAllStatuses();
 		if (userStore.user.fk_statuses_identification !== 1 && userStore.user.fk_statuses_identification != undefined) {
-			userStore.user.fk_statuses_identification = 1;
-			userStore.updateUser();
+			const newUser = { fk_statuses_identification: 1 };
+			userStore.updateUser(newUser);
 		}
 	}
 

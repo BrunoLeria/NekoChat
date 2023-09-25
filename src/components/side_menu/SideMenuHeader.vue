@@ -15,8 +15,8 @@ const statusColor = computed(() => {
 
 function updateStatus(identification) {
 	if (identification !== userStore.user.fk_statuses_identification) {
-		userStore.user.fk_statuses_identification = identification;
-		userStore.updateUser();
+		const newUser = { fk_statuses_identification: identification };
+		userStore.updateUser(newUser);
 	}
 }
 </script>

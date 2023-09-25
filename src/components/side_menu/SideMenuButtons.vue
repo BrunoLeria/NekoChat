@@ -14,14 +14,16 @@ const showTeam = ref(false);
 const showChat = ref(false);
 const showAnalytics = ref(false);
 
-const handleSignOut = () => {
-	signOut(auth).then(() => {
-		updateStatus(4);
-		userStore.user = {};
-		router.push({ name: "Login" });
-	});
+const handleSignOut = async () => {
+  try {
+    await signOut(auth);
+    await updateStatus(4);
+    userStore.user = {};
+    await router.push({ name: "Login" });
+  } catch (error) {
+    console.error(error);
+  }
 };
-
 function configLoggedUser() {
 	userStore.configUser = false;
 	emit("update:modelValue", "Settings");
@@ -29,8 +31,8 @@ function configLoggedUser() {
 
 function updateStatus(identification) {
 	if (identification !== userStore.user.fk_statuses_identification) {
-		userStore.user.fk_statuses_identification = identification;
-		userStore.updateUser();
+		const newUser = { fk_statuses_identification: identification };
+		userStore.updateUser(newUser);
 	}
 }
 </script>
@@ -71,7 +73,8 @@ function updateStatus(identification) {
 			</transition>
 		</div>
 		<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base"
-			@mouseover="showAnalytics = true" @mouseleave="showAnalytics = false" @click="$emit('update:modelValue', 'Analytics')">
+			@mouseover="showAnalytics = true" @mouseleave="showAnalytics = false"
+			@click="$emit('update:modelValue', 'Analytics')">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 				class="w-6 h-6">
 				<path stroke-linecap="round" stroke-linejoin="round"

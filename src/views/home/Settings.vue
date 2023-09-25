@@ -23,14 +23,16 @@ const Spinner = defineAsyncComponent(() => import("/src/components/animations/Sp
 
 function update() {
 	sending.value = true;
-	if (configOthers) {
-		userStore.configUser = person.value;
-	} else {
-		userStore.user = person.value;
-	}
+	const newUser = {
+		identification: person.value.identification,
+		name: person.value.name,
+		email: person.value.email,
+		photo: person.value.photo,
+		is_admin: person.value.is_admin,
+	};
 
 	userStore
-		.updateUser(configOthers)
+		.updateUser(newUser, configOthers)
 		.then(() => {
 			alert("Dados atualizados com sucesso.");
 		})
