@@ -1,6 +1,6 @@
 <script setup>
 import Loading from "../components/Loading.vue";
-import { ref, defineAsyncComponent, computed } from "vue";
+import { ref, defineAsyncComponent, computed, onBeforeMount } from 'vue';
 import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
 import { useUsersStore } from "/src/services/stores/users.js";
@@ -31,8 +31,10 @@ const selectComponent = (component) => {
 	});
 };
 
-talkStore.fetchTalks();
-teamStore.findAllTeam();
+onBeforeMount(async () => {
+	await talkStore.fetchTalks();
+	await teamStore.findAllTeam();
+});
 
 Socket.on("newTalk", () => {
 	if (userStore.user.identification) {
