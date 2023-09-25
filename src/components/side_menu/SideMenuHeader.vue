@@ -48,7 +48,7 @@ function updateStatus(identification) {
 				</button>
 				<div class="rounded-full h-4 w-4 fixed" :style="{ backgroundColor: statusColor }"></div>
 			</div>
-			<transition name="slide-fade" :duration="{ enter: 500, leave: 500 }">
+			<transition name='component-fade'  mode="out-in">
 				<div id="dropdown" class="z-10 bg-gray-100 w-36 rounded-lg" v-show="changeStatus">
 					<ul>
 						<li
