@@ -14,11 +14,6 @@ const usedIdToTransfer = ref("");
 
 function returnToBot(assumeChat) { // precisa verificar se essa função é necessária
 	talkStore.updateTalkToSignInUser(assumeChat, true);
-	if (assumeChat == "1") {
-		talkStore.updateRobot(true);
-	} else {
-		if(talkStore.activeChat[0].fk_users_identification == 1)talkStore.updateRobot(false);
-	}
 }
 
 function sendMessage() {
