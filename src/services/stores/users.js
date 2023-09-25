@@ -36,17 +36,14 @@ export const useUsersStore = defineStore("user", () => {
 
     async function findAllUsers(req, res) {
         const url = GCurl + "users";
-        await fetch(url, {
+        const result = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then((response) => {
-                response.json();
-            })
-            .then((data) => {
-                return data;
+                return response.json();
             })
             .catch((error) => {
                 router.push({
@@ -54,6 +51,7 @@ export const useUsersStore = defineStore("user", () => {
                     params: { resource: "chamada encontrar todos os usuários" }
                 });
             });
+        return result;
     }
 
     async function findOneUserByEmail(email) {
