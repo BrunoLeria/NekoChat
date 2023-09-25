@@ -8,8 +8,7 @@ const props = defineProps({
 	}
 });
 const contactName = computed(() => {
-	const firstName = props.talk.tlk_chat_name.split(" ")[0];
-	return firstName + " - (" + props.talk.chat_id + ")";
+	return props.talk.whatsapp_identification 
 });
 
 const dateTime = computed(() => {
@@ -23,11 +22,11 @@ const dateTime = computed(() => {
 });
 
 const waiting = computed(() => {
-	return props.talk.data_ultima_resposta <= moment().subtract(7, "minutes").format("YYYY-MM-DD HH:mm:ss");
+	return props.talk.created_at <= moment().subtract(7, "minutes").format("YYYY-MM-DD HH:mm:ss");
 });
 
 const urgent = computed(() => {
-	return props.talk.data_ultima_resposta <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss");
+	return props.talk.created_at <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss");
 });
 </script>
 
@@ -41,11 +40,12 @@ const urgent = computed(() => {
 		<div class="contact-list-body-item-info w-full">
 			<div class="flex w-full items-center justify-between">
 				<span>{{ contactName }}</span>
-				<span class="text-sm">{{ dateTime }}</span>
+				<span class="text-sm hidden 2xl:block">{{ dateTime }}</span>
 			</div>
 			<div class="h-4 overflow-hidden text-sm text-ellipsis max-w">
-				<p class="w-full">{{ talk.tlk_message }}</p>
+				<p class="w-full">{{ talk.message }}</p>
 			</div>
+			<span class="text-sm 2xl:hidden">{{ dateTime }}</span>
 		</div>
 	</div>
 </template>
