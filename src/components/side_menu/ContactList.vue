@@ -11,7 +11,8 @@ const search = ref("");
 const selectTalk = async (talk) => {
 	emit("update:modelValue", "Loading");
 	talkStore.selected = talk.whatsapp_identification;
-	await talkStore.findOneTalkByChatID().then(emit("update:modelValue", "Chat"));
+	await talkStore.findOneTalkByChatID();
+	emit("update:modelValue", "Chat");
 };
 
 const searchContact = computed(() => {
@@ -22,8 +23,6 @@ const searchContact = computed(() => {
 		return talk.whatsapp_identification
 	});
 });
-
-console.log(searchContact, talkStore.talks);
 </script>
 
 <template>
