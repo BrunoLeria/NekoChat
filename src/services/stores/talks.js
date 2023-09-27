@@ -65,22 +65,23 @@ export const useTalkStore = defineStore("talks", () => {
     }
     async function findOneTalkByChatID() {
         const url = GCurl + "talks/" + selected.value;
-        await fetch(url, {
-            method: "GET",
-            headers: {
+        try {
+            const response = await fetch(url, {
+              method: "GET",
+              headers: {
                 "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data) activeChat.value = data;
-            })
-            .catch(() => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar conversa por id" }
-                });
+              }
             });
+            const data = await response.json();
+            if ( data.length > 0 ) activeChat.value = data;
+            else throw new Error("Não foi possível encontrar a conversa");
+          } catch (error) {
+            console.error(error);
+            router.push({
+              name: "404Resource",
+              params: { resource: "chamada encontrar conversa por id" }
+            });
+          }
     }
     async function findAllTalksByUser() {
         talks.value = {};
