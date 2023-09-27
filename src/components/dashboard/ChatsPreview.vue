@@ -1,5 +1,9 @@
 <script setup>
 import { computed } from "vue";
+import { useUsersStore } from "../../services/stores/users";
+
+const usersStore = useUsersStore();
+const user = computed(() => usersStore.user.name);
 
 const props = defineProps({
 	talk: {
@@ -54,14 +58,14 @@ const messages = computed(() => {
 			">
 			<div class="flex justify-between">
 				<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-					{{ message.from_me === "1" ? "Robô" : message.tlk_client }}
+					{{ message.from_me === "1" ? user : "Cliente" }}
 				</h3>
 				<p class="ml-3">
 					{{ time(message) }}
 				</p>
 			</div>
 			<p class="my-3 break-all">
-				{{ trataMensagem(message.tlk_message) }}
+				{{ trataMensagem(message.message) }}
 			</p>
 		</div>
 	</div>
