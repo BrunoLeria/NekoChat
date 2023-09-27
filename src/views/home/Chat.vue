@@ -11,6 +11,8 @@ const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 
+const user = computed(() => userStore.user.name);
+
 const time = (message) => {
 	const date = new Date(message.created_at);
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
@@ -77,35 +79,35 @@ Socket.on("returnedToBot", async () => {
 				">
 				<div class="flex justify-between">
 					<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
-						{{ message.from_me === "1" ? "Administrador" : message.tlk_client }}
+						{{ message.from_me === "1" ? user : "Cliente" }}
 					</h3>
 					<p class="ml-3">
 						{{ time(message) }}
 					</p>
 				</div>
-				<div v-if="message.tlk_message.includes('IMAGEM: ')">
-					<img :src="getSource(message.tlk_message)" class="w-full h-full max-w-xs max-h-60" />
-					<p v-if="getText(message.tlk_message).length > 0" class="my-3 break-all">
-						{{ getText(message.tlk_message) }}
+				<div v-if="message.message.includes('IMAGEM: ')">
+					<img :src="getSource(message.message)" class="w-full h-full max-w-xs max-h-60" />
+					<p v-if="getText(message.message).length > 0" class="my-3 break-all">
+						{{ getText(message.message) }}
 					</p>
 				</div>
-				<div v-else-if="message.tlk_message.includes('DOCUMENTO: ')">
-					<a class="my-3 break-all" :href="getSource(message.tlk_message)">
-						{{ "DOCUMENTO: " + getText(message.tlk_message) }}
+				<div v-else-if="message.message.includes('DOCUMENTO: ')">
+					<a class="my-3 break-all" :href="getSource(message.message)">
+						{{ "DOCUMENTO: " + getText(message.message) }}
 					</a>
 				</div>
-				<div v-else-if="message.tlk_message.includes('VIDEO: ')">
+				<div v-else-if="message.message.includes('VIDEO: ')">
 					<video class="w-full h-full max-w-xs max-h-60" controls>
-						<source :src="getSource(message.tlk_message)" type="video/mp4" />
-						<source :src="getSource(message.tlk_message)" type="video/ogg" />
+						<source :src="getSource(message.message)" type="video/mp4" />
+						<source :src="getSource(message.message)" type="video/ogg" />
 						Your browser does not support the video tag.
 					</video>
-					<p v-if="getText(message.tlk_message).length > 0" class="my-3 break-all">
-						{{ getText(message.tlk_message) }}
+					<p v-if="getText(message.message).length > 0" class="my-3 break-all">
+						{{ getText(message.message) }}
 					</p>
 				</div>
 				<p v-else class="my-3 break-all">
-					{{ message.tlk_message }}
+					{{ message.message }}
 				</p>
 			</div>
 		</div>
