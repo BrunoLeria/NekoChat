@@ -32,7 +32,7 @@ const searchContact = computed(() => {
 		</div>
 		<div class="overflow-y-auto h-full">
 			<div v-for="(talk, index) in searchContact">
-				<ContactCard  :key="index" @click="selectTalk(talk)" :talk="talk" />
+				<ContactCard :key="index" @click="selectTalk(talk)" :talk="talk" />
 			</div>
 		</div>
 	</div>
