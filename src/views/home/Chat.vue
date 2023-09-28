@@ -28,8 +28,8 @@ onUpdated(() => {
 });
 
 const userResponsable = computed(() => {
-	if(talkStore.activeChat[0].fk_users_identification == 1) return "Administrador";
-	if(talkStore.activeChat[0].fk_users_identification == userStore.user.identification) return "Você";
+	if (talkStore.activeChat[0].fk_users_identification == 1) return "Administrador";
+	if (talkStore.activeChat[0].fk_users_identification == userStore.user.identification) return "Você";
 	return teamStore.teamOptions.find((user) => user.id == talkStore.activeChat[0].fk_users_identification).name;
 });
 
@@ -63,19 +63,12 @@ Socket.on("returnedToBot", async () => {
 </script>
 
 <template>
-	<div class="bg-neutral-100 p-14 flex flex-wrap justify-between">
-		<div>
-			<p>Usuario responsável: {{userResponsable}}</p>
-		</div>
-		<div class="flex flex-col p-5 overflow-y-auto w-full h-4/5 bg-white rounded-xl" id="scrollContainer">
-			<div
-				v-for="(message, index) in talkStore.activeChat"
-				:key="index"
-				id="mensagens"
-				:class="
-					message.from_me === '1'
-						? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
-						: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
+	<div class="bg-neutral-100 p-14 grid grid-cols-10 grid-rows-6 justify-between">
+		<div class="flex flex-col my-5 p-5 overflow-y-auto  bg-white rounded-xl col-span-10 row-span-5"
+			id="scrollContainer">
+			<div v-for="(message, index) in talkStore.activeChat" :key="index" id="mensagens" :class="message.from_me === '1'
+					? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+					: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
 				">
 				<div class="flex justify-between">
 					<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
@@ -111,7 +104,7 @@ Socket.on("returnedToBot", async () => {
 				</p>
 			</div>
 		</div>
-		<ChatButtons />
+		<ChatButtons class='row-span-1 col-span-10' :responsable='userResponsable' />
 	</div>
 </template>
 
