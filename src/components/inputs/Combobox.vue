@@ -28,7 +28,7 @@ defineEmits(["update:modelValue"]);
 
 <template>
 	<div>
-		<label class="block text-sm font-medium text-gray-700" v-show="label">{{ label }}:</label>
+		<label class="block text-sm font-medium text-gray-700 py-3" v-show="label">{{ label }}:</label>
 		<select
 			:id="id"
 			:name="id"
