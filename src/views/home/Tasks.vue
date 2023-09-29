@@ -37,6 +37,10 @@ const nameOfUser = computed((userId) => {
     return user.name;
 });
 
+const newTask = () => {
+    window.open("task", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+};
+
 </script>
 
 <template>
