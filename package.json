@@ -9,6 +9,7 @@
         "preview": "vite preview --host"
     },
     "dependencies": {
+        "@devindex/vue-mask": "^2.0.3",
         "@vueuse/core": "^8.5.0",
         "autoprefixer": "^10.4.2",
         "firebase": "^9.6.8",

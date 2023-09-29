@@ -4,6 +4,7 @@ import router from "./services/router";
 import { createPinia } from "pinia";
 import "./services/style.css";
 import { initializeApp } from "firebase/app";
+import VueMask from '@devindex/vue-mask';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCmZGDH4Ymb-sx4fFsoMWzer9Tp_eQWv6k",
@@ -17,6 +18,5 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const app = createApp(App).use(router).use(createPinia());
-
+const app = createApp(App).use(router).use(createPinia()).use(VueMask);
 app.mount("#app");
