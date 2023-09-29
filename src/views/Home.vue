@@ -22,6 +22,7 @@ const translatedTitle = computed(() => {
 	if (activeComponent.value == "Analytics") document.title = "NChat - Análise";
 	if (activeComponent.value == "Settings") document.title = "NChat - Configurações";
 	if (activeComponent.value == "Tasks") document.title = "NChat - Tarefas";
+	if (activeComponent.value == "Clients") document.title = "NChat - Clientes";
 	return document.title.replace("NChat - ", "");
 });
 const selectComponent = (component) => {
