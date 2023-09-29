@@ -43,8 +43,8 @@ defineEmits(["update:modelValue"]);
 			]" v-model="modelValue" @change="$emit('update:modelValue', $event.target.value)" :placeholder="label">
 			<option v-if="label" value="" disabled selected>Selecione um(a) {{ label.toLowerCase() }}</option>
 			<option v-else value="" disabled selected></option>
-			<option v-if="alternatives" v-for="alternative in alternatives" :key="alternative.id"
-				:value="idInstead ? alternative.id : alternative.name">
+			<option v-if="alternatives" v-for="alternative in alternatives" :key="alternative.identification"
+				:value="idInstead ? alternative.identification : alternative.name">
 				{{ alternative.name }}
 			</option>
 		</select>
