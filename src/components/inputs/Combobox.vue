@@ -29,12 +29,8 @@ defineEmits(["update:modelValue"]);
 <template>
 	<div>
 		<label class="block text-sm font-medium text-gray-700 py-3" v-show="label">{{ label }}:</label>
-		<select
-			:id="id"
-			:name="id"
-			:disabled="disabled"
-			:required="required"
-			class="rounded-xl relative block w-full placeholder-gray-400 focus:outline-none focus:z-10 sm:text-sm ease-in-out duration-500"
+		<select :id="id" :name="id" :disabled="disabled" :required="required"
+			class="rounded-xl relative block w-full placeholder-gray-400 focus:outline-none focus:z-10 sm:text-sm ease-in-out duration-500 p-4"
 			:class="[
 				textColorProp ? textColorProp : textColor,
 				border,
@@ -44,16 +40,10 @@ defineEmits(["update:modelValue"]);
 				focusBorder,
 				focusBackground,
 				hoverBackground
-			]"
-			v-model="modelValue"
-			@change="$emit('update:modelValue', $event.target.value)"
-			:placeholder="label">
+			]" v-model="modelValue" @change="$emit('update:modelValue', $event.target.value)" :placeholder="label">
 			<option v-if="label" value="" disabled selected>Selecione um(a) {{ label.toLowerCase() }}</option>
 			<option v-else value="" disabled selected></option>
-			<option
-				v-if="alternatives"
-				v-for="alternative in alternatives"
-				:key="alternative.id"
+			<option v-if="alternatives" v-for="alternative in alternatives" :key="alternative.id"
 				:value="idInstead ? alternative.id : alternative.name">
 				{{ alternative.name }}
 			</option>
