@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import Register from "../views/login/Register.vue";
 import ForgotPassword from "../views/login/ForgotPassword.vue";
 import About from "../views/About.vue";
+import TaskForm from "../views/tasks/TaskForm.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
@@ -39,6 +40,12 @@ const routes = [
         name: "About",
         component: About,
         alias: "/about"
+    },
+    {
+        path: "/task",
+        name: "TaskForm",
+        component: TaskForm,
+        alias: "/task"
     },
     {
         path: "/:catchAll(.*)*",
