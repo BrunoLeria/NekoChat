@@ -1,5 +1,5 @@
 <script setup >
-import { ref, defineAsyncComponent, computed } from 'vue';
+import { ref, defineAsyncComponent, computed, onBeforeMount } from 'vue';
 import { useUsersStore } from '../../services/stores/users';
 
 const userStore = useUsersStore();
@@ -12,32 +12,50 @@ const resolution_details = ref('');
 const fk_clients_identification = ref("");
 const fk_users_identification = ref("");
 const is_feedback = ref(false);
+const usersOptions = ref([]);
 
 
 const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
 const Combobox = defineAsyncComponent(() => import("/src/components/inputs/Combobox.vue"));
 const Checkbox = defineAsyncComponent(() => import("/src/components/inputs/Checkbox.vue"));
 
-const usersOptions = computed(async () => {
+
+onBeforeMount(async () => {
 	if (userStore.user.is_admin) {
-		const users = await userStore.findAllUsers();
-		console.log(users)
-		return users.map(user => user.name)
+		usersOptions.value = await userStore.findAllUsers();
 	} else {
-		return [userStore.user.name]
+		usersOptions.value = [userStore.user]
 	}
 });
 
 const clientsOptions = [
-	"Cliente 1",
-	"Cliente 2",
-	"Cliente 3"
+	{
+		identification: 1,
+		name: "Cliente 1"
+	},
+	{
+		identification: 2,
+		name: "Cliente 2"
+	},
+	{
+		identification: 3,
+		name: "Cliente 3"
+	}
 ]
 
 const priorityOptions = [
-	"Baixa",
-	"Média",
-	"Alta"
+	{
+		identification: 1,
+		name: "Baixa"
+	},
+	{
+		identification: 2,
+		name: "Média"
+	},
+	{
+		identification: 3,
+		name: "Alta"
+	}
 ]
 
 </script>
@@ -45,8 +63,9 @@ const priorityOptions = [
 	<div class="bg-slate-100 w-full h-full grid p-3">
 		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
 		<form action="" class='grid grid-cols-6 grid-rows-6'>
-			<TextInput label="Problema" type="text" id="myMessage" autoComplete="myMessage" class="w-full p-3 col-span-3" />
-			<TextInput label="Descrição" type="text" id="myMessage" autoComplete="myMessage"
+			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
+				class="w-full p-3 col-span-3" />
+			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description'
 				class="w-full p-3 col-span-6" />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
@@ -61,8 +80,8 @@ const priorityOptions = [
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
 				:checkmark-color="'text-green-600'" v-model="is_it_solved"
 				@update:modelValue="setSelected(is_it_solved, 'is_it_solved')" />
-			<TextInput label="Detalhes da resolução" type="text" id="myMessage" autoComplete="myMessage"
-				class="w-full p-3 col-span-5" />
+			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
+				v-model='resolution_details' class="w-full p-3 col-span-5" />
 			<button type="button" class="
 				col-start-5
 				mx-3
