@@ -58,6 +58,21 @@ const priorityOptions = [
 	}
 ]
 
+function save() {
+	console.log("issue:", issue.value);
+	console.log("description:", description.value);
+	console.log("priority_level:", priority_level.value);
+	console.log("is_it_solved:", is_it_solved.value);
+	console.log("resolution_details:", resolution_details.value);
+	console.log("fk_clients_identification:", fk_clients_identification.value);
+	console.log("fk_users_identification:", fk_users_identification.value);
+	console.log("is_feedback:", is_feedback.value);
+}
+
+function cancel() {
+	window.close();
+}
+
 </script>
 <template>
 	<div class="bg-slate-100 w-full h-full grid p-3">
@@ -78,8 +93,7 @@ const priorityOptions = [
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Cliente'" title="Cliente" v-model="fk_clients_identification"></Combobox>
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
-				:checkmark-color="'text-green-600'" v-model="is_it_solved"
-				@update:modelValue="setSelected(is_it_solved, 'is_it_solved')" />
+				:checkmark-color="'text-green-600'" v-model="is_it_solved" />
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
 				v-model='resolution_details' class="w-full p-3 col-span-5" />
 			<button type="button" class="
