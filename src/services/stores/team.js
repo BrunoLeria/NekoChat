@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
-import { useUsersStore } from "./users";
 import { ref } from "vue";
 import { GCurl } from "../../config/url";
 import router from "../router";
@@ -8,7 +7,6 @@ import router from "../router";
 export const useTeamStore = defineStore("teamID", () => {
     const teams = ref(useLocalStorage("teamNeko", []));
     const teamOptions = ref(useLocalStorage("teamOptionsNeko", []));
-    const userStore = useUsersStore();
 
     async function findAllTeam() {
         const url = GCurl + "teams";
