@@ -39,19 +39,10 @@ defineEmits(["update:modelValue"]);
 <template>
 	<div class="py-5">
 		<label class="block text-sm font-medium text-gray-700">{{ label }}:</label>
-		<input
-			:id="id"
-			:name="id"
-			:type="type"
-			:autocomplete="autoComplete"
-			:disabled="disabled"
-			v-model="modelValue"
-			@input="$emit('update:modelValue', $event.target.value)"
-			:required="required"
-			class="
+		<input :id="id" :name="id" :type="type" :autocomplete="autoComplete" :disabled="disabled" v-model="modelValue"
+			@input="$emit('update:modelValue', $event.target.value)" :required="required" class="
 				rounded-xl
-				py-4
-				px-4
+				p-4
 				relative
 				block
 				w-full
@@ -60,8 +51,6 @@ defineEmits(["update:modelValue"]);
 				text-gray-900
 				focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10
 				sm:text-sm
-			"
-			:class="disabled ? 'bg-gray-200' : 'bg-white'"
-			:placeholder="label" />
+			" :class="disabled ? 'bg-gray-200' : 'bg-white'" :placeholder="label" />
 	</div>
 </template>
