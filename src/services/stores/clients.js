@@ -10,14 +10,21 @@ export const useClientsStore = defineStore("client", () => {
 
     async function createClient(client) {
         const url = GCurl + "clients";
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(client)
-        })
-        return response.status;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(client)
+            })
+            return await response.status;
+        } catch (error) {
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar todas os clientes" }
+            });
+        }
     }
 
     async function findAllClients() {
