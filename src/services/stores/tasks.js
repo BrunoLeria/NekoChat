@@ -8,70 +8,59 @@ export const useTasksStore = defineStore("task", () => {
     const tasks = ref(useLocalStorage("tasksNeko", {}));
     const selectedTask = ref({});
 
-    async function createTask() {
+    async function createTask(task) {
         const url = GCurl + "tasks";
-        await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(tasks.value)
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                tasks.value = data;
-                for (const [key, value] of Object.entries(tasks.value)) {
-                    if (value === null) {
-                        tasks.value[key] = "";
-                    }
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(task)
+            });
+            return await response.status;
+        } catch (error) {
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada criar uma nova tarefa" }
+            });
+        }
+    }
+
+    async function findAllTasks() {
+        const url = GCurl + "tasks";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
                 }
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada criar uma nova tarefa" }
-                });
             });
+            return await response.json();
+        } catch (error) {
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar todas as tarefas" }
+            });
+        }
     }
 
-    async function findAllTasks(req, res) {
-        const url = GCurl + "tasks";
-        const result = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar todas as tarefas" }
-                });
+    async function findOneTaskById(identification) {
+        const url = GCurl + "tasks/" + identification;
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
-        return result;
-    }
-
-    async function findOneTaskById(id) {
-        const url = GCurl + "tasks/" + id;
-        const retorno = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar uma tarefa" }
-                });
+            return await response.json();
+        } catch (error) {
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar uma tarefa" }
             });
-        return retorno;
+        }
     }
 
     async function findAllTasksByClient(client_id) {
@@ -114,37 +103,39 @@ export const useTasksStore = defineStore("task", () => {
 
     async function updateTask(newTask, identification) {
         const url = GCurl + "tasks/" + identification;
-        await fetch(url, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newTask)
-        })
-            .then((response) => response.json())
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada atualizar uma tarefa" }
-                });
+        try {
+            const response = await fetch(url, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newTask)
             });
+            return await response.status;
+        } catch (error) {
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada atualizar uma tarefa" }
+            });
+        }
     }
 
     async function deleteTask(identification) {
         const url = GCurl + "tasks/" + identification;
-        await fetch(url, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada deletar uma tarefa" }
-                });
+        try {
+            const response = await fetch(url, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
+            return await response.status;
+        } catch (error) {
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada deletar uma tarefa" }
+            });
+        }
     }
 
     return {
