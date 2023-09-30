@@ -1,9 +1,14 @@
 <script setup >
 import { ref, defineAsyncComponent, computed, onBeforeMount } from 'vue';
 import { useUsersStore } from '../../services/stores/users';
+import { useClientsStore } from '../../services/stores/clients';
+import { useTasksStore } from '../../services/stores/tasks';
 
 const userStore = useUsersStore();
+const clientsStore = useClientsStore();
+const tasksStore = useTasksStore();
 
+const identification = ref('');
 const issue = ref('');
 const description = ref('');
 const priority_level = ref('');
@@ -13,7 +18,8 @@ const fk_clients_identification = ref("");
 const fk_users_identification = ref("");
 const is_feedback = ref(false);
 const usersOptions = ref([]);
-
+const clientsOptions = ref([]);
+const task = ref({});
 
 const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
 const Combobox = defineAsyncComponent(() => import("/src/components/inputs/Combobox.vue"));
@@ -21,27 +27,26 @@ const Checkbox = defineAsyncComponent(() => import("/src/components/inputs/Check
 
 
 onBeforeMount(async () => {
+	
 	if (userStore.user.is_admin) {
 		usersOptions.value = await userStore.findAllUsers();
 	} else {
 		usersOptions.value = [userStore.user]
 	}
-});
-
-const clientsOptions = [
-	{
-		identification: 1,
-		name: "Cliente 1"
-	},
-	{
-		identification: 2,
-		name: "Cliente 2"
-	},
-	{
-		identification: 3,
-		name: "Cliente 3"
+	clientsOptions.value = await clientsStore.findAllClients();
+	identification.value = window.location.pathname.split("/").length === 3 ? window.location.pathname.split("/")[2] : "";
+	if(identification.value) {
+		task.value = await tasksStore.findOneTaskById(identification.value);
+		issue.value = task.value.issue;
+		description.value = taks.value.description;
+		priority_level.value = taks.value.priority_level;
+		is_it_solved.value = taks.value.is_it_solved;
+		resolution_details.value = taks.value.resolution_details;
+		fk_clients_identification.value = taks.value.fk_clients_identification;
+		fk_users_identification.value = taks.value.fk_users_identification;
+		is_feedback.value = taks.value.is_feedback;
 	}
-]
+});
 
 const priorityOptions = [
 	{
@@ -58,15 +63,31 @@ const priorityOptions = [
 	}
 ]
 
-function save() {
-	console.log("issue:", issue.value);
-	console.log("description:", description.value);
-	console.log("priority_level:", priority_level.value);
-	console.log("is_it_solved:", is_it_solved.value);
-	console.log("resolution_details:", resolution_details.value);
-	console.log("fk_clients_identification:", fk_clients_identification.value);
-	console.log("fk_users_identification:", fk_users_identification.value);
-	console.log("is_feedback:", is_feedback.value);
+async function save() {
+	const response = ref("");
+
+	task.value = {
+		issue: issue.value,
+		description: description.value,
+		priority_level: priority_level.value,
+		is_it_solved: is_it_solved.value,
+		resolution_details: resolution_details.value,
+		fk_clients_identification: fk_clients_identification.value,
+		fk_users_identification: fk_users_identification.value,
+		is_feedback: is_feedback.value
+	}
+	
+	if (identification.value) {
+		response.value = await tasksStore.updateTask(task.value, identification.value);
+	} else {
+		response.value = await tasksStore.createTask(task.value);
+	}
+	
+	if (response.value === 201 || response.value === 200) {
+		window.close();
+	} else {
+		alert("Erro ao salvar a tarefa");
+	}	
 }
 
 function cancel() {
@@ -77,9 +98,13 @@ function cancel() {
 <template>
 	<div class="bg-slate-100 w-full h-full grid p-3">
 		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
-		<form action="" class='grid grid-cols-6 grid-rows-6'>
+		<form action="" class='grid grid-cols-6 grid-rows-6 items-center justify-center'>
+			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
+				class="w-full p-3 col-span-1" :disabled="true"/>
 			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
 				class="w-full p-3 col-span-3" />
+			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
+				:checkmark-color="'text-green-600'" v-model="is_it_solved" />
 			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description'
 				class="w-full p-3 col-span-6" />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
@@ -92,10 +117,8 @@ function cancel() {
 			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-3 " :alternatives="clientsOptions"
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Cliente'" title="Cliente" v-model="fk_clients_identification"></Combobox>
-			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
-				:checkmark-color="'text-green-600'" v-model="is_it_solved" />
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
-				v-model='resolution_details' class="w-full p-3 col-span-5" />
+				v-model='resolution_details' class="w-full p-3 col-span-4" :disabled="!is_it_solved"/>
 			<button type="button" class="
 				col-start-5
 				mx-3
