@@ -14,32 +14,28 @@ const MaskedInput = defineAsyncComponent(() => import("/src/components/inputs/Ma
 
 onBeforeMount(async () => {
 	identification.value = window.location.pathname.split("/").length === 3 ? window.location.pathname.split("/")[2] : "";
-	if(identification.value) {
+	if (identification.value) {
 		client.value = await clientsStore.findOneClientById(identification.value);
 		name.value = client.value.name;
 		email.value = client.value.email;
-		phone.value = client.value.phone.replace("@s.whatsapp.net","").slice(2)
+		phone.value = client.value.phone.replace("@s.whatsapp.net", "").slice(2)
 	}
 });
 
 async function save() {
 	const response = ref("");
 	phone.value = phone.value.replace(/\D/g, '');
-	if(identification.value) {
-		const client = {
-			name: name.value,
-			email: email.value,
-			phone: "55" + phone.value + "@s.whatsapp.net"
-		}
-		response.value = await clientsStore.updateClient(client, identification.value);
-	} else {
-		const client = {
-			name: name.value,
-			email: email.value,
-			phone: "55" + phone.value + "@s.whatsapp.net"
-		}
-		response.value = await clientsStore.createClient(client);
+	client.value = {
+		name: name.value,
+		email: email.value,
+		phone: "55" + phone.value + "@s.whatsapp.net"
 	}
+	if (identification.value) {
+		response.value = await clientsStore.updateClient(client.value, identification.value);
+	} else {
+		response.value = await clientsStore.createClient(client.value);
+	}
+
 	if (response.value === 201 || response.value === 200) {
 		window.close();
 	} else {
@@ -57,13 +53,13 @@ function cancel() {
 		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
 		<form @submit.prevent="save" class='grid grid-cols-5 grid-rows-4'>
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
-				class="w-full p-3 col-span-1" :disabled="true"/>
-			<TextInput label="Nome" type="text" id="name" autoComplete="" v-model='name'
-				class="w-full p-3 col-span-4" :required="true"/>
+				class="w-full p-3 col-span-1" :disabled="true" />
+			<TextInput label="Nome" type="text" id="name" autoComplete="" v-model='name' class="w-full p-3 col-span-4"
+				:required="true" />
 			<TextInput label="E-mail" type="email" id="description" autoComplete="" v-model='email'
-				class="w-full p-3 col-span-3" :required="true"/>
-			<MaskedInput label="Celular" type="text" id="resolution_details" autoComplete=""
-				v-model='phone' class="w-full p-3 col-span-2" pattern="(##) #####-####" :max="15" :required="true"/>
+				class="w-full p-3 col-span-3" :required="true" />
+			<MaskedInput label="Celular" type="text" id="resolution_details" autoComplete="" v-model='phone'
+				class="w-full p-3 col-span-2" pattern="(##) #####-####" :max="15" :required="true" />
 			<button type="button" class="
 				col-start-4
 				row-start-4
