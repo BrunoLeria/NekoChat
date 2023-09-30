@@ -1,44 +1,33 @@
 <script setup>
-import { useTeamStore } from "../../services/stores/team";
-import { useUsersStore } from "../../services/stores/users";
-import { useTasksStore } from "../../services/stores/tasks";
 import { ref, onMounted, computed } from "vue";
-import TaskCard from "../../components/TaskCard.vue";
+import ClientCard from "../../components/ClientCard.vue";
+import { useClientsStore } from "../../services/stores/clients";
+import { stringify } from "postcss";
 
 const emit = defineEmits(["update:modelValue"]);
+const clientsStore = useClientsStore();
+const clients = ref([]);
 
 onMounted(async () => {
-    users.value = await userStore.findAllUsers();
-});
-
-const displayedTasks = computed(async () => {
-    if (userStore.user.is_admin) {
-        return await tasksStore.findAllTasks();
-    } else {
-        // Retrieve tasks for user's team if user is not an admin
-        const userTeamId = userStore.user.fk_team_identification;
-        const tasks = await tasksStore.findAllTasks();
-        const tasksForUserTeam = tasks.filter(task => {
-            const taskUserId = task.fk_users_identification;
-            const taskUser = users.find(user => user.identification === taskUserId);
-            const taskUserTeamId = taskUser.fk_team_identification;
-            return taskUserTeamId === userTeamId;
-        });
-        return tasksForUserTeam;
-    }
+    clients.value = await clientsStore.findAllClients();
 });
 
 const newTask = () => {
-    window.open("client", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+    window.open("client", "Ratting", "width=700, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+};
+
+function maskedPhone (phone) {
+  const phoneWithoutPrefix = phone.slice(2);
+  return phoneWithoutPrefix.replace(/\D/g, "").replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 };
 
 </script>
 
 <template>
-    <div class="bg-neutral-100 p-14 grid gap-5 grid-rows-6">
-        <div v-for='task in displayedTasks' class='grid grid-cols-3 row-span-6'>
-            <TaskCard :key='task.identification' :issue='task.issue' :user='nameOfUser(task.fk_users_identification)'
-                :client='"Cliente"' :priority_level='task.priority_level' :is_it_solved='task.is_it_solved' />
+    <div class="bg-neutral-100 p-14 grid gap-5 grid-rows-6 grid-cols-3 row-span-6">
+        <div v-for='client in clients' >
+            <ClientCard :key='client.identification' :identification='client.identification' :name='client.name' :email='client.email'
+                :phone="maskedPhone(client.phone)" />
         </div>
         <div class='grid col-span-5 row-start-7 justify-items-end'>
             <button type="button" class="
