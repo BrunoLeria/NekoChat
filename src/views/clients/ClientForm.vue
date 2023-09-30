@@ -7,12 +7,19 @@ const identification = ref('');
 const name = ref('');
 const email = ref('');
 const phone = ref('');
+const client = ref({});
 
 const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
 const MaskedInput = defineAsyncComponent(() => import("/src/components/inputs/MaskedInput.vue"));
 
 onBeforeMount(async () => {
 	identification.value = window.location.pathname.split("/").length === 3 ? window.location.pathname.split("/")[2] : "";
+	if(identification.value) {
+		client.value = await clientsStore.findOneClientById(identification.value);
+		name.value = client.value.name;
+		email.value = client.value.email;
+		phone.value = client.value.phone.replace("@s.whatsapp.net","").slice(2)
+	}
 });
 
 async function save() {
@@ -20,12 +27,11 @@ async function save() {
 	phone.value = phone.value.replace(/\D/g, '');
 	if(identification.value) {
 		const client = {
-			identification: identification.value,
 			name: name.value,
 			email: email.value,
-			phone: phone.value
+			phone: "55" + phone.value + "@s.whatsapp.net"
 		}
-		response.value = await clientsStore.updateClient(client);
+		response.value = await clientsStore.updateClient(client, identification.value);
 	} else {
 		const client = {
 			name: name.value,

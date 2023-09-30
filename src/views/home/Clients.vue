@@ -2,7 +2,6 @@
 import { ref, onMounted, computed } from "vue";
 import ClientCard from "../../components/ClientCard.vue";
 import { useClientsStore } from "../../services/stores/clients";
-import { stringify } from "postcss";
 
 const emit = defineEmits(["update:modelValue"]);
 const clientsStore = useClientsStore();
