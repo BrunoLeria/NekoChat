@@ -79,10 +79,19 @@ const routes = [
         meta: { requiresAuth: false }
     },
     {
-        path: "/task",
+        path: "/task/:id?",
         name: "TaskForm",
         component: TaskForm,
-        alias: "/task",
+        alias: "/task/:id?",
+        props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/task/:id/info",
+        name: "TaskFormInfo",
+        component: TaskForm,
+        alias: "/task/:id/info",
+        props: true,
         meta: { requiresAuth: true }
     },
     {

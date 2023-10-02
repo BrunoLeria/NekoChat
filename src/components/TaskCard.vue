@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from "vue";
 import { useUsersStore } from "../services/stores/users";
+import { useTasksStore } from "../services/stores/tasks";
 
 const userStore = useUsersStore();
+const taskStore = useTasksStore();
 
 const props = defineProps({
     issue: {
@@ -28,8 +30,24 @@ const props = defineProps({
     user_id: {
         type: Number,
         required: true
+    },
+    identification: {
+        type: Number,
+        required: true
     }
 });
+
+function openTaskInfo() {
+    window.open("task/" + props.identification + "/info", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+}
+
+function openEditTask() {
+    window.open("task/" + props.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+}
+
+function deleteTask() {
+
+}
 
 const showInfo = ref(false);
 const showEdit = ref(false);

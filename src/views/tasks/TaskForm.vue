@@ -24,18 +24,17 @@ const task = ref({});
 const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
 const Combobox = defineAsyncComponent(() => import("/src/components/inputs/Combobox.vue"));
 const Checkbox = defineAsyncComponent(() => import("/src/components/inputs/Checkbox.vue"));
-
+const urlSplit = window.location.pathname.split("/");
 
 onBeforeMount(async () => {
-	
 	if (userStore.user.is_admin) {
 		usersOptions.value = await userStore.findAllUsers();
 	} else {
 		usersOptions.value = [userStore.user]
 	}
 	clientsOptions.value = await clientsStore.findAllClients();
-	identification.value = window.location.pathname.split("/").length === 3 ? window.location.pathname.split("/")[2] : "";
-	if(identification.value) {
+	identification.value = urlSplit.length === 3 ? urlSplit[2] : "";
+	if (identification.value) {
 		task.value = await tasksStore.findOneTaskById(identification.value);
 		issue.value = task.value.issue;
 		description.value = taks.value.description;
@@ -76,18 +75,18 @@ async function save() {
 		fk_users_identification: fk_users_identification.value,
 		is_feedback: is_feedback.value
 	}
-	
+
 	if (identification.value) {
 		response.value = await tasksStore.updateTask(task.value, identification.value);
 	} else {
 		response.value = await tasksStore.createTask(task.value);
 	}
-	
+
 	if (response.value === 201 || response.value === 200) {
 		window.close();
 	} else {
 		alert("Erro ao salvar a tarefa");
-	}	
+	}
 }
 
 function cancel() {
@@ -100,13 +99,13 @@ function cancel() {
 		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
 		<form action="" class='grid grid-cols-6 grid-rows-6 items-center justify-center'>
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
-				class="w-full p-3 col-span-1" :disabled="true"/>
+				class="w-full p-3 col-span-1" :disabled="true" />
 			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
-				class="w-full p-3 col-span-3" />
+				class="w-full p-3 col-span-3" :disabled='urlSplit.length === 4' />
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
-				:checkmark-color="'text-green-600'" v-model="is_it_solved" />
+				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='urlSplit.length === 4' />
 			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description'
-				class="w-full p-3 col-span-6" />
+				class="w-full p-3 col-span-6" :disabled='urlSplit.length === 4' />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Responsável'" title="Responsável" v-model="fk_users_identification"></Combobox>
@@ -118,7 +117,8 @@ function cancel() {
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Cliente'" title="Cliente" v-model="fk_clients_identification"></Combobox>
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
-				v-model='resolution_details' class="w-full p-3 col-span-4" :disabled="!is_it_solved"/>
+				v-model='resolution_details' class="w-full p-3 col-span-4"
+				:disabled="!is_it_solved || urlSplit.length === 4" />
 			<button type="button" class="
 				col-start-5
 				mx-3
@@ -139,7 +139,7 @@ function cancel() {
 					stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 				</svg>
-				Cancelar
+				{{ urlSplit.length === 4 ? 'Voltar' : 'Cancelar' }}
 			</button>
 			<button type="button" class="
 							mx-3
@@ -157,7 +157,7 @@ function cancel() {
 							hover:bg-green-700
 							ease-in-out
 							duration-500
-				" @click="save">
+				" @click="save" v-show='urlSplit.length !== 4'>
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 					stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
