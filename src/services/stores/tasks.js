@@ -1,13 +1,8 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import { useLocalStorage } from "@vueuse/core";
 import { GCurl } from "/src/config/url.js";
 import router from "../router";
 
 export const useTasksStore = defineStore("task", () => {
-    const tasks = ref(useLocalStorage("tasksNeko", {}));
-    const selectedTask = ref({});
-
     async function createTask(task) {
         const url = GCurl + "tasks";
         try {
@@ -139,8 +134,6 @@ export const useTasksStore = defineStore("task", () => {
     }
 
     return {
-        tasks,
-        selectedTask,
         createTask,
         findAllTasks,
         findOneTaskById,
