@@ -8,7 +8,6 @@ import ClientForm from "../views/clients/ClientForm.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
-import NetworkError from "../views/NetworkError.vue";
 import { getAuth, onAuthStateChanged } from "@firebase/auth";
 
 const routes = [
@@ -25,13 +24,49 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/registro",
+        path: "/home/team",
+        name: "Team",
+        component: Home,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/home/chat",
+        name: "Chat",
+        component: Home,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/home/analytics",
+        name: "Analytics",
+        component: Home,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/home/settings",
+        name: "Settings",
+        component: Home,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/home/tasks",
+        name: "Tasks",
+        component: Home,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/home/clients",
+        name: "Clients",
+        component: Home,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/register",
         name: "Register",
         component: Register,
         meta: { requiresAuth: false }
     },
     {
-        path: "/esqueceu-senha",
+        path: "/forgot-password",
         name: "ForgotPassword",
         component: ForgotPassword,
         meta: { requiresAuth: false }
@@ -40,20 +75,23 @@ const routes = [
         path: "/about-us",
         name: "About",
         component: About,
-        alias: "/about"
+        alias: "/about",
+        meta: { requiresAuth: false }
     },
     {
         path: "/task",
         name: "TaskForm",
         component: TaskForm,
-        alias: "/task"
+        alias: "/task",
+        meta: { requiresAuth: true }
     },
     {
         path: "/client/:id?",
         name: "ClientForm",
         component: ClientForm,
         alias: "/client/:id?",
-        props: true
+        props: true,
+        meta: { requiresAuth: true }
     },
     {
         path: "/:catchAll(.*)*",
@@ -67,12 +105,6 @@ const routes = [
         component: NotFound,
         meta: { requiresAuth: false },
         props: true
-    },
-    {
-        path: "/network-error",
-        name: "NetworkError",
-        component: Login,
-        meta: { requiresAuth: false }
     }
 ];
 

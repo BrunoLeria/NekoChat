@@ -8,14 +8,13 @@ const tasksStore = useTasksStore();
 const userStore = useUsersStore();
 const emit = defineEmits(["update:modelValue"]);
 const users = ref([]);
+const displayedTasks = ref([]);
+
 
 onMounted(async () => {
     users.value = await userStore.findAllUsers();
-});
-
-const displayedTasks = computed(async () => {
     if (userStore.user.is_admin) {
-        return await tasksStore.findAllTasks();
+        displayedTasks.value = tasksStore.findAllTasks();
     } else {
         // Retrieve tasks for user's team if user is not an admin
         const userTeamId = userStore.user.fk_team_identification;
@@ -26,7 +25,7 @@ const displayedTasks = computed(async () => {
             const taskUserTeamId = taskUser.fk_team_identification;
             return taskUserTeamId === userTeamId;
         });
-        return tasksForUserTeam;
+        displayedTasks.value = tasksForUserTeam;
     }
 });
 

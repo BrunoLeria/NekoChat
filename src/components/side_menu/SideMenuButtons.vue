@@ -45,7 +45,7 @@ function updateStatus(identification) {
 		<transition name='component-fade' mode="out-in">
 			<div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3" v-show='showMenu'>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base"
-					@mouseover="showChat = true" @mouseleave="showChat = false" @click="$emit('update:modelValue', 'Chat')">
+					@mouseover="showChat = true" @mouseleave="showChat = false" @click="router.push({ name: 'Chat' })">
 					<svg v-show='!showChat' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
 						stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -57,7 +57,7 @@ function updateStatus(identification) {
 				</div>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base"
 					@mouseover="showAnalytics = true" @mouseleave="showAnalytics = false"
-					@click="$emit('update:modelValue', 'Analytics')">
+					@click="router.push({ name: 'Analytics' })">
 					<svg v-show='!showAnalytics' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
 						stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -68,7 +68,7 @@ function updateStatus(identification) {
 					</transition>
 				</div>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base"
-					@mouseover="showTeam = true" @mouseleave="showTeam = false" @click="$emit('update:modelValue', 'Team')">
+					@mouseover="showTeam = true" @mouseleave="showTeam = false" @click="router.push({ name: 'Team' })">
 					<svg v-show='!showTeam' xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
 						viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -79,8 +79,7 @@ function updateStatus(identification) {
 					</transition>
 				</div>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base"
-					@mouseover="showTasks = true" @mouseleave="showTasks = false"
-					@click="$emit('update:modelValue', 'Tasks')">
+					@mouseover="showTasks = true" @mouseleave="showTasks = false" @click="router.push({ name: 'Tasks' })">
 					<svg v-show='!showTasks' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
 						stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -92,7 +91,7 @@ function updateStatus(identification) {
 				</div>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base"
 					@mouseover="showClients = true" @mouseleave="showClients = false"
-					@click="$emit('update:modelValue', 'Clients')">
+					@click="router.push({ name: 'Clients' })">
 					<svg v-show='!showClients' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
 						stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -138,4 +137,5 @@ function updateStatus(identification) {
 				<h4 v-show="showMenuLabel" class="mx-3 sm:hidden lg:inline">Menu</h4>
 			</transition>
 		</div>
-</div></template>
+	</div>
+</template>

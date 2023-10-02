@@ -7,7 +7,7 @@ const router = useRouter();
 
 <template>
 	<div class="flex h-full bg-white dark:bg-slate-90">
-		<SideMenu v-model="activeComponent" />
+		<SideMenu />
 		<div class="flex-1 flex flex-col max-w-[85%] h-full">
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">

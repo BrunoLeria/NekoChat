@@ -5,24 +5,25 @@ import Socket from "/src/services/socket.js";
 import { useTalkStore } from "/src/services/stores/talks.js";
 import { useUsersStore } from "/src/services/stores/users.js";
 import { useTeamStore } from "/src/services/stores/team";
+import { useRouter } from "vue-router";
 
 const SideMenu = defineAsyncComponent({
 	loader: () => import("../components/side_menu/SideMenu.vue"),
 	loadingComponent: Loading,
 	delay: 200
 });
-const activeComponent = ref("Welcome");
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
+const router = useRouter()
 const translatedTitle = computed(() => {
 	document.title = "NChat - Bem-vindo";
-	if (activeComponent.value == "Team") document.title = "NChat - Equipe";
-	if (activeComponent.value == "Chat") document.title = "NChat - Chat";
-	if (activeComponent.value == "Analytics") document.title = "NChat - Análise";
-	if (activeComponent.value == "Settings") document.title = "NChat - Configurações";
-	if (activeComponent.value == "Tasks") document.title = "NChat - Tarefas";
-	if (activeComponent.value == "Clients") document.title = "NChat - Clientes";
+	if (router.currentRoute.value.name == "Team") document.title = "NChat - Equipe";
+	if (router.currentRoute.value.name == "Chat") document.title = "NChat - Chat";
+	if (router.currentRoute.value.name == "Analytics") document.title = "NChat - Análise";
+	if (router.currentRoute.value.name == "Settings") document.title = "NChat - Configurações";
+	if (router.currentRoute.value.name == "Tasks") document.title = "NChat - Tarefas";
+	if (router.currentRoute.value.name == "Clients") document.title = "NChat - Clientes";
 	return document.title.replace("NChat - ", "");
 });
 const selectComponent = (component) => {
@@ -53,7 +54,7 @@ Socket.on("userUpdated", () => {
 
 <template>
 	<div class="flex h-full bg-white dark:bg-slate-90">
-		<SideMenu v-model="activeComponent" />
+		<SideMenu />
 		<div class="flex-1 flex flex-col max-w-[75%]">
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">
@@ -63,12 +64,9 @@ Socket.on("userUpdated", () => {
 				</transition>
 			</div>
 			<transition name="component-fade" mode="out-in">
-				<Loading v-if="activeComponent == 'Loading'" :background-color="'bg-white'" />
-				<component
-					v-else
-					:is="selectComponent(activeComponent)"
-					v-model="activeComponent"
-					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll"></component>
+				<component :is="selectComponent(router.currentRoute.value.name)"
+					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll">
+				</component>
 			</transition>
 		</div>
 	</div>

@@ -20,7 +20,6 @@ const props = defineProps({
 const router = useRouter();
 const auth = getAuth();
 const userStore = useUsersStore();
-const activeComponent = ref("Welcome");
 
 const handleSignOut = () => {
 	signOut(auth).then(() => {
@@ -32,7 +31,7 @@ const handleSignOut = () => {
 
 <template>
 	<div class="flex h-full bg-white dark:bg-slate-90">
-		<SideMenu v-model="activeComponent" />
+		<SideMenu />
 		<div class="flex-1 flex flex-col max-w-[85%] h-full">
 			<div class="py-6 bg-indigo-100">
 				<transition name="slide-fade">
@@ -44,6 +43,7 @@ const handleSignOut = () => {
 					A {{ resource }} que você está procurando não está aqui.
 				</h2>
 				<p @click="handleSignOut" class="text-blue-500 underline">Voltar para a página de Login</p>
+				<p href="#" @click="$router.go(-1)" class="text-blue-500 underline">Ou clique aqui para tentar novamente</p>
 			</div>
 			<div class="py-10 bg-indigo-100"></div>
 		</div>
