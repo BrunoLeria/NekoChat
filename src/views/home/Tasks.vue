@@ -1,7 +1,7 @@
 <script setup>
 import { useUsersStore } from "../../services/stores/users";
 import { useTasksStore } from "../../services/stores/tasks";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import TaskCard from "../../components/TaskCard.vue";
 
 const tasksStore = useTasksStore();
@@ -14,14 +14,14 @@ const displayedTasks = ref([]);
 onMounted(async () => {
     users.value = await userStore.findAllUsers();
     if (userStore.user.is_admin) {
-        displayedTasks.value = tasksStore.findAllTasks();
+        displayedTasks.value = await tasksStore.findAllTasks();
     } else {
         // Retrieve tasks for user's team if user is not an admin
         const userTeamId = userStore.user.fk_team_identification;
         const tasks = await tasksStore.findAllTasks();
         const tasksForUserTeam = tasks.filter(task => {
             const taskUserId = task.fk_users_identification;
-            const taskUser = users.find(user => user.identification === taskUserId);
+            const taskUser = users.value.find(user => user.identification === taskUserId);
             const taskUserTeamId = taskUser.fk_team_identification;
             return taskUserTeamId === userTeamId;
         });
@@ -29,10 +29,10 @@ onMounted(async () => {
     }
 });
 
-const nameOfUser = computed((userId) => {
-    const user = users.find(user => user.identification === userId);
+function nameOfUser(userId) {
+    const user = users.value.find(user => user.identification === userId);
     return user.name;
-});
+};
 
 const newTask = () => {
     window.open("task", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
@@ -44,7 +44,8 @@ const newTask = () => {
     <div class="bg-neutral-100 p-14 grid gap-5 grid-rows-6">
         <div v-for='task in displayedTasks' class='grid grid-cols-3 row-span-6'>
             <TaskCard :key='task.identification' :issue='task.issue' :user='nameOfUser(task.fk_users_identification)'
-                :client='"Cliente"' :priority_level='task.priority_level' :is_it_solved='task.is_it_solved' />
+                :user_id='task.fk_users_identifications' :client='"Cliente"' :priority_level='task.priority_level'
+                :is_it_solved='task.is_it_solved' />
         </div>
         <div class='grid col-span-5 row-start-7 justify-items-end'>
             <button type="button" class="
