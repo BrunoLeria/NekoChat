@@ -1,12 +1,10 @@
 <script setup>
-import { useTeamStore } from "../../services/stores/team";
 import { useUsersStore } from "../../services/stores/users";
 import { useTasksStore } from "../../services/stores/tasks";
 import { ref, onMounted, computed } from "vue";
 import TaskCard from "../../components/TaskCard.vue";
 
 const tasksStore = useTasksStore();
-const teamStore = useTeamStore();
 const userStore = useUsersStore();
 const emit = defineEmits(["update:modelValue"]);
 const users = ref([]);
