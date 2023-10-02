@@ -8,7 +8,8 @@ const props = defineProps({
 	}
 });
 const contactName = computed(() => {
-	return props.talk.whatsapp_identification 
+	const phoneWithoutPrefix = props.talk.whatsapp_identification.slice(2);
+	return phoneWithoutPrefix.replace(/\D/g, "").replace(/(\d{2})(\d{4,5})(\d{4})/, "($1) $2-$3");
 });
 
 const dateTime = computed(() => {
@@ -31,8 +32,7 @@ const urgent = computed(() => {
 </script>
 
 <template>
-	<div
-		class="h-20 border border-indigo-900 flex items-center p-4"
+	<div class="h-20 border border-indigo-900 flex items-center p-4"
 		:class="{ 'bg-yellow-600': waiting, 'bg-red-600': urgent, 'animate-pulse': urgent, 'bg-indigo-400': !urgent }">
 		<div class="contact-list-body-item-avatar">
 			<!-- <img :src="contact.avatar" alt="" /> -->
