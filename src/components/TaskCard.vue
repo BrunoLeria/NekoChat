@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from 'vue';
 import { useUsersStore } from "../services/stores/users";
 import { useTasksStore } from "../services/stores/tasks";
 
@@ -49,6 +49,32 @@ function deleteTask() {
     taskStore.deleteTask(props.identification);
 }
 
+const priority = computed(() => {
+    switch (props.priority_level) {
+        case 1:
+            return "Baixa";
+        case 2:
+            return "Média";
+        case 3:
+            return "Alta";
+        default:
+            return "Prioridade não definida";
+    }
+});
+
+const colorBorder = computed(() => {
+    switch (props.priority_level) {
+        case 1:
+            return "border-green-500";
+        case 2:
+            return "border-yellow-500";
+        case 3:
+            return "border-red-500";
+        default:
+            return "border-gray-500";
+    }
+});
+
 const showInfo = ref(false);
 const showEdit = ref(false);
 const showDelete = ref(false);
@@ -62,19 +88,18 @@ const is_solved = ref(false);
 				h-fit
 				flex flex-col
 				w-full
-				shadow-lg
-				border-gray-200 border-2
+				shadow-lg border-2
 				hover:shadow-indigo-500 hover:border-indigo-500
 				ease-in-out
 				duration-500
-			">
+			" :class='colorBorder'>
         <div class="grid grid-cols-5 p-3 m-3 items-center">
             <h4 class="col-span-4 font-semibold text-lg">{{ props.issue }}</h4>
             <p class="col-span-4 text-gray-500">{{ "Responsável: " + props.user }}</p>
             <p class="col-span-4 text-gray-500">{{ "Cliente: " + props.client }}</p>
-            <p class="col-span-4 text-gray-500">{{ "Prioridade: " + props.priority_level }}</p>
+            <p class="col-span-4 text-gray-500">{{ "Prioridade: " + priority }}</p>
             <p class="col-span-3 text-gray-500">{{ "Está resolvido:" }} </p>
-            <input class='col-start-4' type="checkbox" v-model="props.is_it_solved" disabled/>
+            <input class='col-start-4' type="checkbox" v-model="props.is_it_solved" disabled />
         </div>
         <div class="grid grid-cols-3">
             <button @mouseover="showInfo = true" @mouseleave="showInfo = false" class="
