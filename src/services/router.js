@@ -79,7 +79,7 @@ const routes = [
         meta: { requiresAuth: false }
     },
     {
-        path: "/task/:id?",
+        path: "/home/task/:id?",
         name: "TaskForm",
         component: TaskForm,
         alias: "/task/:id?",
@@ -87,7 +87,7 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/task/:id/info",
+        path: "/home/task/:id/info",
         name: "TaskFormInfo",
         component: TaskForm,
         alias: "/task/:id/info",
@@ -95,7 +95,7 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/client/:id?",
+        path: "/home/client/:id?",
         name: "ClientForm",
         component: ClientForm,
         alias: "/client/:id?",
