@@ -31,7 +31,7 @@ function sendMessage() {
 }
 
 function newTask() {
-	console.log("newTask");
+	window.open("task", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
 function endTask() {
