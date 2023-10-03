@@ -46,7 +46,7 @@ function openEditTask() {
 }
 
 function deleteTask() {
-
+    taskStore.deleteTask(props.identification);
 }
 
 const showInfo = ref(false);
@@ -74,7 +74,7 @@ const is_solved = ref(false);
             <p class="col-span-4 text-gray-500">{{ "Cliente: " + props.client }}</p>
             <p class="col-span-4 text-gray-500">{{ "Prioridade: " + props.priority_level }}</p>
             <p class="col-span-3 text-gray-500">{{ "Está resolvido:" }} </p>
-            <input class='col-start-4' type="checkbox" v-model="props.is_it_solved" />
+            <input class='col-start-4' type="checkbox" v-model="props.is_it_solved" disabled/>
         </div>
         <div class="grid grid-cols-3">
             <button @mouseover="showInfo = true" @mouseleave="showInfo = false" class="
@@ -87,7 +87,7 @@ const is_solved = ref(false);
 						hover:bg-indigo-500 hover:text-white
 						ease-in-out
 						duration-500
-					" @click="openUserConfig(member.identification)">
+					" @click="openTaskInfo">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6" v-show='!showInfo'>
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -105,7 +105,7 @@ const is_solved = ref(false);
 						hover:bg-yellow-500 hover:text-white
 						ease-in-out
 						duration-500
-					" @click="openUserConfig(member.identification)">
+					" @click="openEditTask">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6" v-show='!showEdit'>
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -124,7 +124,7 @@ const is_solved = ref(false);
 						hover:bg-red-500 hover:text-white
 						ease-in-out
 						duration-500
-					" @click="openUserConfig(member.identification)">
+					" @click="deleteTask">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6" v-show='!showDelete'>
                     <path stroke-linecap="round" stroke-linejoin="round"
