@@ -8,12 +8,13 @@ const name = ref('');
 const email = ref('');
 const phone = ref('');
 const client = ref({});
+const urlSplit = window.location.pathname.split("/");
 
 const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
 const MaskedInput = defineAsyncComponent(() => import("/src/components/inputs/MaskedInput.vue"));
 
 onBeforeMount(async () => {
-	identification.value = window.location.pathname.split("/").length === 3 ? window.location.pathname.split("/")[2] : "";
+	identification.value = urlSplit.length === 4 ? urlSplit[3] : "";
 	if (identification.value) {
 		client.value = await clientsStore.findOneClientById(identification.value);
 		name.value = client.value.name;
