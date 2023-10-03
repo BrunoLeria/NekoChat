@@ -44,8 +44,8 @@ const newTask = () => {
     <div class="bg-neutral-100 p-14 grid gap-5 grid-rows-6">
         <div v-for='task in displayedTasks' class='grid grid-cols-3 row-span-6'>
             <TaskCard :key='task.identification' :issue='task.issue' :user='nameOfUser(task.fk_users_identification)'
-                :user_id='task.fk_users_identifications' :client='"Cliente"' :priority_level='task.priority_level'
-                :is_it_solved='task.is_it_solved' :identification='taks.identification' />
+                :user_id='task.fk_users_identification' :client='"Cliente"' :priority_level='task.priority_level'
+                :is_it_solved='task.is_it_solved' :identification='task.identification' />
         </div>
         <div class='grid col-span-5 row-start-7 justify-items-end'>
             <button type="button" class="
