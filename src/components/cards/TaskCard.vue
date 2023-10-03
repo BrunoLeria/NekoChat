@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { useUsersStore } from "../services/stores/users";
-import { useTasksStore } from "../services/stores/tasks";
+import { useUsersStore } from "../../services/stores/users";
+import { useTasksStore } from "../../services/stores/tasks";
 
 const userStore = useUsersStore();
 const taskStore = useTasksStore();

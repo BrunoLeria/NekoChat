@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useTalkStore } from "../../services/stores/talks";
-import ContactCard from "./ContactCard.vue";
+import ContactCard from "../cards/ContactCard.vue";
 import Filter from "./Filter.vue";
 
 const emit = defineEmits(["update:modelValue"]);

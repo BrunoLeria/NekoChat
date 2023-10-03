@@ -2,7 +2,7 @@
 import { useUsersStore } from "../../services/stores/users";
 import { useTasksStore } from "../../services/stores/tasks";
 import { ref, onMounted } from "vue";
-import TaskCard from "../../components/TaskCard.vue";
+import TaskCard from "../../components/cards/TaskCard.vue";
 
 const tasksStore = useTasksStore();
 const userStore = useUsersStore();
