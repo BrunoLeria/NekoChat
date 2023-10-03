@@ -33,17 +33,17 @@ onBeforeMount(async () => {
 		usersOptions.value = [userStore.user]
 	}
 	clientsOptions.value = await clientsStore.findAllClients();
-	identification.value = urlSplit.length === 3 ? urlSplit[2] : "";
+	identification.value = urlSplit.length === 4 || urlSplit.includes("info") ? urlSplit[3] : "";
 	if (identification.value) {
 		task.value = await tasksStore.findOneTaskById(identification.value);
 		issue.value = task.value.issue;
-		description.value = taks.value.description;
-		priority_level.value = taks.value.priority_level;
-		is_it_solved.value = taks.value.is_it_solved;
-		resolution_details.value = taks.value.resolution_details;
-		fk_clients_identification.value = taks.value.fk_clients_identification;
-		fk_users_identification.value = taks.value.fk_users_identification;
-		is_feedback.value = taks.value.is_feedback;
+		description.value = task.value.description;
+		priority_level.value = task.value.priority_level;
+		is_it_solved.value = task.value.is_it_solved;
+		resolution_details.value = task.value.resolution_details;
+		fk_clients_identification.value = task.value.fk_clients_identification;
+		fk_users_identification.value = task.value.fk_users_identification;
+		is_feedback.value = task.value.is_feedback;
 	}
 });
 
@@ -101,11 +101,11 @@ function cancel() {
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
 				class="w-full p-3 col-span-1" :disabled="true" />
 			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
-				class="w-full p-3 col-span-3" :disabled='urlSplit.length === 4' />
+				class="w-full p-3 col-span-3" :disabled='urlSplit.includes("info")' />
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
-				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='urlSplit.length === 4' />
+				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='urlSplit.includes("info")' />
 			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description'
-				class="w-full p-3 col-span-6" :disabled='urlSplit.length === 4' />
+				class="w-full p-3 col-span-6" :disabled='urlSplit.includes("info")' />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Responsável'" title="Responsável" v-model="fk_users_identification"></Combobox>
@@ -118,7 +118,7 @@ function cancel() {
 				:label="'Cliente'" title="Cliente" v-model="fk_clients_identification"></Combobox>
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
 				v-model='resolution_details' class="w-full p-3 col-span-4"
-				:disabled="!is_it_solved || urlSplit.length === 4" />
+				:disabled='!is_it_solved || urlSplit.includes("info")' />
 			<button type="button" class="
 				col-start-5
 				mx-3
@@ -139,7 +139,7 @@ function cancel() {
 					stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 				</svg>
-				{{ urlSplit.length === 4 ? 'Voltar' : 'Cancelar' }}
+				{{ urlSplit.includes("info") ? 'Voltar' : 'Cancelar' }}
 			</button>
 			<button type="button" class="
 							mx-3
