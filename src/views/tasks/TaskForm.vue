@@ -21,9 +21,9 @@ const usersOptions = ref([]);
 const clientsOptions = ref([]);
 const task = ref({});
 
-const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
-const Combobox = defineAsyncComponent(() => import("/src/components/inputs/Combobox.vue"));
-const Checkbox = defineAsyncComponent(() => import("/src/components/inputs/Checkbox.vue"));
+const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
+const Combobox = defineAsyncComponent(() => import("../../components/inputs/Combobox.vue"));
+const Checkbox = defineAsyncComponent(() => import("../../components/inputs/Checkbox.vue"));
 const urlSplit = window.location.pathname.split("/");
 
 onBeforeMount(async () => {
@@ -97,7 +97,7 @@ function cancel() {
 <template>
 	<div class="bg-slate-100 w-full h-full grid p-3">
 		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
-		<form action="" class='grid grid-cols-6 grid-rows-6 items-center justify-center'>
+		<form @submit.prevent="save" class='grid grid-cols-6 grid-rows-6 items-center justify-center'>
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
 				class="w-full p-3 col-span-1" :disabled="true" />
 			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
@@ -141,7 +141,7 @@ function cancel() {
 				</svg>
 				{{ urlSplit.includes("info") ? 'Voltar' : 'Cancelar' }}
 			</button>
-			<button type="button" class="
+			<button type="submit" class="
 							mx-3
 							flex
 							justify-center
@@ -157,7 +157,7 @@ function cancel() {
 							hover:bg-green-700
 							ease-in-out
 							duration-500
-				" @click="save" v-show='urlSplit.length !== 4'>
+				" v-show='urlSplit.length !== 4'>
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 					stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
