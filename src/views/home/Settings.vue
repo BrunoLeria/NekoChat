@@ -1,25 +1,26 @@
 <script setup>
-import { defineAsyncComponent, ref, watch } from "vue";
-import { useAddressStore } from "/src/services/stores/address.js";
-import { useUsersStore } from "/src/services/stores/users.js";
+import { defineAsyncComponent, ref, watch, onBeforeMount } from 'vue';
+import { useAddressStore } from "../../services/stores/address.js";
+import { useUsersStore } from "../../services/stores/users.js";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import router from '../../services/router';
 
 const addressStore = useAddressStore();
 const userStore = useUsersStore();
-const configOthers = userStore.configUser && Object.keys(userStore.configUser).length != 0;
-const person = ref(configOthers ? userStore.configUser : userStore.user);
+const person = ref({});
 const loading = ref(false);
 const sending = ref(false);
 const auth = getAuth();
 
-const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
-const Combobox = defineAsyncComponent(() => import("/src/components/inputs/Combobox.vue"));
-const Checkbox = defineAsyncComponent(() => import("/src/components/inputs/Checkbox.vue"));
-const DatePicker = defineAsyncComponent(() => import("/src/components/inputs/DatePicker.vue"));
-const PhotoPicker = defineAsyncComponent(() => import("/src/components/inputs/PhotoPicker.vue"));
-const PasswordInput = defineAsyncComponent(() => import("/src/components/inputs/PasswordInput.vue"));
-const Spinner = defineAsyncComponent(() => import("/src/components/animations/Spinner.vue"));
+const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
+const Checkbox = defineAsyncComponent(() => import("../../components/inputs/Checkbox.vue"));
+const PhotoPicker = defineAsyncComponent(() => import("../../components/inputs/PhotoPicker.vue"));
 
+onBeforeMount(async () => {
+	person.value = router.currentRoute.value.params.id
+		? await userStore.findOneUserById(router.currentRoute.value.params.id)
+		: userStore.user;
+});
 
 function update() {
 	sending.value = true;
@@ -89,30 +90,25 @@ watch(
 				<div class="px-4 py-5 bg-white sm:p-6">
 					<div class="grid grid-cols-6 gap-6">
 						<div class="col-span-1">
-							<TextInput
-								label="ID"
-								type="text"
-								id="identification"
-								:required="true"
-								:disabled="true"
+							<TextInput label="ID" type="text" id="identification" :required="true" :disabled="true"
 								v-model="person.identification" />
 						</div>
 						<div class="col-span-3">
 							<TextInput label="Nome" type="text" id="name" :required="true" v-model="person.name" />
 						</div>
 						<div class="col-span-2">
-							<TextInput label="E-mail" type="email" id="email" :required="true" :disabled="true" v-model="person.email" />
+							<TextInput label="E-mail" type="email" id="email" :required="true" :disabled="true"
+								v-model="person.email" />
 						</div>
 						<div class="col-span-1">
 							<PhotoPicker label="Foto" id="photo" :text="'Selecionar foto'" v-model="person.photo" />
 						</div>
 						<div class="col-span-1">
-							<Checkbox :id="'isAdminCheckBox'" :label="'Admin'" v-model="person.is_admin" v-if="userStore.user.is_admin" />
+							<Checkbox :id="'isAdminCheckBox'" :label="'Admin'" v-model="person.is_admin"
+								v-if="userStore.user.is_admin" />
 						</div>
 						<div class="col-span-2 flex items-center">
-							<button
-								type="button"
-								class="
+							<button type="button" class="
 									group
 									relative
 									w-full
@@ -130,19 +126,12 @@ watch(
 									focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
 									ease-in-out
 									duration-500
-								"
-								@click="sendEmailPasswordRecovery">
+								" @click="sendEmailPasswordRecovery">
 								<span class="absolute left-0 inset-y-0 flex items-center pl-3">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="lock-closed h-5 w-5 text-blue-500 group-hover:text-blue-400"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="2">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
+									<svg xmlns="http://www.w3.org/2000/svg"
+										class="lock-closed h-5 w-5 text-blue-500 group-hover:text-blue-400" fill="none"
+										viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+										<path stroke-linecap="round" stroke-linejoin="round"
 											d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 									</svg>
 								</span>
@@ -152,9 +141,7 @@ watch(
 					</div>
 				</div>
 				<div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-					<button
-						type="button"
-						class="
+					<button type="button" class="
 							inline-flex
 							justify-center
 							py-2
@@ -168,9 +155,7 @@ watch(
 							bg-indigo-600
 							hover:bg-indigo-700
 							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-						"
-						:disabled="sending"
-						@click="update">
+						" :disabled="sending" @click="update">
 						Salvar
 					</button>
 				</div>
