@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { GCurl } from "/src/config/url.js";
+import { GCurl } from "../../config/url.js";
 import router from "../router";
 
 export const useTasksStore = defineStore("task", () => {

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { GCurl } from "/src/config/url.js";
+import { GCurl } from "../../config/url.js";
 import router from "../router";
 
 export const useClientsStore = defineStore("client", () => {
@@ -17,7 +17,7 @@ export const useClientsStore = defineStore("client", () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(client)
-            })
+            });
             return await response.status;
         } catch (error) {
             router.push({
@@ -35,8 +35,8 @@ export const useClientsStore = defineStore("client", () => {
                 headers: {
                     "Content-Type": "application/json"
                 }
-            })  
-            return await response.json();  
+            });
+            return await response.json();
         } catch (error) {
             router.push({
                 name: "404Resource",
@@ -54,7 +54,7 @@ export const useClientsStore = defineStore("client", () => {
                     "Content-Type": "application/json"
                 }
             });
-            return await response.json();  
+            return await response.json();
         } catch (error) {
             router.push({
                 name: "404Resource",
