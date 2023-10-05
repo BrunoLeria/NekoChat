@@ -42,9 +42,10 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/home/settings",
+        path: "/home/settings/:id?",
         name: "Settings",
         component: Home,
+        props: true,
         meta: { requiresAuth: true }
     },
     {
