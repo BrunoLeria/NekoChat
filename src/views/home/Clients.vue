@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import ClientCard from "../../components/ClientCard.vue";
+import ClientCard from "../../components/cards/ClientCard.vue";
 import { useClientsStore } from "../../services/stores/clients";
 
 const emit = defineEmits(["update:modelValue"]);
@@ -15,18 +15,18 @@ const newTask = () => {
     window.open("client", "Ratting", "width=700, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 };
 
-function maskedPhone (phone) {
-  const phoneWithoutPrefix = phone.slice(2);
-  return phoneWithoutPrefix.replace(/\D/g, "").replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+function maskedPhone(phone) {
+    const phoneWithoutPrefix = phone.slice(2);
+    return phoneWithoutPrefix.replace(/\D/g, "").replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
 };
 
 </script>
 
 <template>
     <div class="bg-neutral-100 p-14 grid gap-5 grid-rows-6 grid-cols-3 row-span-6">
-        <div v-for='client in clients' >
-            <ClientCard :key='client.identification' :identification='client.identification' :name='client.name' :email='client.email'
-                :phone="maskedPhone(client.phone)" />
+        <div v-for='client in clients'>
+            <ClientCard :key='client.identification' :identification='client.identification' :name='client.name'
+                :email='client.email' :phone="maskedPhone(client.phone)" />
         </div>
         <div class='grid col-span-5 row-start-7 justify-items-end'>
             <button type="button" class="
