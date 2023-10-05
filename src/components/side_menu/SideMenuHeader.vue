@@ -1,7 +1,7 @@
 <script setup>
-import { useUsersStore } from "/src/services/stores/users";
+import { useUsersStore } from "../../services/stores/users";
 import { ref, computed } from "vue";
-import { useStatusesStore } from "/src/services/stores/status";
+import { useStatusesStore } from "../../services/stores/status";
 
 const userStore = useUsersStore();
 const statuses = useStatusesStore().statuses;
@@ -28,17 +28,10 @@ function updateStatus(identification) {
 
 		<div class="flex flex-col place-content-start">
 			<div class="flex items-end justify-end" syle data-dropdown-toggle="dropdown">
-				<button
-					id="dropdownDefault"
-					@click="changeStatus = !changeStatus"
-					@focusout="changeStatus = false"
-					title="Mudar status?"
-					type="button">
-					<img
-						v-if="userStore.user.photo"
-						:src="userStore.user.photo"
-						class="inline-block h-12 w-12 rounded-full overflow-hidden"
-						alt="" />
+				<button id="dropdownDefault" @click="changeStatus = !changeStatus" @focusout="changeStatus = false"
+					title="Mudar status?" type="button">
+					<img v-if="userStore.user.photo" :src="userStore.user.photo"
+						class="inline-block h-12 w-12 rounded-full overflow-hidden" alt="" />
 					<span v-else class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
 						<svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
 							<path
@@ -48,15 +41,12 @@ function updateStatus(identification) {
 				</button>
 				<div class="rounded-full h-4 w-4 fixed" :style="{ backgroundColor: statusColor }"></div>
 			</div>
-			<transition name='component-fade'  mode="out-in">
+			<transition name='component-fade' mode="out-in">
 				<div id="dropdown" class="z-10 bg-gray-100 w-36 rounded-lg" v-show="changeStatus">
 					<ul>
-						<li
-							@click="updateStatus(status.identification)"
-							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg"
-							:style="{ color: status.color }"
-							aria-labelledby="dropdownDefault"
-							v-for="status in statuses">
+						<li @click="updateStatus(status.identification)"
+							class="bg-gray-100 hover:bg-gray-300 p-2 rounded-lg" :style="{ color: status.color }"
+							aria-labelledby="dropdownDefault" v-for="status in statuses">
 							{{ status.description }}
 						</li>
 					</ul>

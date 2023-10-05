@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watch } from "vue";
-import { useTalkStore } from "../services/stores/talks";
-import { useUsersStore } from "../services/stores/users";
-import { useTeamStore } from "../services/stores/team";
-import TextInput from "/src/components/inputs/TextInput.vue";
-import Combobox from "/src/components/inputs/Combobox.vue";
+import { useTalkStore } from "../../services/stores/talks";
+import { useUsersStore } from "../../services/stores/users";
+import { useTeamStore } from "../../services/stores/team";
+import TextInput from "../../components/inputs/TextInput.vue";
+import Combobox from "../../components/inputs/Combobox.vue";
 
 const props = defineProps({
 	responsable: {
