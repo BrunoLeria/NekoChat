@@ -1,11 +1,11 @@
 <script setup>
-import Loading from "../components/Loading.vue";
-import { ref, defineAsyncComponent, computed, onBeforeMount } from 'vue';
-import Socket from "/src/services/socket.js";
-import { useTalkStore } from "/src/services/stores/talks.js";
-import { useUsersStore } from "/src/services/stores/users.js";
-import { useTeamStore } from "/src/services/stores/team";
+import { defineAsyncComponent, computed, onBeforeMount } from 'vue';
 import { useRouter } from "vue-router";
+import { useTalkStore } from "../services/stores/talks.js";
+import { useUsersStore } from "../services/stores/users.js";
+import { useTeamStore } from "../services/stores/team.js";
+import Loading from "../components/Loading.vue";
+import Socket from "../services/socket.js";
 
 const SideMenu = defineAsyncComponent({
 	loader: () => import("../components/side_menu/SideMenu.vue"),
@@ -27,6 +27,7 @@ const translatedTitle = computed(() => {
 	return document.title.replace("NChat - ", "");
 });
 const selectComponent = (component) => {
+	if (component === "Home") component = "Welcome";
 	return defineAsyncComponent({
 		loader: () => import("./home/" + component + ".vue"),
 		loadingComponent: Loading,
@@ -36,6 +37,7 @@ const selectComponent = (component) => {
 
 onBeforeMount(async () => {
 	await talkStore.fetchTalks();
+	talkStore.selected = talkStore.talks[0].whatsapp_identification;
 	await teamStore.findAllTeam();
 });
 

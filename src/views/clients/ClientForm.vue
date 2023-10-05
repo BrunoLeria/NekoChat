@@ -10,8 +10,8 @@ const phone = ref('');
 const client = ref({});
 const urlSplit = window.location.pathname.split("/");
 
-const TextInput = defineAsyncComponent(() => import("/src/components/inputs/TextInput.vue"));
-const MaskedInput = defineAsyncComponent(() => import("/src/components/inputs/MaskedInput.vue"));
+const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
+const MaskedInput = defineAsyncComponent(() => import("../../components/inputs/MaskedInput.vue"));
 
 onBeforeMount(async () => {
 	identification.value = urlSplit.length === 4 ? urlSplit[3] : "";

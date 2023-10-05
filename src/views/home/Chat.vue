@@ -1,10 +1,10 @@
 <script setup>
-import ChatButtons from "/src/components/ChatButtons.vue";
+import ChatBarButtons from "../../components/bars/ChatBarButtons.vue";
 import { useTalkStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
-import { computed, onMounted, onUpdated } from "vue";
-import Socket from "/src/services/socket.js";
+import { computed, onMounted, onUpdated, onBeforeMount } from 'vue';
+import Socket from "../../services/socket.js";
 
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
@@ -18,8 +18,11 @@ const time = (message) => {
 	return date.getMinutes() < 10 ? date.getHours() + ":0" + date.getMinutes() : date.getHours() + ":" + date.getMinutes();
 };
 
-onMounted(async () => {
+onBeforeMount(async () => {
 	await talkStore.findOneTalkByChatID();
+});
+
+onMounted(async () => {
 	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
 });
 
@@ -67,8 +70,8 @@ Socket.on("returnedToBot", async () => {
 		<div class="flex flex-col my-5 p-5 overflow-y-auto  bg-white rounded-xl col-span-10 row-span-5"
 			id="scrollContainer">
 			<div v-for="(message, index) in talkStore.activeChat" :key="index" id="mensagens" :class="message.from_me === '1'
-					? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
-					: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
+				? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
+				: 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
 				">
 				<div class="flex justify-between">
 					<h3 :class="'text-indigo-700 break-words capitalize font-bold'">
@@ -104,7 +107,7 @@ Socket.on("returnedToBot", async () => {
 				</p>
 			</div>
 		</div>
-		<ChatButtons class='row-span-1 col-span-10' :responsable='userResponsable' />
+		<ChatBarButtons class='row-span-1 col-span-10' :responsable='userResponsable' />
 	</div>
 </template>
 

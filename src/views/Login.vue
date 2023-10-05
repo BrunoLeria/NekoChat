@@ -1,11 +1,11 @@
 <script setup>
-import TextInput from "/src/components/inputs/TextInput.vue";
-import Sublink from "/src/components/buttons/Sublink.vue";
+import TextInput from "../components/inputs/TextInput.vue";
+import Sublink from "../components/buttons/Sublink.vue";
 import PasswordInput from "../components/inputs/PasswordInput.vue";
-import logo from "/src/assets/nekologo.jpeg";
+import logo from "../assets/nekologo.jpeg";
 import { ref, onBeforeMount, onMounted } from "vue";
-import { useUsersStore } from "/src/services/stores/users.js";
-import { useStatusesStore } from "/src/services/stores/status.js";
+import { useUsersStore } from "../services/stores/users.js";
+import { useStatusesStore } from "../services/stores/status.js";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
 
@@ -62,20 +62,23 @@ const signInWithEmail = () => {
 };
 
 async function login(data) {
-	const userFound = await userStore.findOneUserByEmail(data.user.email);
-
-	if (userFound) {
+	try {
+		const user = await userStore.findOneUserByEmail(data.user.email);
+		if (!user.identification) {
+			throw new Error("Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.");
+		}
+		userStore.user = user;
 		await statusesStore.findAllStatuses();
-		if (userStore.user.fk_statuses_identification !== 1 && userStore.user.fk_statuses_identification != undefined) {
+
+		if (user.fk_statuses_identification !== 1 && user.fk_statuses_identification != undefined) {
 			const newUser = { fk_statuses_identification: 1 };
 			await userStore.updateUser(newUser);
 		}
-	}
 
-	if (userStore.user.identification == undefined) {
-		errMsg.value = "Usuário não encontrado. Verifique com o suporte se ocorreu algum problema com o servidor.";
-	} else {
 		router.push({ name: "Home" });
+	} catch (error) {
+		console.error(error);
+		errMsg.value = error.message;
 	}
 }
 </script>
