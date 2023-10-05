@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import  { GCurl } from "/src/config/url.js";
+import { GCurl } from "../../config/url.js";
 import router from "../router";
 
 export const useStatusesStore = defineStore("status", () => {
@@ -9,22 +9,22 @@ export const useStatusesStore = defineStore("status", () => {
 
     async function findAllStatuses() {
         const url = GCurl + "statuses";
-        await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                statuses.value = data;
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar todos os status" }
-                });
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
+            const data = await response.json();
+            statuses.value = data;
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar todos os status" }
+            });
+        }
     }
 
     return {
@@ -32,4 +32,3 @@ export const useStatusesStore = defineStore("status", () => {
         findAllStatuses
     };
 });
-
