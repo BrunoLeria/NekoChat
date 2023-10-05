@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useUsersStore } from "./users";
 import { ref } from "vue";
 import router from "../router";
-import { GCurl } from "/src/config/url.js";
+import { GCurl } from "../../config/url.js";
 
 export const useTalkStore = defineStore("talks", () => {
     const userStore = useUsersStore();
@@ -38,50 +38,51 @@ export const useTalkStore = defineStore("talks", () => {
 
     async function findAllTalks() {
         const url = GCurl + "talks";
-        await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await response.json();
                 if (data) {
                     talks.value = {};
-                    data.forEach((talk) => {
-                        talks.value = {};
-                        data.forEach((talk) => {
-                            talks.value[talk.whatsapp_identification] = talk;
-                        });
-                    });
+                    for (const talk of data) {
+                        talks.value[talk.whatsapp_identification] = talk;
+                    }
+                    resolve(talks.value);
                 }
-            })
-            .catch(() => {
+            } catch (error) {
+                console.error(error);
+                reject(error);
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa" }
                 });
-            });
+            }
+        });
     }
     async function findOneTalkByChatID() {
         const url = GCurl + "talks/" + selected.value;
         try {
             const response = await fetch(url, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json"
-              }
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
             const data = await response.json();
-            if ( data.length > 0 ) activeChat.value = data;
+            if (data.length > 0) activeChat.value = data;
             else throw new Error("Não foi possível encontrar a conversa");
-          } catch (error) {
+        } catch (error) {
             console.error(error);
             router.push({
-              name: "404Resource",
-              params: { resource: "chamada encontrar conversa por id" }
+                name: "404Resource",
+                params: { resource: "chamada encontrar conversa por id" }
             });
-          }
+        }
     }
     async function findAllTalksByUser() {
         talks.value = {};
