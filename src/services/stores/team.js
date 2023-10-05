@@ -10,31 +10,31 @@ export const useTeamStore = defineStore("teamID", () => {
 
     async function findAllTeam() {
         const url = GCurl + "teams";
-        await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data) {
-                    teams.value = data;
-                    teamOptions.value = [];
-                    data.forEach((element) => {
-                        teamOptions.value.push({
-                            id: element.identification,
-                            name: element.name ? element.name : "Usuário " + element.identification
-                        });
-                    });
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
                 }
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar todos os usuários do time" }
-                });
             });
+            const data = await response.json();
+            if (data) {
+                teams.value = data;
+                teamOptions.value = [];
+                data.forEach((element) => {
+                    teamOptions.value.push({
+                        id: element.identification,
+                        name: element.name ? element.name : "Usuário " + element.identification
+                    });
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar todos os usuários do time" }
+            });
+        }
     }
 
     return {
