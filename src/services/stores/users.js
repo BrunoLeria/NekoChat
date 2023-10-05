@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { GCurl } from "/src/config/url.js";
+import { GCurl } from "../../config/url.js";
 import router from "../router";
 
 export const useUsersStore = defineStore("user", () => {
@@ -10,138 +10,155 @@ export const useUsersStore = defineStore("user", () => {
 
     async function createUser() {
         const url = GCurl + "users";
-        await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user.value)
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                user.value = data;
-                for (const [key, value] of Object.entries(user.value)) {
-                    if (value === null) {
-                        user.value[key] = "";
-                    }
-                }
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada criar um novo usuário" }
-                });
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user.value)
             });
+            const data = await response.json();
+            user.value = data;
+            for (const [key, value] of Object.entries(user.value)) {
+                if (value === null) {
+                    user.value[key] = "";
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada criar um novo usuário" }
+            });
+        }
     }
 
-    async function findAllUsers(req, res) {
+    async function findAllUsers() {
         const url = GCurl + "users";
-        const result = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar todos os usuários" }
-                });
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
-        return result;
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar todos os usuários" }
+            });
+        }
+    }
+
+    async function findOneUserById(id) {
+        const url = GCurl + "users/" + id;
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await response.json();
+            if (data.message === undefined) {
+                for (const [key, value] of Object.entries(data)) {
+                    if (value === null) {
+                        data[key] = "";
+                    }
+                }
+            }
+            return data;
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar um usuário por e-mail" }
+            });
+        }
     }
 
     async function findOneUserByEmail(email) {
-        const url = GCurl + "users/" + email;
-        const retorno = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.message === undefined) {
-                    data = fillEmptyFields(data);
-                    user.value = data;
-                    return true;
+        const url = GCurl + "users/email/" + email;
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
                 }
-                return false;
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada encontrar um usuário por e-mail" }
-                });
             });
-        return retorno;
+            const data = await response.json();
+            if (data.message === undefined) {
+                for (const [key, value] of Object.entries(data)) {
+                    if (value === null) {
+                        data[key] = "";
+                    }
+                }
+            }
+            return data;
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar um usuário por e-mail" }
+            });
+        }
     }
 
     async function updateUser(newUser, configOthers = false) {
-        const id = configOthers ? configUser.value.identification : user.value.identification;
+        const id = configOthers ? newUser.identification : user.value.identification;
         const url = GCurl + "users/" + id;
-        Object.keys(newUser).forEach((key) => {
-            if (newUser[key] === "" || newUser[key] === "identification") {
-                delete newUser[key];
-            }
-        });
-        await fetch(url, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newUser)
-        })
-            .then(async (response) => {
-                response = await response.json();
-                console.log(response)
-                if(response.message === "Usuário foi atualizado com sucesso!") {
-                    if (!configOthers) {
-                        for (const key of Object.keys(newUser)) {
-                            user.value[key] = newUser[key];
-                        }
+        try {
+            Object.keys(newUser).forEach((key) => {
+                if (newUser[key] === "" || newUser[key] === "identification") {
+                    delete newUser[key];
+                }
+            });
+            const response = await fetch(url, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newUser)
+            });
+            const data = await response.json();
+            if (data.message === "Usuário foi atualizado com sucesso!") {
+                if (!configOthers) {
+                    for (const key of Object.keys(newUser)) {
+                        user.value[key] = newUser[key];
                     }
                 }
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada atualizar um usuário" }
-                });
+            }
+            return response.status;
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada atualizar um usuário" }
             });
-        
+        }
     }
 
     async function deleteUser(req, res) {
         const url = GCurl + "users/" + user.value.identification;
-        await fetch(url, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                return data;
-            })
-            .catch((error) => {
-                router.push({
-                    name: "404Resource",
-                    params: { resource: "chamada deletar um usuário" }
-                });
+        try {
+            const response = await fetch(url, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
-    }
-
-    function fillEmptyFields(data) {
-        for (const [key, value] of Object.entries(data)) {
-            if (value === null) {
-                data[key] = "";
-            }
+            return await response.status;
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada deletar um usuário" }
+            });
         }
-        return data;
     }
 
     return {
@@ -149,6 +166,7 @@ export const useUsersStore = defineStore("user", () => {
         configUser,
         createUser,
         findAllUsers,
+        findOneUserById,
         findOneUserByEmail,
         updateUser,
         deleteUser
