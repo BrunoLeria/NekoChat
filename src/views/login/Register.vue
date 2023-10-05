@@ -1,10 +1,10 @@
 <script setup>
-import TextInput from "/src/components/inputs/TextInput.vue";
-import PasswordInput from "/src/components/inputs/PasswordInput.vue";
-import Sublink from "/src/components/buttons/Sublink.vue";
-import logo from "/src/assets/nekologo.jpeg";
+import TextInput from "../../components/inputs/TextInput.vue";
+import PasswordInput from "../../components/inputs/PasswordInput.vue";
+import Sublink from "../../components/buttons/Sublink.vue";
+import logo from "../../assets/nekologo.jpeg";
 import { ref } from "vue";
-import { useUsersStore } from "/src/services/stores/users.js";
+import { useUsersStore } from "../../services/stores/users.js";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
 import zxcvbn from "zxcvbn";
@@ -89,7 +89,8 @@ async function login(data) {
 					<Sublink text="Possui uma conta, entre aqui." route="Login" />
 				</p>
 			</div>
-			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST" @submit="register">
+			<form class="mt-8 space-y-6 border-slate-200 border-2 rounded-xl p-5 shadow-xl" action="#" method="POST"
+				@submit="register">
 				<input type="hidden" name="remember" value="true" />
 				<div class="rounded-md shadow-sm -space-y-px">
 					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
@@ -100,9 +101,7 @@ async function login(data) {
 					<PasswordInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" />
 				</div>
 				<div>
-					<button
-						type="submit"
-						class="
+					<button type="submit" class="
 							group
 							relative
 							w-full
@@ -120,19 +119,12 @@ async function login(data) {
 							focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
 							ease-in-out
 							duration-500
-						"
-						:disabled="logging">
+						" :disabled="logging">
 						<span class="absolute left-0 inset-y-0 flex items-center pl-3">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="lock-closed h-5 w-5 text-blue-500 group-hover:text-blue-400"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								stroke-width="2">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
+							<svg xmlns="http://www.w3.org/2000/svg"
+								class="lock-closed h-5 w-5 text-blue-500 group-hover:text-blue-400" fill="none"
+								viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+								<path stroke-linecap="round" stroke-linejoin="round"
 									d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
 							</svg>
 						</span>
