@@ -3,16 +3,17 @@ import { ref, computed } from "vue";
 import { useTalkStore } from "../../services/stores/talks";
 import ContactCard from "../cards/ContactCard.vue";
 import Filter from "./Filter.vue";
+import { useRouter } from "vue-router";
 
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalkStore();
 const search = ref("");
+const router = useRouter();
 
 const selectTalk = async (talk) => {
-	emit("update:modelValue", "Loading");
 	talkStore.selected = talk.whatsapp_identification;
 	await talkStore.findOneTalkByChatID();
-	emit("update:modelValue", "Chat");
+	router.push({ name: "Chat" });
 };
 
 const searchContact = computed(() => {
