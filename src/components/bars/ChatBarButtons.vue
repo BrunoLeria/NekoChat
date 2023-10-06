@@ -28,6 +28,11 @@ const hasClient = computed(() => {
 	const activeChatPhone = activeChat?.whatsapp_identification;
 	return !!clientStore.clients.find(client => client.phone === activeChatPhone);
 });
+const clientId = computed(() => {
+	const activeChat = talkStore.activeChat?.[0];
+	const activeChatPhone = activeChat?.whatsapp_identification;
+	return clientStore.clients.find(client => client.phone === activeChatPhone)?.identification;
+});
 
 function returnToBot(assumeChat) { // precisa verificar se essa função é necessária
 	talkStore.updateTalkToSignInUser(assumeChat, true);
@@ -41,7 +46,17 @@ function sendMessage() {
 }
 
 function newTask() {
-	window.open("task", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+	if (taskStore.beginingOfTask.length === 0) {
+		alert("Primeiro você precisa selecionar em qual mensagem a tarefa irá começar.");
+		return;
+	}
+
+	if (!hasClient) {
+		alert("Primeiro você precisa cadastrar o cliente.");
+		return;
+	}
+
+	window.open("task/client/" + clientId.value + "/chat/" + taskStore.beginingOfTask, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
 function newClient() {
@@ -172,25 +187,25 @@ watch(
 			</svg>
 		</button>
 		<button v-else type="button" class="
-					col-start-6
-					xl:col-start-11
-					mx-3
-					flex
-					justify-center
-					items-center
-					py-2
-					px-2
-					border border-transparent
-					text-sm
-					font-medium
-					rounded-full
-					text-white
-					bg-green-900
-					hover:bg-green-700
-					ease-in-out
-					duration-500
-					w-12
-					h-12
+						col-start-6
+						xl:col-start-11
+						mx-3
+						flex
+						justify-center
+						items-center
+						py-2
+						px-2
+						border border-transparent
+						text-sm
+						font-medium
+						rounded-full
+						text-white
+						bg-green-900
+						hover:bg-green-700
+						ease-in-out
+						duration-500
+						w-12
+						h-12
 					" title="Adicionar novo cliente" @click="newClient">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 				class="w-6 h-6">
