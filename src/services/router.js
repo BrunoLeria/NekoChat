@@ -87,7 +87,7 @@ const routes = [
     },
     {
         path: "/home/task/client/:client_id/chat/:message_id",
-        name: "TaskChatForm",
+        name: "ChatTaskForm",
         component: TaskForm,
         props: true,
         meta: { requiresAuth: true }
