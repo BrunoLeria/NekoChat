@@ -86,6 +86,13 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
+        path: "/home/task/client/:client_id/chat/:message_id",
+        name: "TaskChatForm",
+        component: TaskForm,
+        props: true,
+        meta: { requiresAuth: true }
+    },
+    {
         path: "/home/task/info/:id",
         name: "InfoTaskForm",
         component: TaskForm,
