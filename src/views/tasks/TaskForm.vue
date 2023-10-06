@@ -1,8 +1,15 @@
 <script setup >
-import { ref, defineAsyncComponent, computed, onBeforeMount } from 'vue';
+import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue';
 import { useUsersStore } from '../../services/stores/users';
 import { useClientsStore } from '../../services/stores/clients';
 import { useTasksStore } from '../../services/stores/tasks';
+import { useRouter } from "vue-router";
+
+const props = defineProps({
+	id: {
+		type: String,
+	},
+});
 
 const userStore = useUsersStore();
 const clientsStore = useClientsStore();
@@ -20,11 +27,12 @@ const is_feedback = ref(false);
 const usersOptions = ref([]);
 const clientsOptions = ref([]);
 const task = ref({});
+const isInfo = useRouter().currentRoute.value.name === "InfoTaskForm";
+
 
 const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
 const Combobox = defineAsyncComponent(() => import("../../components/inputs/Combobox.vue"));
 const Checkbox = defineAsyncComponent(() => import("../../components/inputs/Checkbox.vue"));
-const urlSplit = window.location.pathname.split("/");
 
 onBeforeMount(async () => {
 	if (userStore.user.is_admin) {
@@ -32,9 +40,8 @@ onBeforeMount(async () => {
 	} else {
 		usersOptions.value = [userStore.user]
 	}
-	clientsOptions.value = await clientsStore.findAllClients();
-	identification.value = urlSplit.length === 4 || urlSplit.includes("info") ? urlSplit[3] : "";
-	if (identification.value) {
+	if (props.id) {
+		identification.value = props.id;
 		task.value = await tasksStore.findOneTaskById(identification.value);
 		issue.value = task.value.issue;
 		description.value = task.value.description;
@@ -101,11 +108,11 @@ function cancel() {
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
 				class="w-full p-3 col-span-1" :disabled="true" />
 			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
-				class="w-full p-3 col-span-3" :disabled='urlSplit.includes("info")' />
+				class="w-full p-3 col-span-3" :disabled='isInfo' />
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
-				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='urlSplit.includes("info")' />
+				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='isInfo' />
 			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description'
-				class="w-full p-3 col-span-6" :disabled='urlSplit.includes("info")' />
+				class="w-full p-3 col-span-6" :disabled='isInfo' />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Responsável'" title="Responsável" v-model="fk_users_identification"></Combobox>
@@ -113,12 +120,12 @@ function cancel() {
 				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Prioridade'" title="Prioridade" v-model="priority_level">
 			</Combobox>
-			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-3 " :alternatives="clientsOptions"
-				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
-				:label="'Cliente'" title="Cliente" v-model="fk_clients_identification"></Combobox>
+			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-3 "
+				:alternatives="clientsStore.clients" :padding="'p-1'" :focusRing="'focus:ring-indigo-500'"
+				:focusBorder="'focus:border-indigo-500'" :label="'Cliente'" title="Cliente"
+				v-model="fk_clients_identification"></Combobox>
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
-				v-model='resolution_details' class="w-full p-3 col-span-4"
-				:disabled='!is_it_solved || urlSplit.includes("info")' />
+				v-model='resolution_details' class="w-full p-3 col-span-4" :disabled='!is_it_solved || isInfo' />
 			<button type="button" class="
 				col-start-5
 				mx-3
@@ -139,7 +146,7 @@ function cancel() {
 					stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
 				</svg>
-				{{ urlSplit.includes("info") ? 'Voltar' : 'Cancelar' }}
+				{{ isInfo ? 'Voltar' : 'Cancelar' }}
 			</button>
 			<button type="submit" class="
 							mx-3
@@ -157,7 +164,7 @@ function cancel() {
 							hover:bg-green-700
 							ease-in-out
 							duration-500
-				" v-show='urlSplit.length !== 4'>
+				" v-show='!isInfo'>
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 					stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
