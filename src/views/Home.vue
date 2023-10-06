@@ -40,7 +40,6 @@ const selectComponent = (component) => {
 onBeforeMount(async () => {
 	await talkStore.fetchTalks();
 	await clientStore.findAllClients();
-	talkStore.selected = talkStore.talks[0].whatsapp_identification;
 	await teamStore.findAllTeam();
 });
 
