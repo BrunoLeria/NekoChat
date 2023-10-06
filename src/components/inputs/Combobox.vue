@@ -39,7 +39,8 @@ defineEmits(["update:modelValue"]);
 				focusRing,
 				focusBorder,
 				focusBackground,
-				hoverBackground
+				hoverBackground,
+				disabled ? 'bg-gray-200' : 'bg-white'
 			]" v-model="modelValue" @change="$emit('update:modelValue', $event.target.value)" :placeholder="label">
 			<option v-if="label" value="" disabled selected>Selecione um(a) {{ label.toLowerCase() }}</option>
 			<option v-else value="" disabled selected></option>
