@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from 'vue';
 import { useTalkStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
@@ -7,6 +7,7 @@ import { useClientsStore } from "../../services/stores/clients";
 import TextInput from "../../components/inputs/TextInput.vue";
 import Combobox from "../../components/inputs/Combobox.vue";
 import { removeWhatsAppKey } from "../../utils/DataTreament";
+import { useTasksStore } from "../../services/stores/tasks";
 
 const props = defineProps({
 	responsable: {
@@ -20,11 +21,13 @@ const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const clientStore = useClientsStore();
+const taskStore = useTasksStore();
 const usedIdToTransfer = ref("");
-
-function hasClient() {
-	return clientStore.clients.some(client => client.phone === props.talk.whatsapp_identification);
-}
+const hasClient = computed(() => {
+	const activeChat = talkStore.activeChat?.[0];
+	const activeChatPhone = activeChat?.whatsapp_identification;
+	return !!clientStore.clients.find(client => client.phone === activeChatPhone);
+});
 
 function returnToBot(assumeChat) { // precisa verificar se essa função é necessária
 	talkStore.updateTalkToSignInUser(assumeChat, true);
@@ -141,34 +144,7 @@ watch(
 		<div class='mx-3 col-span-2 xl:col-span-3'>
 			<p>Usuário responsável: {{ props.responsable }}</p>
 		</div>
-		<button type="button" class="
-					col-start-5
-					xl:col-start-10
-					mx-3
-					flex
-					justify-center
-					items-center
-					py-2
-					px-2
-					border border-transparent
-					text-sm
-					font-medium
-					rounded-full
-					text-white
-					bg-green-900
-					hover:bg-green-700
-					ease-in-out
-					duration-500
-					w-12
-					h-12
-				" title="Adicionar novo cliente" @click="newClient" v-show='!hasClient'>
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-				class="w-6 h-6">
-				<path stroke-linecap="round" stroke-linejoin="round"
-					d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
-			</svg>
-		</button>
-		<button type="button" class="
+		<button v-if='hasClient' type="button" class="
 					col-start-6
 					xl:col-start-11
 					mx-3
@@ -193,6 +169,33 @@ watch(
 				class="w-6 h-6">
 				<path stroke-linecap="round" stroke-linejoin="round"
 					d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+			</svg>
+		</button>
+		<button v-else type="button" class="
+					col-start-6
+					xl:col-start-11
+					mx-3
+					flex
+					justify-center
+					items-center
+					py-2
+					px-2
+					border border-transparent
+					text-sm
+					font-medium
+					rounded-full
+					text-white
+					bg-green-900
+					hover:bg-green-700
+					ease-in-out
+					duration-500
+					w-12
+					h-12
+					" title="Adicionar novo cliente" @click="newClient">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+				class="w-6 h-6">
+				<path stroke-linecap="round" stroke-linejoin="round"
+					d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
 			</svg>
 		</button>
 		<button type="button" class="
