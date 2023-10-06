@@ -1,4 +1,6 @@
 <script setup>
+import { useTasksStore } from '../../services/stores/tasks';
+
 const props = defineProps({
     message: {
         type: Object,
@@ -13,6 +15,12 @@ const props = defineProps({
         required: true,
     },
 });
+
+const tasksStore = useTasksStore();
+
+function clicked() {
+    tasksStore.beginingOfTask = tasksStore.beginingOfTask === props.message.identification ? "" : props.message.identification;
+}
 
 function getSource(message) {
     const source = message.match(/(http|ftp| https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/)[0].replace(" ", "");
@@ -36,10 +44,10 @@ const time = (message) => {
 </script>
 
 <template>
-    <div :key="index" :class="props.message.from_me === '1'
+    <div :key="index" class='border' :class="props.message.from_me === '1'
         ? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
-        : 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3'
-        ">
+        : 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3', tasksStore.beginingOfTask === message.identification ? 'border-green-800' : ' border-transparent'
+        " @click='clicked()'>
         <div class="flex justify-between">
             <h3 :class="'text-indigo-700 break-words capitalize font-bold'">
                 {{ user }}
