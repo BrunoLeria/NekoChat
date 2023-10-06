@@ -76,22 +76,19 @@ const routes = [
         path: "/about-us",
         name: "About",
         component: About,
-        alias: "/about",
         meta: { requiresAuth: false }
     },
     {
         path: "/home/task/:id?",
         name: "TaskForm",
         component: TaskForm,
-        alias: "/task/:id?",
         props: true,
         meta: { requiresAuth: true }
     },
     {
-        path: "/home/task/:id/info",
-        name: "TaskFormInfo",
+        path: "/home/task/info/:id",
+        name: "InfoTaskForm",
         component: TaskForm,
-        alias: "/task/:id/info",
         props: true,
         meta: { requiresAuth: true }
     },
@@ -99,7 +96,13 @@ const routes = [
         path: "/home/client/:id?",
         name: "ClientForm",
         component: ClientForm,
-        alias: "/client/:id?",
+        props: true,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/home/client/task/:phone_number?",
+        name: "ClientFormWithPhoneNumber",
+        component: ClientForm,
         props: true,
         meta: { requiresAuth: true }
     },
