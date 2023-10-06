@@ -11,12 +11,10 @@ const userStore = useUsersStore();
 const clientStore = useClientsStore();
 const emit = defineEmits(["update:modelValue"]);
 const users = ref([]);
-const clients = ref([]);
 const displayedTasks = ref([]);
 
 onMounted(async () => {
     users.value = await userStore.findAllUsers();
-    clients.value = await clientStore.findAllClients();
     await findAllTasks();
 });
 
@@ -43,13 +41,12 @@ function nameOfUser(userId) {
 };
 
 function nameOfClient(clientId) {
-    const client = clients.value.find(client => client.identification === clientId);
+    const client = clientStore.clients.find(client => client.identification === clientId);
     return client.name;
 };
 
-function filterTasks(filterValue) {
+async function filterTasks(filterValue) {
     let filteredTasks = displayedTasks.value;
-    console.log(filteredTasks[0].priority_level === filterValue.priority_level);
 
     if (filterValue.fk_users_identification) {
         filteredTasks = filteredTasks.filter(task => task.fk_users_identification === parseInt(filterValue.fk_users_identification));
@@ -66,7 +63,7 @@ function filterTasks(filterValue) {
     if (!filterValue.fk_users_identification &&
         !filterValue.priority_level &&
         !filterValue.fk_clients_identification) {
-        findAllTasks();
+        await findAllTasks();
     }
     displayedTasks.value = filteredTasks;
 }
@@ -79,7 +76,8 @@ const newTask = () => {
 
 <template>
     <div class='grid grid-rows-6 grid-cols-1 bg-neutral-100 p-14 lg:p-6'>
-        <TasksFilterBar @update:modelValue="filterTasks($event)" :usersOptions='users' :clientsOptions='clients' />
+        <TasksFilterBar @update:modelValue="filterTasks($event)" :usersOptions='users'
+            :clientsOptions='clientStore.clients' />
         <div class="row-start-2 row-span-5 grid gap-5 2xl:grid-cols-4 overflow-scroll grid-cols-3">
             <div v-for='task in displayedTasks' class='grid w-full p-3'>
                 <TaskCard :key='task.identification' :issue='task.issue' :user='nameOfUser(task.fk_users_identification)'
