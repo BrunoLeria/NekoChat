@@ -84,27 +84,27 @@ export const useTalkStore = defineStore("talks", () => {
     async function findAllTalksByUser() {
         talks.value = {};
         const url = GCurl + "talks/users/" + userStore.user.identification;
-        await fetch(url, {
+        try {
+            const response = await fetch(url, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
-        })
-            .then((response) => response.json())
-            .then((data) => {
+            });
+            const data = await response.json();
                 if (data) {
                     talks.value = {};
                     data.forEach((talk) => {
                         talks.value[talk.whatsapp_identification] = talk;
                     });
                 }
-            })
-            .catch(() => {
+        } catch (error) {
+            console.error(error);
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa por usuário" }
                 });
-            });
+        }
     }
     async function updateTalk(req, res) {}
     async function updateTalkToSignInUser(idQuemAssumeChat, updateOtherClients = false) {
