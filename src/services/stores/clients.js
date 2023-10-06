@@ -36,7 +36,7 @@ export const useClientsStore = defineStore("client", () => {
                     "Content-Type": "application/json"
                 }
             });
-            return await response.json();
+            if (response.status === 200) clients.value = await response.json();
         } catch (error) {
             router.push({
                 name: "404Resource",
