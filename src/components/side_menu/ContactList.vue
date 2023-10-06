@@ -1,12 +1,12 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useTalkStore } from "../../services/stores/talks";
+import { useTalksStore } from "../../services/stores/talks";
 import ContactCard from "../cards/ContactCard.vue";
 import Filter from "./Filter.vue";
 import { useRouter } from "vue-router";
 
 const emit = defineEmits(["update:modelValue"]);
-const talkStore = useTalkStore();
+const talkStore = useTalksStore();
 const search = ref("");
 const router = useRouter();
 
