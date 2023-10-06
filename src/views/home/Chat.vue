@@ -1,6 +1,6 @@
 <script setup>
 import ChatBarButtons from "../../components/bars/ChatBarButtons.vue";
-import { useTalkStore } from "../../services/stores/talks";
+import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
 import { computed, onMounted, onUpdated, onBeforeMount } from 'vue';
@@ -8,7 +8,7 @@ import Socket from "../../services/socket.js";
 import MessageCard from "../../components/cards/MessageCard.vue";
 
 const emit = defineEmits(["update:modelValue"]);
-const talkStore = useTalkStore();
+const talkStore = useTalksStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 

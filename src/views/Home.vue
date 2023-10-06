@@ -1,7 +1,7 @@
 <script setup>
 import { defineAsyncComponent, computed, onBeforeMount } from 'vue';
 import { useRouter } from "vue-router";
-import { useTalkStore } from "../services/stores/talks.js";
+import { useTalksStore } from "../services/stores/talks.js";
 import { useUsersStore } from "../services/stores/users.js";
 import { useTeamStore } from "../services/stores/team.js";
 import Loading from "../components/Loading.vue";
@@ -13,7 +13,7 @@ const SideMenu = defineAsyncComponent({
 	loadingComponent: Loading,
 	delay: 200
 });
-const talkStore = useTalkStore();
+const talkStore = useTalksStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const clientStore = useClientsStore();
