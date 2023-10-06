@@ -4,7 +4,7 @@ import { ref } from "vue";
 import router from "../router";
 import { GCurl } from "../../config/url.js";
 
-export const useTalkStore = defineStore("talks", () => {
+export const useTalksStore = defineStore("talks", () => {
     const userStore = useUsersStore();
     const talks = ref({});
     const selected = ref("");
@@ -106,7 +106,26 @@ export const useTalkStore = defineStore("talks", () => {
             });
         }
     }
-    async function updateTalk(req, res) {}
+    async function updateTalkToNewTalks(identification, talk) {
+        const url = GCurl + "talks/tasks/" + identification;
+        try {
+            const response = await fetch(url, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(talk)
+            });
+            const data = await response.json();
+            console.log("Success:", data);
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada atualizar conversa para usuário", redirect: "Home" }
+            });
+        }
+    }
     async function updateTalkToSignInUser(idQuemAssumeChat, updateOtherClients = false) {
         const url = GCurl + "talks/users/" + idQuemAssumeChat;
         try {
@@ -140,8 +159,8 @@ export const useTalkStore = defineStore("talks", () => {
         activeChat,
         createTalk,
         findOneTalkByChatID,
-        updateTalk,
         updateTalkToSignInUser,
+        updateTalkToNewTalks,
         fetchTalks
     };
 });
