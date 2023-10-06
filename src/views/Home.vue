@@ -6,6 +6,7 @@ import { useUsersStore } from "../services/stores/users.js";
 import { useTeamStore } from "../services/stores/team.js";
 import Loading from "../components/Loading.vue";
 import Socket from "../services/socket.js";
+import { useClientsStore } from '../services/stores/clients';
 
 const SideMenu = defineAsyncComponent({
 	loader: () => import("../components/side_menu/SideMenu.vue"),
@@ -15,6 +16,7 @@ const SideMenu = defineAsyncComponent({
 const talkStore = useTalkStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
+const clientStore = useClientsStore();
 const router = useRouter()
 const translatedTitle = computed(() => {
 	document.title = "NChat - Bem-vindo";
@@ -37,6 +39,7 @@ const selectComponent = (component) => {
 
 onBeforeMount(async () => {
 	await talkStore.fetchTalks();
+	await clientStore.findAllClients();
 	talkStore.selected = talkStore.talks[0].whatsapp_identification;
 	await teamStore.findAllTeam();
 });
