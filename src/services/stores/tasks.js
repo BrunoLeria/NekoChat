@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 import { GCurl } from "../../config/url.js";
+import { ref } from "vue";
 import router from "../router";
 
 export const useTasksStore = defineStore("task", () => {
+    const beginingOfTask = ref("");
+
     async function createTask(task) {
         const url = GCurl + "tasks";
         try {
@@ -134,6 +137,7 @@ export const useTasksStore = defineStore("task", () => {
     }
 
     return {
+        beginingOfTask,
         createTask,
         findAllTasks,
         findOneTaskById,
