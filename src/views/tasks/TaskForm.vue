@@ -9,6 +9,14 @@ const props = defineProps({
 	id: {
 		type: String,
 	},
+	message_id: {
+		type: String,
+		default: ""
+	},
+	client_id: {
+		type: String,
+		default: ""
+	}
 });
 
 const userStore = useUsersStore();
@@ -25,7 +33,6 @@ const fk_clients_identification = ref("");
 const fk_users_identification = ref("");
 const is_feedback = ref(false);
 const usersOptions = ref([]);
-const clientsOptions = ref([]);
 const task = ref({});
 const isInfo = useRouter().currentRoute.value.name === "InfoTaskForm";
 
@@ -51,6 +58,10 @@ onBeforeMount(async () => {
 		fk_clients_identification.value = task.value.fk_clients_identification;
 		fk_users_identification.value = task.value.fk_users_identification;
 		is_feedback.value = task.value.is_feedback;
+		return;
+	}
+	if (props.client_id) {
+		fk_clients_identification.value = props.client_id;
 	}
 });
 
@@ -123,7 +134,7 @@ function cancel() {
 			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-3 "
 				:alternatives="clientsStore.clients" :padding="'p-1'" :focusRing="'focus:ring-indigo-500'"
 				:focusBorder="'focus:border-indigo-500'" :label="'Cliente'" title="Cliente"
-				v-model="fk_clients_identification"></Combobox>
+				v-model="fk_clients_identification" :disabled='client_id.length > 0'></Combobox>
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
 				v-model='resolution_details' class="w-full p-3 col-span-4" :disabled='!is_it_solved || isInfo' />
 			<button type="button" class="
