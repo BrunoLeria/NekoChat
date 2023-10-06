@@ -1,15 +1,22 @@
 <script setup>
 import { computed } from "vue";
 import moment from "moment";
+import { formatPhoneNumber } from "../../utils/DataTreament";
+import { useClientsStore } from "../../services/stores/clients";
 
 const props = defineProps({
 	talk: {
 		type: Object
 	}
 });
+const clientStore = useClientsStore();
+
 const contactName = computed(() => {
-	const phoneWithoutPrefix = props.talk.whatsapp_identification.slice(2);
-	return phoneWithoutPrefix.replace(/\D/g, "").replace(/(\d{2})(\d{4,5})(\d{4})/, "($1) $2-$3");
+	const client = clientStore.clients.find(client => client.phone === props.talk.whatsapp_identification);
+	if (client) {
+		return client.name;
+	}
+	return formatPhoneNumber(props.talk.whatsapp_identification);
 });
 
 const dateTime = computed(() => {
