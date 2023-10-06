@@ -10,7 +10,7 @@ export const useTalkStore = defineStore("talks", () => {
     const selected = ref("");
     const activeChat = ref([]);
 
-    async function createTalk(message) {
+    async function createTalk(message, whatsapp_identification) {
         const url = GCurl + "talks";
         fetch(url, {
             method: "POST",
@@ -20,7 +20,7 @@ export const useTalkStore = defineStore("talks", () => {
             body: JSON.stringify({
                 message: message,
                 fk_users_identification: userStore.user.identification,
-                phone_number: phone_number,
+                whatsapp_identification: whatsapp_identification,
                 from_me: true
             })
         })
