@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
-import { useTalkStore } from "../../services/stores/talks";
+import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
 import { useClientsStore } from "../../services/stores/clients";
@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 const myMessage = ref("");
-const talkStore = useTalkStore();
+const talkStore = useTalksStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const clientStore = useClientsStore();
