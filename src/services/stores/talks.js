@@ -12,7 +12,8 @@ export const useTalkStore = defineStore("talks", () => {
 
     async function createTalk(message, whatsapp_identification) {
         const url = GCurl + "talks";
-        fetch(url, {
+        try {
+            const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -23,17 +24,16 @@ export const useTalkStore = defineStore("talks", () => {
                 whatsapp_identification: whatsapp_identification,
                 from_me: true
             })
-        })
-            .then((response) => response.json())
-            .then((data) => {
+            });
+            const data = await response.json();
                 console.log("Success:", data);
-            })
-            .catch(() => {
+        } catch (error) {
+            console.error(error);
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada criar conversa", redirect: "Home" }
                 });
-            });
+        }
     }
 
     async function findAllTalks() {
