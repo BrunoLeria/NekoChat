@@ -130,8 +130,9 @@ export const useTalkStore = defineStore("talks", () => {
                 });
             });
     }
-    async function fetchTalks() {
-        userStore.user.is_admin ? await findAllTalks() : await findAllTalksByUser();
+
+    function fetchTalks() {
+        userStore.user.is_admin ? findAllTalks() : findAllTalksByUser();
     }
 
     return {
