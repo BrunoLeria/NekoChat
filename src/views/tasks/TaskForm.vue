@@ -3,6 +3,7 @@ import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue';
 import { useUsersStore } from '../../services/stores/users';
 import { useClientsStore } from '../../services/stores/clients';
 import { useTasksStore } from '../../services/stores/tasks';
+import { useTalksStore } from '../../services/stores/talks';
 import { useRouter } from "vue-router";
 
 const props = defineProps({
@@ -22,6 +23,7 @@ const props = defineProps({
 const userStore = useUsersStore();
 const clientsStore = useClientsStore();
 const tasksStore = useTasksStore();
+const talksStore = useTalksStore();
 
 const identification = ref('');
 const issue = ref('');
@@ -35,6 +37,7 @@ const is_feedback = ref(false);
 const usersOptions = ref([]);
 const task = ref({});
 const isInfo = useRouter().currentRoute.value.name === "InfoTaskForm";
+const isChatTask = useRouter().currentRoute.value.name === "ChatTaskForm";
 
 
 const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
@@ -60,7 +63,7 @@ onBeforeMount(async () => {
 		is_feedback.value = task.value.is_feedback;
 		return;
 	}
-	if (props.client_id) {
+	if (isChatTask) {
 		fk_clients_identification.value = props.client_id;
 	}
 });
@@ -81,7 +84,7 @@ const priorityOptions = [
 ]
 
 async function save() {
-	const response = ref("");
+	const response = ref({});
 
 	task.value = {
 		issue: issue.value,
@@ -100,7 +103,13 @@ async function save() {
 		response.value = await tasksStore.createTask(task.value);
 	}
 
-	if (response.value === 201 || response.value === 200) {
+	if (response.status === 201 || response.status === 200) {
+		if (isChatTask) {
+			const talk = {
+				fk_tasks_identification: response.data.identification
+			}
+			await talksStore.updateTalkToNewTalks(message_id, talk);
+		}
 		window.close();
 	} else {
 		alert("Erro ao salvar a tarefa");
