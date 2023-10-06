@@ -16,7 +16,7 @@ export const useTasksStore = defineStore("task", () => {
                 },
                 body: JSON.stringify(task)
             });
-            return await response.status;
+            return { status: response.status, data: await response.json() };
         } catch (error) {
             router.push({
                 name: "404Resource",
