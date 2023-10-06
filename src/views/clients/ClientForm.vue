@@ -1,25 +1,35 @@
 <script setup >
 import { ref, defineAsyncComponent, onBeforeMount } from 'vue';
 import { useClientsStore } from '../../services/stores/clients';
+import { removeWhatsAppKey } from '../../utils/DataTreament';
 
+const props = defineProps({
+	id: {
+		type: String,
+	},
+	phone_number: {
+		type: String,
+	},
+});
 const clientsStore = useClientsStore();
 const identification = ref('');
 const name = ref('');
 const email = ref('');
 const phone = ref('');
 const client = ref({});
-const urlSplit = window.location.pathname.split("/");
 
 const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
 const MaskedInput = defineAsyncComponent(() => import("../../components/inputs/MaskedInput.vue"));
 
 onBeforeMount(async () => {
-	identification.value = urlSplit.length === 4 ? urlSplit[3] : "";
-	if (identification.value) {
+	if (props.id) {
+		identification.value = props.id;
 		client.value = await clientsStore.findOneClientById(identification.value);
 		name.value = client.value.name;
 		email.value = client.value.email;
-		phone.value = client.value.phone.replace("@s.whatsapp.net", "").slice(2)
+		phone.value = removeWhatsAppKey(client.value.phone);
+	} else if (props.phone_number) {
+		phone.value = props.phone_number;
 	}
 });
 
