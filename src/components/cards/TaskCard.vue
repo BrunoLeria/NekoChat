@@ -38,7 +38,7 @@ const props = defineProps({
 });
 
 function openTaskInfo() {
-    window.open("task/" + props.identification + "/info", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+    window.open("task/info/" + props.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
 function openEditTask() {
