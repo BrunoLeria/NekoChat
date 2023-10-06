@@ -38,7 +38,6 @@ export const useTalkStore = defineStore("talks", () => {
 
     async function findAllTalks() {
         const url = GCurl + "talks";
-        return new Promise(async (resolve, reject) => {
             try {
                 const response = await fetch(url, {
                     method: "GET",
@@ -52,17 +51,15 @@ export const useTalkStore = defineStore("talks", () => {
                     for (const talk of data) {
                         talks.value[talk.whatsapp_identification] = talk;
                     }
-                    resolve(talks.value);
                 }
+            return;
             } catch (error) {
                 console.error(error);
-                reject(error);
                 router.push({
                     name: "404Resource",
                     params: { resource: "chamada encontrar conversa" }
                 });
             }
-        });
     }
     async function findOneTalkByChatID() {
         const url = GCurl + "talks/" + selected.value;
