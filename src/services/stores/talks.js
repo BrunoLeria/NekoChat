@@ -106,7 +106,7 @@ export const useTalksStore = defineStore("talks", () => {
             });
         }
     }
-    async function updateTalkToNewTalks(identification, talk) {
+    async function updateTalksToNewTask(identification, talk) {
         const url = GCurl + "talks/tasks/" + identification;
         try {
             const response = await fetch(url, {
@@ -161,6 +161,7 @@ export const useTalksStore = defineStore("talks", () => {
         findOneTalkByChatID,
         updateTalkToSignInUser,
         updateTalkToNewTalks,
+        updateTalksToNewTask,
         fetchTalks
     };
 });
