@@ -17,7 +17,7 @@ function maskedPhone(phone) {
 </script>
 
 <template>
-    <div class="bg-neutral-100 p-14 grid gap-5 grid-rows-6 grid-cols-3 row-span-6">
+    <div class="bg-neutral-100 p-14 grid gap-x-3.5 gap-y-32 grid-rows-6 grid-cols-3 row-span-6">
         <div v-for='client in clientsStore.clients'>
             <ClientCard :key='client.identification' :identification='client.identification' :name='client.name'
                 :email='client.email' :phone="maskedPhone(client.phone)" />

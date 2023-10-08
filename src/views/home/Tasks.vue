@@ -87,7 +87,7 @@ Socket.on("tasks", () => {
     <div class='grid grid-rows-6 grid-cols-1 bg-neutral-100 p-14 lg:p-6'>
         <TasksFilterBar @update:modelValue="filterTasks($event)" :usersOptions='users'
             :clientsOptions='clientStore.clients' />
-        <div class="row-start-2 row-span-5 grid gap-5 2xl:grid-cols-4 overflow-scroll grid-cols-3">
+        <div class="row-start-2 row-span-5 grid gap-x-3.5 gap-y-32 2xl:grid-cols-4 overflow-scroll grid-cols-3">
             <div v-for='task in displayedTasks' class='grid w-full p-3'>
                 <TaskCard :key='task.identification' :issue='task.issue' :user='nameOfUser(task.fk_users_identification)'
                     :user_id='task.fk_users_identification' :client='nameOfClient(task.fk_clients_identification)'
