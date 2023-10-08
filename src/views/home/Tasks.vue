@@ -11,6 +11,7 @@ const userStore = useUsersStore();
 const clientStore = useClientsStore();
 const emit = defineEmits(["update:modelValue"]);
 const users = ref([]);
+const allTasks = ref([]);
 const displayedTasks = ref([]);
 
 onMounted(async () => {
@@ -20,7 +21,7 @@ onMounted(async () => {
 
 async function findAllTasks() {
     if (userStore.user.is_admin) {
-        displayedTasks.value = await tasksStore.findAllTasks();
+        allTasks.value = await tasksStore.findAllTasks();
     } else {
         // Retrieve tasks for user's team if user is not an admin
         const userTeamId = userStore.user.fk_team_identification;
@@ -31,8 +32,9 @@ async function findAllTasks() {
             const taskUserTeamId = taskUser.fk_team_identification;
             return taskUserTeamId === userTeamId;
         });
-        displayedTasks.value = tasksForUserTeam;
+        allTasks.value = tasksForUserTeam;
     }
+    displayedTasks.value = allTasks.value;
 }
 
 function nameOfUser(userId) {
@@ -46,7 +48,14 @@ function nameOfClient(clientId) {
 };
 
 async function filterTasks(filterValue) {
-    let filteredTasks = displayedTasks.value;
+
+    if (!filterValue.fk_users_identification &&
+        !filterValue.priority_level &&
+        !filterValue.fk_clients_identification) {
+        displayedTasks.value = allTasks.value;
+        return;
+    }
+    let filteredTasks = allTasks.value;
 
     if (filterValue.fk_users_identification) {
         filteredTasks = filteredTasks.filter(task => task.fk_users_identification === parseInt(filterValue.fk_users_identification));
@@ -60,11 +69,6 @@ async function filterTasks(filterValue) {
         filteredTasks = filteredTasks.filter(task => task.fk_clients_identification === parseInt(filterValue.fk_clients_identification));
     }
 
-    if (!filterValue.fk_users_identification &&
-        !filterValue.priority_level &&
-        !filterValue.fk_clients_identification) {
-        await findAllTasks();
-    }
     displayedTasks.value = filteredTasks;
 }
 

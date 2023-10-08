@@ -31,9 +31,9 @@ function cleanFilter() {
     priority_level.value = "";
     fk_clients_identification.value = "";
     emit("update:modelValue", {
-        fk_users_identification: fk_users_identification.value,
-        priority_level: priority_level.value,
-        fk_clients_identification: fk_clients_identification.value
+        fk_users_identification: false,
+        priority_level: false,
+        fk_clients_identification: false
     });
 }
 
