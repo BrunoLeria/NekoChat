@@ -78,7 +78,6 @@ const colorBorder = computed(() => {
 const showInfo = ref(false);
 const showEdit = ref(false);
 const showDelete = ref(false);
-const is_solved = ref(false);
 </script>
 
 <template>
