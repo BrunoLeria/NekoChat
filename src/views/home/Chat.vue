@@ -34,19 +34,6 @@ const userResponsable = computed(() => {
 	}
 	return "";
 });
-
-//WebSocket chenges to the dashboard and the selected talk
-Socket.on("returnedToBot", async () => {
-	if (userStore.user.identification) {
-		await talkStore.findOneTalkByChatID().then(() => {
-			if (talkStore.activeChat[0].fk_users_identification !== userStore.user.identification) {
-				talkStore.selected = "";
-				alert("Usuário responsável pelo chat modificado.");
-				emit("update:modelValue", "Welcome");
-			}
-		});
-	}
-});
 </script>
 
 <template>
