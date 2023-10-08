@@ -78,7 +78,8 @@ function openUserConfig(id) {
 						justify-center
 						text-gray-500
 						rounded-bl-lg
-						border-gray-200 border-t-2 border-r
+						rounded-br-lg
+						border-gray-200 border-t-2
 						hover:bg-indigo-500 hover:text-white
 						ease-in-out
 						duration-500
