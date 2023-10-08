@@ -5,6 +5,7 @@ import { useClientsStore } from "../../services/stores/clients";
 import { ref, onMounted } from "vue";
 import TaskCard from "../../components/cards/TaskCard.vue";
 import TasksFilterBar from "../../components/bars/TasksFilterBar.vue";
+import Socket from "../services/socket.js";
 
 const tasksStore = useTasksStore();
 const userStore = useUsersStore();
@@ -75,6 +76,10 @@ async function filterTasks(filterValue) {
 const newTask = () => {
     window.open("task", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 };
+
+Socket.on("tasks", () => {
+    teamStore.findAllTasks();
+});
 
 </script>
 

@@ -43,7 +43,7 @@ onBeforeMount(async () => {
 	await teamStore.findAllTeam();
 });
 
-Socket.on("newTalk", () => {
+Socket.on("talks", () => {
 	if (userStore.user.identification) {
 		if (userStore.user.is_admin) talkStore.fetchTalks();
 		else talkStore.fetchTalksByUser();
@@ -51,7 +51,10 @@ Socket.on("newTalk", () => {
 		if (talkStore.selected) talkStore.findOneTalkByChatID();
 	}
 });
-Socket.on("userUpdated", () => {
+Socket.on("users", () => {
+	teamStore.findAllTeam();
+});
+Socket.on("client", () => {
 	teamStore.findAllTeam();
 });
 </script>
