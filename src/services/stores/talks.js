@@ -160,7 +160,6 @@ export const useTalksStore = defineStore("talks", () => {
         createTalk,
         findOneTalkByChatID,
         updateTalkToSignInUser,
-        updateTalkToNewTalks,
         updateTalksToNewTask,
         fetchTalks
     };
