@@ -40,18 +40,6 @@ function updateStatus(identification) {
 		<transition name='component-fade' mode="out-in">
 			<div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3" v-show='showMenu'>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base md:px-2"
-					@mouseover="showAnalytics = true" @mouseleave="showAnalytics = false"
-					@click="router.push({ name: 'Analytics' })">
-					<svg v-show='!showAnalytics' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-						stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-						<path stroke-linecap="round" stroke-linejoin="round"
-							d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-					</svg>
-					<transition name="slide-fade" :duration="{ enter: 50, leave: 50 }">
-						<h4 v-show="showAnalytics" class="mx-3 sm:hidden lg:inline">Analiticos</h4>
-					</transition>
-				</div>
-				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base md:px-2"
 					@mouseover="showTeam = true" @mouseleave="showTeam = false" @click="router.push({ name: 'Team' })">
 					<svg v-show='!showTeam' xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
 						viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
