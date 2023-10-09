@@ -5,7 +5,7 @@ import { useClientsStore } from "../../services/stores/clients";
 import { ref, onMounted } from "vue";
 import TaskCard from "../../components/cards/TaskCard.vue";
 import TasksFilterBar from "../../components/bars/TasksFilterBar.vue";
-import Socket from "../services/socket.js";
+import Socket from "../../services/socket.js";
 
 const tasksStore = useTasksStore();
 const userStore = useUsersStore();
