@@ -38,11 +38,12 @@ defineEmits(["update:modelValue"]);
 
 <template>
 	<div class="py-5">
-		<label class="block text-sm font-medium text-gray-700">{{ label }}:</label>
+		<label class="text-sm font-medium text-gray-700 hidden 2xl:block">{{ label }}:</label>
 		<input :id="id" :name="id" :type="type" :autocomplete="autoComplete" :disabled="disabled" v-model="modelValue"
 			@input="$emit('update:modelValue', $event.target.value)" :required="required" class="
 				rounded-xl
-				p-4
+				p-2
+				2xl:p-4
 				relative
 				block
 				w-full
