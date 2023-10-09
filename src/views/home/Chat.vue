@@ -1,5 +1,6 @@
 <script setup>
 import ChatBarButtons from "../../components/bars/ChatBarButtons.vue";
+import { useClientsStore } from "../../services/stores/clients";
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
@@ -11,6 +12,8 @@ const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalksStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
+const clientStore = useClientsStore();
+
 
 const user = computed(() => userStore.user.name);
 
@@ -35,6 +38,14 @@ const userResponsable = computed(() => {
 	return "";
 });
 
+const contactName = computed(() => {
+	const client = clientStore.clients.find(client => client.phone === talkStore.activeChat[0].whatsapp_identification);
+	if (client) {
+		return client.name;
+	}
+	return formatPhoneNumber(talkStore.activeChat[0].whatsapp_identification);
+});
+
 Socket.on("talks", async() => {
 	await talkStore.findOneTalkByChatID();
 });
@@ -45,7 +56,7 @@ Socket.on("talks", async() => {
 		<div class="flex flex-col my-5 p-5 overflow-y-auto  bg-white rounded-xl col-span-10 row-span-5"
 			id="scrollContainer">
 			<div v-for="(message, index) in talkStore.activeChat">
-				<MessageCard :key="index" :message="message" :user="message.from_me === '1' ? user : 'Cliente'"
+				<MessageCard :key="index" :message="message" :user="message.from_me === '1' ? user : contactName"
 					:index="index" />
 			</div>
 		</div>
