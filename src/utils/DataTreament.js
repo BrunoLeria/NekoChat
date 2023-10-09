@@ -8,6 +8,5 @@ export const removeWhatsAppKey = (phone_number) => {
 
 export const formatPhoneNumber = (phone_number) => {
     phone_number = removeWhatsAppKey(phone_number).replace(/(\d{2})(\d{4,5})(\d{4})/, "($1) $2-$3");
-    console.log(phone_number);
     return phone_number;
 };
