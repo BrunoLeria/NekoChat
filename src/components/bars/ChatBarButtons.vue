@@ -105,6 +105,7 @@ watch(
 					mx-3
 					flex
 					justify-center
+					items-center
 					py-2
 					px-2
 					border border-transparent
@@ -116,8 +117,10 @@ watch(
 					hover:bg-blue-700
 					ease-in-out
 					duration-500
-					w-12
-					h-12
+					w-10
+					h-10
+					2xl:w-12
+					2xl:h-12
 				" title="Anexar arquivo">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
 				stroke-width="2">
@@ -131,6 +134,7 @@ watch(
 					mx-3
 					flex
 					justify-center
+					items-center
 					py-2
 					px-2
 					border border-transparent
@@ -142,8 +146,10 @@ watch(
 					hover:bg-blue-700
 					ease-in-out
 					duration-500
-					w-12
-					h-12
+					w-10
+					h-10
+					2xl:w-12
+					2xl:h-12
 				" title="Enviar mensagem" @click="sendMessage()">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
 				<path fill-rule="evenodd"
@@ -152,11 +158,12 @@ watch(
 			</svg>
 		</button>
 		<Combobox v-if="userStore.user.is_admin" :id="'usersComboBox'" :idInstead="true"
-			class="grid grid-row-2 row-start-2 col-span-3 xl:col-span-4 w-full" :alternatives="teamStore.teamOptions"
-			:backgroundColor="'bg-yellow-700 hover:bg-yellow-500 '" :padding="'p-1'" :border="'border border-transparent'"
-			:focusRing="'focus:ring-transparent'" :focusBorder="'focus:border-transparent'" :textColorProp="'text-white'"
-			:label="'Usuário para transferir'" title="Transferir para outro usuário" v-model="usedIdToTransfer"></Combobox>
-		<div class='mx-3 col-span-2 xl:col-span-3'>
+			class="grid grid-row-2 row-start-2 col-span-4 w-full" :alternatives="teamStore.teamOptions"
+			:backgroundColor="'bg-yellow-700 hover:bg-yellow-500 '" :padding="'p-1 2xl:p-4'"
+			:border="'border border-transparent'" :focusRing="'focus:ring-transparent'"
+			:focusBorder="'focus:border-transparent'" :textColorProp="'text-white'" :label="'Usuário para transferir'"
+			title="Transferir para outro usuário" v-model="usedIdToTransfer"></Combobox>
+		<div class='mx-3 col-span-4 '>
 			<p>Usuário responsável: {{ props.responsable }}</p>
 		</div>
 		<button v-if='hasClient' type="button" class="
@@ -177,8 +184,10 @@ watch(
 					hover:bg-green-700
 					ease-in-out
 					duration-500
-					w-12
-					h-12
+					w-10
+					h-10
+					2xl:w-12
+					2xl:h-12
 				" title="Adicionar nova tarefa" @click="newTask">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 				class="w-6 h-6">
@@ -204,8 +213,10 @@ watch(
 						hover:bg-green-700
 						ease-in-out
 						duration-500
-						w-12
-						h-12
+						w-10
+					h-10
+					2xl:w-12
+					2xl:h-12
 					" title="Adicionar novo cliente" @click="newClient">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 				class="w-6 h-6">
@@ -229,8 +240,10 @@ watch(
 					hover:bg-red-700
 					ease-in-out
 					duration-500
-					w-12
-					h-12
+					w-10
+					h-10
+					2xl:w-12
+					2xl:h-12
 				" title="Encerrar conversa" @click="endTask">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
 				stroke-width="2">
