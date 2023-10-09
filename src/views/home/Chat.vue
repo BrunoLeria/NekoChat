@@ -34,6 +34,10 @@ const userResponsable = computed(() => {
 	}
 	return "";
 });
+
+Socket.on("talks", async() => {
+	await talkStore.findOneTalkByChatID();
+});
 </script>
 
 <template>
