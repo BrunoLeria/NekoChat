@@ -13,7 +13,7 @@ const props = defineProps({
         required: true
     },
     email: {
-        type: String,
+        type: [String, null],
         required: true
     },
     phone: {
@@ -34,7 +34,7 @@ function openEditClient() {
 
 async function deleteClient() {
     const response = await clientsStore.deleteClient(props.identification);
-    if (response.status == 200) {
+    if (response == 200) {
         window.location.reload();
     } else {
         alert("Erro ao deletar cliente");
@@ -58,7 +58,7 @@ async function deleteClient() {
         <div class="grid grid-cols-5 p-3 m-3 items-center">
             <h4 class="col-span-4 font-semibold text-lg">{{ props.name }}</h4>
             <p class="col-span-4  text-gray-500 ">{{ "Id: " + props.identification }}</p>
-            <p class="col-span-4 text-gray-500">{{ "E-mail: " + props.email }}</p>
+            <p class="col-span-4 text-gray-500" v-if='props.email'>{{ "E-mail: " + props.email }}</p>
             <p class="col-span-4 text-gray-500">{{ "Celular: " + props.phone }}</p>
         </div>
         <div class="grid grid-cols-2">
