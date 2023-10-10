@@ -11,7 +11,7 @@ const emit = defineEmits(["update:modelValue"]);
 const showLoggout = ref(false);
 const showConfig = ref(false);
 const showTeam = ref(false);
-const showAnalytics = ref(false);
+const showFeedback = ref(false);
 const showMenu = ref(false);
 const showMenuLabel = ref(false);
 const showTasks = ref(false);
@@ -27,6 +27,10 @@ const handleSignOut = async () => {
 		console.error(error);
 	}
 };
+
+function openFeedback() {
+	window.open("task/feedback", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+}
 
 function updateStatus(identification) {
 	if (identification !== userStore.user.fk_statuses_identification) {
@@ -84,6 +88,18 @@ function updateStatus(identification) {
 					</svg>
 					<transition name="slide-fade" :duration="{ enter: 50, leave: 50 }">
 						<h4 v-show="showConfig" class="mx-3 sm:hidden lg:inline">Configurações</h4>
+					</transition>
+				</div>
+				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base md:px-2"
+					@mouseover="showFeedback = true" @mouseleave="showFeedback = false"
+					@click="openFeedback">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+						stroke="currentColor" class="w-6 h-6">
+						<path stroke-linecap="round" stroke-linejoin="round"
+							d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z" />
+					</svg>
+					<transition name="slide-fade" :duration="{ enter: 50, leave: 50 }">
+						<h4 v-show="showFeedback" class="mx-3 sm:hidden lg:inline">Feedback</h4>
 					</transition>
 				</div>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base md:px-2"
