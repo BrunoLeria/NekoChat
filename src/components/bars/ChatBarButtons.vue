@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onBeforeMount } from 'vue';
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
@@ -23,6 +23,7 @@ const teamStore = useTeamStore();
 const clientStore = useClientsStore();
 const taskStore = useTasksStore();
 const usedIdToTransfer = ref("");
+const users = ref([]);
 const activeChat = talkStore.activeChat?.[0];
 const hasClient = computed(() => {
 	const activeChat = talkStore.activeChat?.[0];
@@ -88,6 +89,10 @@ function uploadFile(event) {
 		}
 	};
 }
+
+onBeforeMount(async () => {
+	users.value = await userStore.findAllUsers();
+});
 
 watch(
 	() => usedIdToTransfer.value,
@@ -159,7 +164,7 @@ watch(
 			</svg>
 		</button>
 		<Combobox v-if="userStore.user.is_admin" :id="'usersComboBox'" :idInstead="true"
-			class="grid grid-row-2 row-start-2 col-span-4 w-full" :alternatives="teamStore.teamOptions"
+			class="grid grid-row-2 row-start-2 col-span-4 w-full" :alternatives="users"
 			:backgroundColor="'bg-yellow-700 hover:bg-yellow-500 '" :padding="'p-1 2xl:p-4'"
 			:border="'border border-transparent'" :focusRing="'focus:ring-transparent'"
 			:focusBorder="'focus:border-transparent'" :textColorProp="'text-white'" :label="'Usuário para transferir'"
