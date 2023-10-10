@@ -100,6 +100,12 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
+        path: "/task/feedback",
+        name: "FeedbackTaskForm",
+        component: TaskForm,
+        meta: { requiresAuth: true }
+    },
+    {
         path: "/home/client/:id?",
         name: "ClientForm",
         component: ClientForm,
