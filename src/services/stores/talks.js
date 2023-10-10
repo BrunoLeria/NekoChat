@@ -100,10 +100,6 @@ export const useTalksStore = defineStore("talks", () => {
             }
         } catch (error) {
             console.error(error);
-            router.push({
-                name: "404Resource",
-                params: { resource: "chamada encontrar conversa por usuário" }
-            });
         }
     }
     async function updateTalksToNewTask(identification, talk) {
