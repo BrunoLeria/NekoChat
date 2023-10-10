@@ -115,6 +115,21 @@ async function save() {
 		alert("Erro ao salvar a tarefa");
 	}
 }
+const title = computed(() => {
+	if (isInfo) {
+		return "Informações da tarefa";
+	}
+	if (isChatTask) {
+		return "Nova tarefa";
+	}
+	if (isFeedback) {
+		return "Feedback";
+	}
+	if (props.id) {
+		return "Editar tarefa";
+	}
+	return "Nova tarefa";
+})
 
 function cancel() {
 	window.close();
@@ -123,28 +138,28 @@ function cancel() {
 </script>
 <template>
 	<div class="bg-slate-100 w-full h-full grid p-3">
-		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
+		<h3 class="mb-4 text-xl font-medium text-gray-900">{{ title }}</h3>
 		<form @submit.prevent="save" class='grid grid-cols-6 grid-rows-6 items-center justify-center'>
-			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
+			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification' padding='p-4'
 				class="w-full p-3 col-span-1" :disabled="true" />
-			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue'
+			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue' padding='p-4'
 				class="w-full p-3 col-span-3" :disabled='isInfo' />
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
 				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='isInfo' />
-			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description'
+			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description' padding='p-4'
 				class="w-full p-3 col-span-6" :disabled='isInfo' />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
-				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
-				:label="'Responsável'" title="Responsável" v-model="fk_users_identification"></Combobox>
-			<Combobox :id="'priorityComboBox'" :idInstead="true" class="grid p-3" :alternatives="priorityOptions"
-				:padding="'p-1'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
-				:label="'Prioridade'" title="Prioridade" v-model="priority_level">
+				:padding="'p-4'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
+				:label="'Responsável'" title="Responsável" v-model="fk_users_identification"
+			<Combobox :id="'priorityComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="priorityOptions"
+				:padding="'p-4'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
+				:label="'Prioridade'" title="Prioridade" v-model="priority_level" :disabled='isInfo'>
 			</Combobox>
-			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-3 "
-				:alternatives="clientsStore.clients" :padding="'p-1'" :focusRing="'focus:ring-indigo-500'"
+			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-2"
+				:alternatives="clientsStore.clients" :padding="'p-4'" :focusRing="'focus:ring-indigo-500'"
 				:focusBorder="'focus:border-indigo-500'" :label="'Cliente'" title="Cliente"
 				v-model="fk_clients_identification" :disabled='client_id.length > 0'></Combobox>
-			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete=""
+			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete="" padding='p-4'
 				v-model='resolution_details' class="w-full p-3 col-span-4" :disabled='!is_it_solved || isInfo' />
 			<button type="button" class="
 				col-start-5
