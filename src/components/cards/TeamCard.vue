@@ -2,8 +2,10 @@
 import { ref } from 'vue';
 import router from '../../services/router';
 import { useUsersStore } from '../../services/stores/users';
+import { useTeamStore } from '../../services/stores/team';
 
 const userStore = useUsersStore();
+const teamStore = useTeamStore();
 const props = defineProps({
     team: {
         type: Object,
@@ -20,8 +22,21 @@ function openTeamInfo() {
 function openEditTeam() {
     console.log("edit")
 }
-function deleteTeam() {
-    console.log("delete")
+async function deleteTeam() {
+    try {
+        if (confirm("Tem certeza que deseja deletar essa equipe?")) {
+            const response = await teamStore.deleteTeam(props.team.identification);
+            if (response === 200) {
+                alert("Equipe deletada com sucesso!");
+                window.location.reload();
+            }
+            else {
+                alert("Erro ao deletar equipe!");
+            }
+        }
+    } catch (error) {
+        alert("Erro ao deletar equipe!");
+    }
 }
 </script>
 
