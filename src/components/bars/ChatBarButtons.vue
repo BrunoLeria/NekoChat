@@ -64,8 +64,33 @@ function newClient() {
 	window.open("client/task/" + phone_number, "Ratting", "width=700, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
-function endTask() {
-	console.log("endTask");
+async function endTask() {
+	try{
+		if (taskStore.endingOfTask.length === 0) {
+			alert("Primeiro você precisa selecionar em qual mensagem a tarefa irá terminar.");
+			return;
+		}
+		
+		if (!hasClient) {
+			alert("Primeiro você precisa cadastrar o cliente.");
+			return;
+		}
+
+		if(confirm("Tem certeza que deseja encerrar a conversa? Caso sim lembre de informar depois o motivo do encerramento.")) {
+			const body = {
+				fk_tasks_identification: true,
+			}
+			const response = await talkStore.updateTalksAndEndTask(taskStore.endingOfTask);
+			if (response === 200){
+				alert("Tarefa encerrada com sucesso.");
+			} else {
+				alert("Erro ao encerrar a tarefa.");
+			}
+		}
+	} catch (error) {
+		alert("Erro ao encerrar a tarefa: " + error);	
+		console.log(error)
+	}
 }
 
 function uploadFile(event) {
