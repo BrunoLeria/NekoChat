@@ -91,37 +91,45 @@ const priorityOptions = [
 ]
 
 async function save() {
-	const response = ref({});
+	try {
+		if (confirm("Deseja salvar a tarefa?")) {
+			const response = ref({});
 
-	task.value = {
-		issue: issue.value,
-		description: description.value,
-		priority_level: priority_level.value,
-		is_it_solved: is_it_solved.value,
-		resolution_details: resolution_details.value,
-		fk_clients_identification: fk_clients_identification.value,
-		fk_users_identification: fk_users_identification.value,
+			task.value = {
+				issue: issue.value,
+				description: description.value,
+				priority_level: priority_level.value,
+				is_it_solved: is_it_solved.value,
+				resolution_details: resolution_details.value,
+				fk_clients_identification: fk_clients_identification.value,
+				fk_users_identification: fk_users_identification.value,
 				is_feedback: isFeedback
-	}
-
-	if (identification.value) {
-		response.value = await tasksStore.updateTask(task.value, identification.value);
-	} else {
-		response.value = await tasksStore.createTask(task.value);
-	}
-
-	if (response.status === 201 || response.status === 200) {
-		if (isChatTask) {
-			const talk = {
-				fk_tasks_identification: response.data.identification
 			}
-			await talksStore.updateTalkToNewTalks(message_id, talk);
+
+			if (identification.value) {
+				response.value = await tasksStore.updateTask(task.value, identification.value);
+			} else {
+				response.value = await tasksStore.createTask(task.value);
+			}
+
+			if (response.value.status === 201 || response.value.status === 200) {
+				if (isChatTask) {
+					const talk = {
+						fk_tasks_identification: response.value.data.identification
+					}
+					await talksStore.updateTalksToNewTask(props.message_id, talk);
+				}
+				window.close();
+			} else {
+				alert("Erro ao salvar a tarefa");
+			}
 		}
-		window.close();
-	} else {
+	} catch (error) {
+		console.log("Erro: ",error)
 		alert("Erro ao salvar a tarefa");
 	}
 }
+
 const title = computed(() => {
 	if (isInfo) {
 		return "Informações da tarefa";
