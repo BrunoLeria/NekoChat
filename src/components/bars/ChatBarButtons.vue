@@ -23,6 +23,7 @@ const teamStore = useTeamStore();
 const clientStore = useClientsStore();
 const taskStore = useTasksStore();
 const usedIdToTransfer = ref("");
+const activeChat = talkStore.activeChat?.[0];
 const hasClient = computed(() => {
 	const activeChat = talkStore.activeChat?.[0];
 	const activeChatPhone = activeChat?.whatsapp_identification;
@@ -40,7 +41,7 @@ function returnToBot(assumeChat) { // precisa verificar se essa função é nece
 
 function sendMessage() {
 	if (myMessage.value != "") {
-		talkStore.sendMessage(myMessage.value, talkStore.activeChat[0].whatsapp_identification);
+		talkStore.sendMessage(myMessage.value, activeChat.whatsapp_identification);
 		myMessage.value = "";
 	}
 }
@@ -60,7 +61,7 @@ function newTask() {
 }
 
 function newClient() {
-	const phone_number = removeWhatsAppKey(talkStore.activeChat[0].whatsapp_identification);
+	const phone_number = removeWhatsAppKey(activeChat.whatsapp_identification);
 	window.open("client/task/" + phone_number, "Ratting", "width=700, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
