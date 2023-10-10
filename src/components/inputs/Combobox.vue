@@ -27,10 +27,10 @@ defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-	<div class='grid grid-cols-2 2xl:grid-cols-1'>
+	<div class='grid grid-cols-3'>
 		<label class="block text-sm font-medium text-gray-700 py-1" v-show="label">{{ label }}:</label>
 		<select :id="id" :name="id" :disabled="disabled" :required="required"
-			class="rounded-xl relative block w-full placeholder-gray-400 focus:outline-none focus:z-10 sm:text-sm ease-in-out duration-500 "
+			class="rounded-xl relative block w-full placeholder-gray-400 focus:outline-none focus:z-10 sm:text-sm ease-in-out duration-500 col-span-2"
 			:class="[
 				textColorProp ? textColorProp : textColor,
 				border,
