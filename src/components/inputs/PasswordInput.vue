@@ -24,6 +24,10 @@ const props = defineProps({
 	passwordScoreShow: {
 		type: Boolean,
 		default: true
+	},
+	padding:{
+		type: String,
+		default: "p-2 2xl:p-4"
 	}
 });
 defineEmits(["update:modelValue"]);
@@ -36,8 +40,8 @@ const passwordScore = computed(() => {
 </script>
 
 <template>
-	<div class="py-5 px-0 border-0">
-		<label class="block text-sm font-medium text-gray-700">{{ label }}:</label>
+	<div class="py-3 2xl:py-5 px-0 border-0">
+		<label class="text-sm font-medium text-gray-700 hidden 2xl:block">{{ label }}:</label>
 		<div class="flex content-center">
 			<input
 				:type="showPasswordField ? 'text' : 'password'"
@@ -45,7 +49,6 @@ const passwordScore = computed(() => {
 				:name="id"
 				v-model="modelValue"
 				class="
-					p-4
 					relative
 					block
 					w-full
@@ -56,6 +59,7 @@ const passwordScore = computed(() => {
 					focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none focus:z-10
 					sm:text-sm
 				"
+				:class="padding"
 				:placeholder="label"
 				@input="$emit('update:modelValue', $event.target.value)" />
 			<button
@@ -63,7 +67,6 @@ const passwordScore = computed(() => {
 					block
 					w-7
 					h-full
-					py-4
 					text-center text-xl
 					leading-0
 					text-gray-400
@@ -73,7 +76,7 @@ const passwordScore = computed(() => {
 					focus:outline-none focus:border-indigo-500
 					hover:text-indigo-500
 					transition-colors
-				"
+				" :class='padding.replace("p-", "py-")'
 				@click.prevent="showPasswordField = !showPasswordField">
 				<div v-if="showPasswordField">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

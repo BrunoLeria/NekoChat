@@ -31,6 +31,10 @@ defineProps({
 	disabled: {
 		type: Boolean,
 		default: false
+	},
+	padding: {
+		type: String,
+		default: "p-2 2xl:p-4"
 	}
 });
 defineEmits(["update:modelValue"]);
@@ -42,8 +46,6 @@ defineEmits(["update:modelValue"]);
 		<input :id="id" :name="id" :type="type" :autocomplete="autoComplete" :disabled="disabled" v-model="modelValue"
 			@input="$emit('update:modelValue', $event.target.value)" :required="required" class="
 				rounded-xl
-				p-2
-				2xl:p-4
 				relative
 				block
 				w-full
@@ -52,6 +54,6 @@ defineEmits(["update:modelValue"]);
 				text-gray-900
 				focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10
 				sm:text-sm
-			" :class="disabled ? 'bg-gray-200' : 'bg-white'" :placeholder="label" />
+			" :class="disabled ? 'bg-gray-200' : 'bg-white', padding" :placeholder="label" />
 	</div>
 </template>
