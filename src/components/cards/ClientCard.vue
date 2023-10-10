@@ -33,11 +33,17 @@ function openEditClient() {
 }
 
 async function deleteClient() {
-    const response = await clientsStore.deleteClient(props.identification);
-    if (response == 200) {
-        window.location.reload();
-    } else {
-        alert("Erro ao deletar cliente");
+    try {
+        if (confirm("Tem certeza que deseja deletar esse cliente?")) {
+            const response = await clientsStore.deleteClient(props.identification);
+            if (response === 200) {
+                alert("Cliente deletado com sucesso!");
+                await clientStore.findAllClients();
+            }
+            else alert("Erro ao deletar cliente!");
+        }
+    } catch (error) {
+        alert("Erro ao deletar cliente!");
     }
 }
 </script>

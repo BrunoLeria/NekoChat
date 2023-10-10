@@ -45,8 +45,21 @@ function openEditTask() {
     window.open("task/" + props.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
-function deleteTask() {
-    taskStore.deleteTask(props.identification);
+async function deleteTask() {
+    try {
+        if (confirm("Tem certeza que deseja deletar essa tarefa?")) {
+            const response = await taskStore.deleteTask(props.identification);
+            if (response === 200) {
+                alert("Tarefa deletada com sucesso!");
+                window.location.reload();
+            }
+            else {
+                alert("Erro ao deletar tarefa!");
+            }
+        }
+    } catch (error) {
+        alert("Erro ao deletar tarefa!");
+    }
 }
 
 const priority = computed(() => {
