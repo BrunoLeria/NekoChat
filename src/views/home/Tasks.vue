@@ -78,7 +78,7 @@ const newTask = () => {
 };
 
 Socket.on("tasks", () => {
-    teamStore.findAllTasks();
+    tasksStore.findAllTasks();
 });
 
 </script>
