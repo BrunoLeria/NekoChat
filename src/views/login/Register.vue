@@ -96,9 +96,9 @@ async function login(data) {
 					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
 						{{ errMsg }}
 					</p>
-					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
-					<PasswordInput label="Senha" type="password" id="password" v-model="password" />
-					<PasswordInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" />
+					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" padding='p-3 2xl:p-4'/>
+					<PasswordInput label="Senha" type="password" id="password" v-model="password" padding='p-3 2xl:p-4'/>
+					<PasswordInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" padding='p-3 2xl:p-4'/>
 				</div>
 				<div>
 					<button type="submit" class="

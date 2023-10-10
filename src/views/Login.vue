@@ -100,9 +100,9 @@ async function login(data) {
 					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
 						{{ errMsg }}
 					</p>
-					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" />
+					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" padding='p-4' />
 					<PasswordInput label="Senha" v-model="password" type="password" id="password"
-						autoComplete="current-password" :password-score-show="false" />
+						autoComplete="current-password" :password-score-show="false" padding='p-4'/>
 					<div class="flex items-center justify-center">
 						<Sublink text="Esqueceu a sua senha?" route="ForgotPassword" />
 					</div>
