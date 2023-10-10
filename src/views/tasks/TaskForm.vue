@@ -38,6 +38,7 @@ const usersOptions = ref([]);
 const task = ref({});
 const isInfo = useRouter().currentRoute.value.name === "InfoTaskForm";
 const isChatTask = useRouter().currentRoute.value.name === "ChatTaskForm";
+const isFeedback = useRouter().currentRoute.value.name === "FeedbackTaskForm";
 
 
 const TextInput = defineAsyncComponent(() => import("../../components/inputs/TextInput.vue"));
@@ -65,6 +66,12 @@ onBeforeMount(async () => {
 	}
 	if (isChatTask) {
 		fk_clients_identification.value = props.client_id;
+		return;
+	}
+	if (isFeedback) {
+		fk_clients_identification.value = 1;
+		fk_users_identification.value = 1;
+		return;
 	}
 });
 
@@ -94,7 +101,7 @@ async function save() {
 		resolution_details: resolution_details.value,
 		fk_clients_identification: fk_clients_identification.value,
 		fk_users_identification: fk_users_identification.value,
-		is_feedback: is_feedback.value
+				is_feedback: isFeedback
 	}
 
 	if (identification.value) {
@@ -145,12 +152,13 @@ function cancel() {
 			<TextInput label="Nome da tarefa" type="text" id="name" autoComplete="" v-model='issue' padding='p-4'
 				class="w-full p-3 col-span-3" :disabled='isInfo' />
 			<Checkbox :id="'isItSolvedCheckBox'" :label="'Está resolvido'" class="justify-between"
-				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='isInfo' />
+				:checkmark-color="'text-green-600'" v-model="is_it_solved" :disabled='isInfo || isFeedback' />
 			<TextInput label="Descrição" type="text" id="description" autoComplete="" v-model='description' padding='p-4'
 				class="w-full p-3 col-span-6" :disabled='isInfo' />
 			<Combobox :id="'usersComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="usersOptions"
 				:padding="'p-4'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Responsável'" title="Responsável" v-model="fk_users_identification"
+				:disabled='isInfo || isFeedback'></Combobox>
 			<Combobox :id="'priorityComboBox'" :idInstead="true" class="grid p-3 col-span-2" :alternatives="priorityOptions"
 				:padding="'p-4'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
 				:label="'Prioridade'" title="Prioridade" v-model="priority_level" :disabled='isInfo'>
@@ -158,7 +166,7 @@ function cancel() {
 			<Combobox :id="'clientsComboBox'" :idInstead="true" class="grid p-3 col-span-2"
 				:alternatives="clientsStore.clients" :padding="'p-4'" :focusRing="'focus:ring-indigo-500'"
 				:focusBorder="'focus:border-indigo-500'" :label="'Cliente'" title="Cliente"
-				v-model="fk_clients_identification" :disabled='client_id.length > 0'></Combobox>
+				v-model="fk_clients_identification" :disabled='isInfo || isFeedback || isChatTask'></Combobox>
 			<TextInput label="Detalhes da resolução" type="text" id="resolution_details" autoComplete="" padding='p-4'
 				v-model='resolution_details' class="w-full p-3 col-span-4" :disabled='!is_it_solved || isInfo' />
 			<button type="button" class="
