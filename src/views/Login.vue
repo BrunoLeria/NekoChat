@@ -84,7 +84,7 @@ async function login(data) {
 </script>
 
 <template>
-	<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" @keypress.enter="signInWithEmail()">
+	<div class="min-h-full flex items-center justify-center py-12 px-4 lg:px-8" @keypress.enter="signInWithEmail()">
 		<div class="max-w-md w-full space-y-8">
 			<div>
 				<img class="mx-auto h-36 w-auto rounded-full" :src="logo" alt="Workflow" />

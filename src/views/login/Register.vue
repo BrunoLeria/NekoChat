@@ -17,7 +17,7 @@ const router = useRouter();
 const userStore = useUsersStore();
 const logging = ref(false);
 
-const register = (e) => {
+const register = async (e) => {
 	e.preventDefault();
 	logging.value = true;
 	if (zxcvbn(password.value).score + 1 < 4) {
@@ -29,52 +29,52 @@ const register = (e) => {
 		return;
 	}
 	const auth = getAuth();
-	createUserWithEmailAndPassword(auth, email.value, password.value)
-		.then((data) => {
-			login(data);
-		})
-		.catch((error) => {
-			switch (error.code) {
-				case "auth/email-already-in-use":
-					errMsg.value = "Este email já está em uso.";
-					break;
+	try {
+		const data = await createUserWithEmailAndPassword(auth, email.value, password.value);
+		login(data);
+	} catch (error) {
+		switch (error.code) {
+			case "auth/email-already-in-use":
+				errMsg.value = "Este email já está em uso.";
+				break;
 
-				case "auth/invalid-email":
-					errMsg.value = "Este email não é válido.";
-					break;
+			case "auth/invalid-email":
+				errMsg.value = "Este email não é válido.";
+				break;
 
-				case "auth/operation-not-allowed":
-					errMsg.value = "Não é possível criar usuários.";
-					break;
+			case "auth/operation-not-allowed":
+				errMsg.value = "Não é possível criar usuários.";
+				break;
 
-				case "auth/weak-password":
-					errMsg.value = "A senha é muito fraca.";
-					break;
-				default:
+			case "auth/weak-password":
+				errMsg.value = "A senha é muito fraca.";
+				break;
+
+			default:
+				if (error.code >= 400 && error.code < 500) {
+					errMsg.value = "Erro de requisição: " + error.message;
+				} else if (error.code >= 500 && error.code < 600) {
+					errMsg.value = "Erro interno do servidor: " + error.message;
+				} else {
 					errMsg.value = error.message;
-					break;
-			}
-		});
+				}
+				break;
+		}
+	}
 };
 
 async function login(data) {
-	userStore.user.name = data.user.name;
-	userStore.user.email = data.user.email;
-	userStore.user.photo = data.user.photo;
-	userStore.user.fk_statuses_identification = 1;
-	userStore.user.fk_team_identification = 1;
-	userStore.user.is_admin = 1;
-	await userStore
-		.createUser()
-		.then(() => {
-			router.push({ name: "Home" });
-		})
-		.catch((error) => {
-			errMsg.value = "Ocorreu um erro ao tentar criar um novo usuário. Por favor, contate o nosso suporte:" + error.message;
-		})
-		.finally(() => {
-			logging.value = false;
-		});
+	const { email } = data.user;
+	userStore.user = { name: email.split("@")[0], email, photo: null, fk_statuses_identification: 1, fk_team_identification: 1, is_admin: 0 };
+	try {
+		const response = await userStore.createUser();
+		if(response === 201) router.push({ name: "Home" });
+		else throw new Error("Ocorreu um erro ao tentar criar um novo usuário. Por favor, contate o nosso suporte.");
+	} catch (error) {
+		errMsg.value = "Ocorreu um erro ao tentar criar um novo usuário. Por favor, contate o nosso suporte: " + error.message;
+	} finally {
+		logging.value = false;
+	}
 }
 </script>
 
@@ -96,9 +96,11 @@ async function login(data) {
 					<p class="mt-2 text-center text-sm text-red-600" v-show="errMsg != ''">
 						{{ errMsg }}
 					</p>
-					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" padding='p-3 2xl:p-4'/>
-					<PasswordInput label="Senha" type="password" id="password" v-model="password" padding='p-3 2xl:p-4'/>
-					<PasswordInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword" padding='p-3 2xl:p-4'/>
+					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email"
+						padding='p-3 2xl:p-4' />
+					<PasswordInput label="Senha" type="password" id="password" v-model="password" padding='p-3 2xl:p-4' />
+					<PasswordInput label="Confirmar senha" v-model="confirmPassword" type="password" id="confirmPassword"
+						padding='p-3 2xl:p-4' />
 				</div>
 				<div>
 					<button type="submit" class="

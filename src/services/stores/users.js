@@ -25,6 +25,7 @@ export const useUsersStore = defineStore("user", () => {
                     user.value[key] = "";
                 }
             }
+            return response.status;
         } catch (error) {
             console.error(error);
             router.push({
