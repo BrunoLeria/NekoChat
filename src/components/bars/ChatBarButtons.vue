@@ -26,12 +26,10 @@ const usedIdToTransfer = ref("");
 const users = ref([]);
 const activeChat = talkStore.activeChat?.[0];
 const hasClient = computed(() => {
-	const activeChat = talkStore.activeChat?.[0];
 	const activeChatPhone = activeChat?.whatsapp_identification;
 	return !!clientStore.clients.find(client => client.phone === activeChatPhone);
 });
 const clientId = computed(() => {
-	const activeChat = talkStore.activeChat?.[0];
 	const activeChatPhone = activeChat?.whatsapp_identification;
 	return clientStore.clients.find(client => client.phone === activeChatPhone)?.identification;
 });
