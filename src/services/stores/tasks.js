@@ -100,7 +100,7 @@ export const useTasksStore = defineStore("task", () => {
     }
 
     async function updateTask(newTask, identification) {
-        const url = GCurl + "tasks/" + identification;
+                const url = GCurl + "tasks/" + identification;
         try {
             const response = await fetch(url, {
                 method: "PATCH",
@@ -138,6 +138,7 @@ export const useTasksStore = defineStore("task", () => {
 
     return {
         beginingOfTask,
+        endingOfTask: beginingOfTask,
         createTask,
         findAllTasks,
         findOneTaskById,
