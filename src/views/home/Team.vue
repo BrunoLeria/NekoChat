@@ -36,7 +36,7 @@ function createTeam() {
 			</div>
 		</div>
 		<div v-if='membersView'
-			class="bg-white p-8 border-2 border-t-0 border-gray-200 row-span-5 col-span-2 grid grid-cols-2 xl:grid-cols-3 gap-5 h-full">
+			class="bg-white p-8 border-2 border-t-0 border-gray-200 row-span-5 col-span-2 grid grid-cols-2 2xl:grid-cols-3 gap-5 h-full">
 			<UserCard v-for="user in users" :key="user.identification" :member="user" :teams='teams' :statuses='statuses' />
 		</div>
 		<div v-else class='grid h-full'>
