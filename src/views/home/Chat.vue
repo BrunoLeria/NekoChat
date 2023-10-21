@@ -46,19 +46,16 @@ const contactName = computed(() => {
 	return formatPhoneNumber(talkStore.activeChat[0].whatsapp_identification);
 });
 
-Socket.on("talks", async() => {
+Socket.on("talks", async () => {
 	await talkStore.findOneTalkByChatID();
 });
 </script>
 
 <template>
 	<div class="bg-neutral-100 p-6 2xl:p-14 grid grid-cols-10 grid-rows-6 justify-between">
-		<div class="flex flex-col my-5 p-5 overflow-y-auto bg-white rounded-xl col-span-10 row-span-5"
-			id="scrollContainer">
-			<div v-for="(message, index) in talkStore.activeChat">
-				<MessageCard :key="index" :message="message" :user="message.from_me === '1' ? user : contactName"
-					:index="index" />
-			</div>
+		<div class="flex flex-col my-5 p-5 overflow-y-auto bg-white rounded-xl col-span-10 row-span-5" id="scrollContainer">
+			<MessageCard v-for="(message, index) in talkStore.activeChat" :key="index" :message="message"
+				:user="message.from_me === true ? user : contactName" :index="index" />
 		</div>
 		<ChatBarButtons class='row-span-1 col-span-10' :responsable='userResponsable' />
 	</div>
