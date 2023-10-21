@@ -72,7 +72,11 @@ async function login(data) {
 
 		if (user.fk_statuses_identification !== 1 && user.fk_statuses_identification != undefined) {
 			const newUser = { fk_statuses_identification: 1 };
-			await userStore.updateUser(newUser);
+			const response = await userStore.updateUser(newUser);
+			if (response !== 200) {
+				throw new Error("Erro ao atualizar o usuário. Verifique com o suporte se ocorreu algum problema com o servidor.");
+			}
+			userStore.user.fk_statuses_identification = 1;
 		}
 
 		router.push({ name: "Home" });
@@ -102,7 +106,7 @@ async function login(data) {
 					</p>
 					<TextInput label="Email" v-model="email" type="email" id="email" autoComplete="email" padding='p-4' />
 					<PasswordInput label="Senha" v-model="password" type="password" id="password"
-						autoComplete="current-password" :password-score-show="false" padding='p-4'/>
+						autoComplete="current-password" :password-score-show="false" padding='p-4' />
 					<div class="flex items-center justify-center">
 						<Sublink text="Esqueceu a sua senha?" route="ForgotPassword" />
 					</div>
