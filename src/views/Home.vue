@@ -45,8 +45,7 @@ onBeforeMount(async () => {
 
 Socket.on("talks", () => {
 	if (userStore.user.identification) {
-		if (userStore.user.is_admin) talkStore.fetchTalks();
-		else talkStore.fetchTalksByUser();
+		talkStore.fetchTalks();
 
 		if (talkStore.selected) talkStore.findOneTalkByChatID();
 	}
