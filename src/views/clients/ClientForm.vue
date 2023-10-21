@@ -1,5 +1,5 @@
 <script setup >
-import { ref, defineAsyncComponent, onBeforeMount } from 'vue';
+import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue';
 import { useClientsStore } from '../../services/stores/clients';
 import { removeWhatsAppKey } from '../../utils/DataTreament';
 
@@ -54,6 +54,13 @@ async function save() {
 	}
 }
 
+const title = computed(() => {
+	if (identification.value) {
+		return "Editar tarefa";
+	}
+	return "Novo cliente";
+})
+
 function cancel() {
 	window.close();
 }
@@ -61,14 +68,14 @@ function cancel() {
 </script>
 <template>
 	<div class="bg-slate-100 w-full h-full grid p-3">
-		<h3 class="mb-4 text-xl font-medium text-gray-900">Criando uma nova tarefa</h3>
+		<h3 class="mb-4 text-xl font-medium text-gray-900">{{ title }}</h3>
 		<form @submit.prevent="save" class='grid grid-cols-5 grid-rows-4'>
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification'
-				class="w-full p-3 col-span-1" :disabled="true" />
+				class="w-full p-3 col-span-1" :disabled="true" padding='p-4' />
 			<TextInput label="Nome" type="text" id="name" autoComplete="" v-model='name' class="w-full p-3 col-span-4"
-				:required="true" />
+				:required="true" padding='p-4' />
 			<TextInput label="E-mail" type="email" id="description" autoComplete="" v-model='email'
-				class="w-full p-3 col-span-3" :required="true" />
+				class="w-full p-3 col-span-3" :required="true" padding='p-4' />
 			<MaskedInput label="Celular" type="text" id="resolution_details" autoComplete="" v-model='phone'
 				class="w-full p-3 col-span-2" pattern="(##) #####-####" :max="15" :required="true" />
 			<button type="button" class="
