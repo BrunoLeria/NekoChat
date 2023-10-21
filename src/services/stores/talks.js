@@ -10,7 +10,7 @@ export const useTalksStore = defineStore("talks", () => {
     const selected = ref("");
     const activeChat = ref([]);
 
-    async function createTalk(message, whatsapp_identification) {
+    async function createTalk(message, whatsapp_identification, type) {
         const url = GCurl + "talks";
         try {
             const response = await fetch(url, {
@@ -22,6 +22,7 @@ export const useTalksStore = defineStore("talks", () => {
                     message: message,
                     fk_users_identification: userStore.user.identification,
                     whatsapp_identification: whatsapp_identification,
+                    type: type,
                     from_me: true
                 })
             });
