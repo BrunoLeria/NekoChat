@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onBeforeMount } from 'vue';
+import { ref, computed, onBeforeMount } from 'vue';
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
@@ -33,10 +33,6 @@ const clientId = computed(() => {
 	const activeChatPhone = activeChat?.whatsapp_identification;
 	return clientStore.clients.find(client => client.phone === activeChatPhone)?.identification;
 });
-
-function returnToBot(assumeChat) { // precisa verificar se essa função é necessária
-	talkStore.updateTalkToSignInUser(assumeChat, true);
-}
 
 function sendMessage() {
 	if (myMessage.value != "") {
@@ -113,17 +109,29 @@ function uploadFile(event) {
 	};
 }
 
+async function transferToNewUser() {
+	if (usedIdToTransfer.value === "") {
+		alert("Selecione um usuário para transferir a conversa.");
+		return;
+	}
+
+	if (confirm("Tem certeza que deseja transferir a conversa?")) {
+		const body = {
+			fk_users_identification: usedIdToTransfer.value,
+		}
+		const response = await talkStore.updateTalkToNewUser(body);
+		if (response === 200) {
+			alert("Conversa transferida com sucesso.");
+		} else {
+			alert("Erro ao transferir a conversa.");
+		}
+	}
+}
+
 onBeforeMount(async () => {
 	users.value = await userStore.findAllUsers();
 	users.value = users.value.filter(user => user.identification !== userStore.user.identification);
 });
-
-watch(
-	() => usedIdToTransfer.value,
-	(newUser) => {
-		returnToBot(parseInt(newUser), true);
-	}
-);
 </script>
 
 <template>
