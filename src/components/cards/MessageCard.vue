@@ -44,10 +44,10 @@ const time = (message) => {
 </script>
 
 <template>
-    <div :key="index" class='border' :class="props.message.from_me === '1'
+    <div :key="index" class='border' :class="props.message.from_me === true
         ? 'bg-indigo-100 p-5 rounded-xl w-fit h-fit my-3 place-self-end'
         : 'bg-blue-100 p-5 rounded-xl w-fit h-fit my-3', tasksStore.beginingOfTask === message.identification ? 'border-green-800' : ' border-transparent'
-        " @click='clicked()'>
+        " @click='clicked()' v-if='props.message?.message'>
         <div class="flex justify-between">
             <h3 :class="'text-indigo-700 break-words capitalize font-bold'">
                 {{ user }}
