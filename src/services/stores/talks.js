@@ -124,7 +124,7 @@ export const useTalksStore = defineStore("talks", () => {
         }
     }
     async function updateTalkToNewUser(idQuemAssumeChat) {
-        const url = GCurl + "talks/users/" + activeChat.whatsapp_identification;
+        const url = GCurl + "talks/users/" + activeChat[0].whatsapp_identification;
         try {
             const response = await fetch(url, {
                 method: "PATCH",
