@@ -40,7 +40,7 @@ function returnToBot(assumeChat) { // precisa verificar se essa função é nece
 
 function sendMessage() {
 	if (myMessage.value != "") {
-		talkStore.sendMessage(myMessage.value, activeChat.whatsapp_identification);
+		talkStore.createTalk(myMessage.value, activeChat.whatsapp_identification, "conversation");
 		myMessage.value = "";
 	}
 }
@@ -65,30 +65,30 @@ function newClient() {
 }
 
 async function endTask() {
-	try{
+	try {
 		if (taskStore.endingOfTask.length === 0) {
 			alert("Primeiro você precisa selecionar em qual mensagem a tarefa irá terminar.");
 			return;
 		}
-		
+
 		if (!hasClient) {
 			alert("Primeiro você precisa cadastrar o cliente.");
 			return;
 		}
 
-		if(confirm("Tem certeza que deseja encerrar a conversa? Caso sim lembre de informar depois o motivo do encerramento.")) {
+		if (confirm("Tem certeza que deseja encerrar a conversa? Caso sim lembre de informar depois o motivo do encerramento.")) {
 			const body = {
 				fk_tasks_identification: true,
 			}
 			const response = await talkStore.updateTalksAndEndTask(taskStore.endingOfTask);
-			if (response === 200){
+			if (response === 200) {
 				alert("Tarefa encerrada com sucesso.");
 			} else {
 				alert("Erro ao encerrar a tarefa.");
 			}
 		}
 	} catch (error) {
-		alert("Erro ao encerrar a tarefa: " + error);	
+		alert("Erro ao encerrar a tarefa: " + error);
 		console.log(error)
 	}
 }
@@ -115,6 +115,7 @@ function uploadFile(event) {
 
 onBeforeMount(async () => {
 	users.value = await userStore.findAllUsers();
+	users.value = users.value.filter(user => user.identification !== userStore.user.identification);
 });
 
 watch(
@@ -192,6 +193,32 @@ watch(
 			:border="'border border-transparent'" :focusRing="'focus:ring-transparent'"
 			:focusBorder="'focus:border-transparent'" :textColorProp="'text-white'" :label="'Usuário para transferir'"
 			title="Transferir para outro usuário" v-model="usedIdToTransfer"></Combobox>
+		<button type="button" class="
+					mx-3
+					flex
+					justify-center
+					items-center
+					py-2
+					px-2
+					border border-transparent
+					text-sm
+					font-medium
+					rounded-full
+					text-white
+					bg-blue-900
+					hover:bg-blue-700
+					ease-in-out
+					duration-500
+					w-10
+					h-10
+					2xl:w-12
+					2xl:h-12
+				" title="Enviar mensagem" @click="transferToNewUser()">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+				class="w-6 h-6">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+			</svg>
+		</button>
 		<div class='mx-3 col-span-4 '>
 			<p>Usuário responsável: {{ props.responsable }}</p>
 		</div>
