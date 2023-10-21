@@ -123,8 +123,8 @@ export const useTalksStore = defineStore("talks", () => {
             });
         }
     }
-    async function updateTalkToSignInUser(idQuemAssumeChat, updateOtherClients = false) {
-        const url = GCurl + "talks/users/" + idQuemAssumeChat;
+    async function updateTalkToNewUser(idQuemAssumeChat) {
+        const url = GCurl + "talks/users/" + activeChat.whatsapp_identification;
         try {
             const response = await fetch(url, {
                 method: "PATCH",
@@ -137,6 +137,7 @@ export const useTalksStore = defineStore("talks", () => {
             });
             const data = await response.json();
             console.log("Success:", data);
+            return response.status;
         } catch (error) {
             console.error(error);
             router.push({
@@ -156,7 +157,7 @@ export const useTalksStore = defineStore("talks", () => {
         activeChat,
         createTalk,
         findOneTalkByChatID,
-        updateTalkToSignInUser,
+        updateTalkToNewUser,
         updateTalksToNewTask,
         fetchTalks
     };
