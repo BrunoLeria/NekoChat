@@ -74,6 +74,7 @@ export const useTalksStore = defineStore("talks", () => {
             const data = await response.json();
             if (data.length > 0) activeChat.value = data;
             else throw new Error("Não foi possível encontrar a conversa");
+            return response.status;
         } catch (error) {
             console.error(error);
             router.push({
@@ -124,7 +125,7 @@ export const useTalksStore = defineStore("talks", () => {
         }
     }
     async function updateTalkToNewUser(idQuemAssumeChat) {
-        const url = GCurl + "talks/users/" + activeChat[0].whatsapp_identification;
+        const url = GCurl + "talks/users/" + activeChat.value[0].whatsapp_identification;
         try {
             const response = await fetch(url, {
                 method: "PATCH",
