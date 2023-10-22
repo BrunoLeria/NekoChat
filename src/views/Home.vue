@@ -69,9 +69,14 @@ Socket.on("client", () => {
 				</transition>
 			</div>
 			<transition name="component-fade" mode="out-in">
-				<component :is="selectComponent(router.currentRoute.value.name)"
-					class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll">
-				</component>
+				<Suspense>
+					<component :is="selectComponent(router.currentRoute.value.name)"
+						class="h-full m-6 border-8 z-10 shadow-xl overflow-x-scroll">
+					</component>
+					<template #fallback>
+						<Loading />
+					</template>
+				</Suspense>
 			</transition>
 		</div>
 	</div>
