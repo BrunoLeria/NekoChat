@@ -4,7 +4,7 @@ import { useClientsStore } from "../../services/stores/clients";
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
 import { useTeamStore } from "../../services/stores/team";
-import { computed, onMounted, onUpdated, onBeforeMount } from 'vue';
+import { computed, onMounted, onUpdated, ref } from 'vue';
 import Socket from "../../services/socket.js";
 import MessageCard from "../../components/cards/MessageCard.vue";
 
@@ -13,20 +13,18 @@ const talkStore = useTalksStore();
 const userStore = useUsersStore();
 const teamStore = useTeamStore();
 const clientStore = useClientsStore();
-
+const scrollContainer = ref(null);
 
 const user = computed(() => userStore.user.name);
+await talkStore.findOneTalkByChatID();
 
-onBeforeMount(async () => {
-	await talkStore.findOneTalkByChatID();
-});
 
-onMounted(async () => {
-	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
+onMounted(() => {
+	scrollContainer.value.scrollTo(0, scrollContainer.value.scrollHeight);
 });
 
 onUpdated(() => {
-	document.getElementById("scrollContainer").scrollTo(0, document.getElementById("scrollContainer").scrollHeight);
+	scrollContainer.value.scrollTo(0, scrollContainer.value.scrollHeight);
 });
 
 const userResponsable = computed(() => {
@@ -53,7 +51,7 @@ Socket.on("talks", async () => {
 
 <template>
 	<div class="bg-neutral-100 p-6 2xl:p-14 grid grid-cols-10 grid-rows-6 justify-between">
-		<div class="flex flex-col my-5 p-5 overflow-y-auto bg-white rounded-xl col-span-10 row-span-5" id="scrollContainer">
+		<div class="flex flex-col my-5 p-5 overflow-y-auto bg-white rounded-xl col-span-10 row-span-5" id="scrollContainer" ref="scrollContainer">
 			<MessageCard v-for="(message, index) in talkStore.activeChat" :key="index" :message="message"
 				:user="message.from_me === true ? user : contactName" :index="index" />
 		</div>
