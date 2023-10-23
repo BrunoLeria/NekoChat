@@ -3,7 +3,6 @@ import ChatBarButtons from "../../components/bars/ChatBarButtons.vue";
 import { useClientsStore } from "../../services/stores/clients";
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { useTeamStore } from "../../services/stores/team";
 import { computed, onMounted, onUpdated, ref } from 'vue';
 import Socket from "../../services/socket.js";
 import MessageCard from "../../components/cards/MessageCard.vue";
@@ -11,12 +10,12 @@ import MessageCard from "../../components/cards/MessageCard.vue";
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalksStore();
 const userStore = useUsersStore();
-const teamStore = useTeamStore();
 const clientStore = useClientsStore();
 const scrollContainer = ref(null);
 
 const user = computed(() => userStore.user.name);
 await talkStore.findOneTalkByChatID();
+const response = await userStore.findOneUserById(talkStore.activeChat[0].fk_users_identification);
 
 
 onMounted(() => {
@@ -31,7 +30,7 @@ const userResponsable = computed(() => {
 	if (talkStore.activeChat && talkStore.activeChat.length > 0) {
 		if (talkStore.activeChat[0].fk_users_identification == 1) return "Administrador";
 		if (talkStore.activeChat[0].fk_users_identification == userStore.user.identification) return "Você";
-		return teamStore.teamOptions.find((user) => user.id == talkStore.activeChat[0].fk_users_identification).name;
+  		return response.name || response.email.split("@")[0];
 	}
 	return "";
 });
@@ -51,7 +50,8 @@ Socket.on("talks", async () => {
 
 <template>
 	<div class="bg-neutral-100 p-6 2xl:p-14 grid grid-cols-10 grid-rows-6 justify-between">
-		<div class="flex flex-col my-5 p-5 overflow-y-auto bg-white rounded-xl col-span-10 row-span-5" id="scrollContainer" ref="scrollContainer">
+		<div class="flex flex-col my-5 p-5 overflow-y-auto bg-white rounded-xl col-span-10 row-span-5" id="scrollContainer"
+			ref="scrollContainer">
 			<MessageCard v-for="(message, index) in talkStore.activeChat" :key="index" :message="message"
 				:user="message.from_me === true ? user : contactName" :index="index" />
 		</div>
