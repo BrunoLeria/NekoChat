@@ -124,7 +124,7 @@ export const useTalksStore = defineStore("talks", () => {
             });
         }
     }
-    async function updateTalkToNewUser(idQuemAssumeChat) {
+    async function updateTalkToNewUser(body) {
         const url = GCurl + "talks/users/" + activeChat.value[0].whatsapp_identification;
         try {
             const response = await fetch(url, {
@@ -132,9 +132,7 @@ export const useTalksStore = defineStore("talks", () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    fk_users_identification: idQuemAssumeChat
-                })
+                body: JSON.stringify(body)
             });
             const data = await response.json();
             console.log("Success:", data);
