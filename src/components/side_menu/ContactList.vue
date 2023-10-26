@@ -20,7 +20,7 @@ const searchContact = computed(() => {
   const sanitizedSearch = search.value.replace(" ", "").replace("-", "");
   return Object.keys(talkStore.talks)
     .filter((key) => key.includes(sanitizedSearch))
-    .map((key) => talkStore.talks[key][0]);
+    .map((key) => talkStore.talks[key][talkStore.talks[key].length - 1]);
 });
 </script>
 
