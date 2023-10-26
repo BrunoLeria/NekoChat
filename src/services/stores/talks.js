@@ -46,13 +46,7 @@ export const useTalksStore = defineStore("talks", () => {
                     "Content-Type": "application/json"
                 }
             });
-            const data = await response.json();
-            if (data) {
-                talks.value = {};
-                for (const talk of data) {
-                    talks.value[talk.whatsapp_identification] = talk;
-                }
-            }
+            talks.value = await response.json();
             return;
         } catch (error) {
             console.error(error);
