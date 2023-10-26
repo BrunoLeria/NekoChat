@@ -17,12 +17,10 @@ const selectTalk = async (talk) => {
 };
 
 const searchContact = computed(() => {
-	return Object.values(talkStore.talks).filter((talk) => {
-		if (/^\d+$/.test(search.value.replace(" ", "").replace("-", ""))) {
-			return talk.whatsapp_identification.includes(search.value);
-		}
-		return talk.whatsapp_identification
-	});
+  const sanitizedSearch = search.value.replace(" ", "").replace("-", "");
+  return Object.keys(talkStore.talks)
+    .filter((key) => key.includes(sanitizedSearch))
+    .map((key) => talkStore.talks[key][0]);
 });
 </script>
 
