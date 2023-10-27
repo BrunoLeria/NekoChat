@@ -3,7 +3,7 @@ import { defineAsyncComponent, computed, onBeforeMount } from 'vue';
 import { useRouter } from "vue-router";
 import { useTalksStore } from "../services/stores/talks.js";
 import { useUsersStore } from "../services/stores/users.js";
-import { useTeamStore } from "../services/stores/team.js";
+import { useTeamsStore } from "../services/stores/teams.js";
 import Loading from "../components/Loading.vue";
 import Socket from "../services/socket.js";
 import { useClientsStore } from '../services/stores/clients';
@@ -15,12 +15,12 @@ const SideMenu = defineAsyncComponent({
 });
 const talkStore = useTalksStore();
 const userStore = useUsersStore();
-const teamStore = useTeamStore();
+const teamStore = useTeamsStore();
 const clientStore = useClientsStore();
 const router = useRouter()
 const translatedTitle = computed(() => {
 	document.title = "NChat - Bem-vindo";
-	if (router.currentRoute.value.name == "Team") document.title = "NChat - Equipe";
+	if (router.currentRoute.value.name == "Teams") document.title = "NChat - Equipe";
 	if (router.currentRoute.value.name == "Chat") document.title = "NChat - Chat";
 	if (router.currentRoute.value.name == "Analytics") document.title = "NChat - Análise";
 	if (router.currentRoute.value.name == "Settings") document.title = "NChat - Configurações";

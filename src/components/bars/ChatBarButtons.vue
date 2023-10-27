@@ -2,7 +2,7 @@
 import { ref, computed, onBeforeMount } from 'vue';
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { useTeamStore } from "../../services/stores/team";
+import { useTeamsStore } from "../../services/stores/teams";
 import { useClientsStore } from "../../services/stores/clients";
 import TextInput from "../../components/inputs/TextInput.vue";
 import Combobox from "../../components/inputs/Combobox.vue";
@@ -19,7 +19,7 @@ const props = defineProps({
 const myMessage = ref("");
 const talkStore = useTalksStore();
 const userStore = useUsersStore();
-const teamStore = useTeamStore();
+const teamStore = useTeamsStore();
 const clientStore = useClientsStore();
 const taskStore = useTasksStore();
 const usedIdToTransfer = ref("");

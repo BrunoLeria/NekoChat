@@ -5,6 +5,7 @@ import ForgotPassword from "../views/login/ForgotPassword.vue";
 import About from "../views/About.vue";
 import TaskForm from "../views/tasks/TaskForm.vue";
 import ClientForm from "../views/clients/ClientForm.vue";
+import TeamForm from "../views/teams/TeamForm.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
@@ -24,8 +25,8 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/home/team",
-        name: "Team",
+        path: "/home/teams",
+        name: "Teams",
         component: Home,
         meta: { requiresAuth: true }
     },

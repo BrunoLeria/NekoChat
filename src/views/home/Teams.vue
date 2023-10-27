@@ -1,12 +1,12 @@
 <script setup>
-import { useTeamStore } from "../../services/stores/team";
+import { useTeamsStore } from "../../services/stores/teams";
 import { useUsersStore } from "../../services/stores/users";
 import { useStatusesStore } from "../../services/stores/status";
 import { onBeforeMount, ref } from 'vue';
 import UserCard from "../../components/cards/UserCard.vue";
 import TeamCard from "../../components/cards/TeamCard.vue";
 
-const teamStore = useTeamStore();
+const teamStore = useTeamsStore();
 const userStore = useUsersStore();
 const emit = defineEmits(["update:modelValue"]);
 const statuses = useStatusesStore().statuses;
@@ -19,7 +19,7 @@ onBeforeMount(async () => {
 });
 
 function createTeam() {
-	console.log('create team');
+	window.open("team", "Ratting", "width=700, height = 480, left = 480, top = 200, toolbar = 0, status = 0, ");	
 }
 
 </script>

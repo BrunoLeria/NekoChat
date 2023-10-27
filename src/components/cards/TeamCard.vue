@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 import router from '../../services/router';
 import { useUsersStore } from '../../services/stores/users';
-import { useTeamStore } from '../../services/stores/team';
+import { useTeamsStore } from '../../services/stores/teams';
 
 const userStore = useUsersStore();
-const teamStore = useTeamStore();
+const teamStore = useTeamsStore();
 const props = defineProps({
     team: {
         type: Object,
