@@ -12,15 +12,11 @@ const props = defineProps({
         required: true
     },
 });
-const showInfo = ref(false);
 const showEdit = ref(false);
 const showDelete = ref(false);
 
-function openTeamInfo() {
-    console.log("info");
-}
 function openEditTeam() {
-    console.log("edit")
+    window.open("team/" + props.team.identification , "Ratting", "width=700, height = 480, left = 480, top = 200, toolbar = 0, status = 0, ");	
 }
 async function deleteTeam() {
     try {
@@ -62,25 +58,7 @@ async function deleteTeam() {
                 <p class="text-gray-500">{{ "Descrição: " + team.description }}</p>
             </div>
         </div>
-        <div class="grid grid-cols-3">
-            <button @mouseover="showInfo = true" @mouseleave="showInfo = false" class="
-						flex
-						p-4
-						justify-center
-						text-gray-500
-						rounded-bl-lg
-						border-gray-200 border-t-2 border-r
-						hover:bg-indigo-500 hover:text-white
-						ease-in-out
-						duration-500
-					" @click="openTeamInfo">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6" v-show='!showInfo'>
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                </svg>
-                <p class="text-white" v-show='showInfo'>{{ "Info" }}</p>
-            </button>
+        <div class="grid grid-cols-2">
             <button @mouseover="showEdit = true" @mouseleave="showEdit = false"
                 v-if="userStore.user.is_admin || userStore.user.identification === userId" class="
 						flex

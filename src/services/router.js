@@ -121,6 +121,13 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
+        path: "/home/team/:id?",
+        name: "TeamForm",
+        component: TeamForm,
+        props: true,
+        meta: { requiresAuth: true }
+    },
+    {
         path: "/:catchAll(.*)*",
         name: "NotFound",
         component: NotFound,
