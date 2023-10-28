@@ -46,7 +46,7 @@ defineEmits(["update:modelValue"]);
 			<option v-else value="" disabled selected></option>
 			<option v-if="alternatives" v-for="alternative in alternatives" :key="alternative.identification"
 				:value="idInstead ? alternative.identification : alternative.name">
-				{{ alternative.name }}
+				{{ alternative.name || alternative.identification }}
 			</option>
 		</select>
 	</div>
