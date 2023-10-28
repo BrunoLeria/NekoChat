@@ -27,30 +27,6 @@ const props = defineProps({
 });
 const emits = defineEmits(["update:modelValue"]);
 
-function urlToBase64(urlStorage) {
-	function toDataURL(url, callback) {
-		const xhr = new XMLHttpRequest();
-		xhr.onload = function () {
-			const reader = new FileReader();
-			reader.onloadend = function () {
-				callback(reader.result);
-			};
-			reader.readAsDataURL(xhr.response);
-		};
-		xhr.open("GET", url);
-		xhr.responseType = "blob";
-		xhr.send();
-	}
-
-	toDataURL(urlStorage, function (dataUrl) {
-		emits("update:value", {
-			base64: dataUrl,
-			name: null,
-			format: "png"
-		});
-	});
-}
-
 function uploadImage(event) {
 	const reader = new FileReader();
 	reader.readAsDataURL(event.target.files[0]);
