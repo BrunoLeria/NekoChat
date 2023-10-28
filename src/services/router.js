@@ -6,6 +6,7 @@ import About from "../views/About.vue";
 import TaskForm from "../views/tasks/TaskForm.vue";
 import ClientForm from "../views/clients/ClientForm.vue";
 import TeamForm from "../views/teams/TeamForm.vue";
+import UserForm from "../views/users/UserForm.vue";
 import NProgress from "nprogress";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
@@ -43,9 +44,9 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: "/home/settings/:id?",
+        path: "/settings/:id",
         name: "Settings",
-        component: Home,
+        component: UserForm,
         props: true,
         meta: { requiresAuth: true }
     },

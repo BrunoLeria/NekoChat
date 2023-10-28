@@ -23,7 +23,6 @@ const translatedTitle = computed(() => {
 	if (router.currentRoute.value.name == "Teams") document.title = "NChat - Equipe";
 	if (router.currentRoute.value.name == "Chat") document.title = "NChat - Chat";
 	if (router.currentRoute.value.name == "Analytics") document.title = "NChat - Análise";
-	if (router.currentRoute.value.name == "Settings") document.title = "NChat - Configurações";
 	if (router.currentRoute.value.name == "Tasks") document.title = "NChat - Tarefas";
 	if (router.currentRoute.value.name == "Clients") document.title = "NChat - Clientes";
 	return document.title.replace("NChat - ", "");

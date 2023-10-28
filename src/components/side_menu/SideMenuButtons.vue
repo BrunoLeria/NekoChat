@@ -32,6 +32,10 @@ function openFeedback() {
 	window.open("task/feedback", "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
+function openSettings() {
+	window.open("settings/" + userStore.user.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+}
+
 function updateStatus(identification) {
 	if (identification !== userStore.user.fk_statuses_identification) {
 		const newUser = { fk_statuses_identification: identification };
@@ -79,7 +83,7 @@ function updateStatus(identification) {
 				</div>
 				<div class="py-7 px-4 flex items bg-indigo-700 hover:bg-indigo-600 text-white text-lg md:text-base md:px-2"
 					@mouseover="showConfig = true" @mouseleave="showConfig = false"
-					@click="router.push({ name: 'Settings' })">
+					@click="openSettings">
 					<svg v-show='!showConfig' xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none"
 						viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 						<path stroke-linecap="round" stroke-linejoin="round"
