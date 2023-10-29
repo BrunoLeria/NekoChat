@@ -18,9 +18,12 @@ const selectTalk = async (talk) => {
 
 const searchContact = computed(() => {
   const sanitizedSearch = search.value.replace(" ", "").replace("-", "");
-  return Object.keys(talkStore.talks)
+  let tempList = Object.keys(talkStore.talks)
     .filter((key) => key.includes(sanitizedSearch))
     .map((key) => talkStore.talks[key][talkStore.talks[key].length - 1]);
+  return tempList.sort((a, b) => {
+	return new Date(b.created_at) - new Date(a.created_at);
+  });
 });
 </script>
 
