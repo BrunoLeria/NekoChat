@@ -62,7 +62,7 @@ function cancel() {
 <template>
 	<div class="bg-slate-100 w-full h-full grid p-3">
 		<h3 class="mb-4 text-xl font-medium text-gray-900">{{ title }}</h3>
-		<form @submit.prevent="save" class='grid grid-cols-6 grid-rows-6 items-center justify-center'>
+		<form @submit.prevent="save" class='grid grid-cols-6 grid-rows-6 items-center justify-items-center'>
 			<TextInput label="Identificação" type="text" id="id" autoComplete="" v-model='identification' padding='p-4'
 				class="w-full p-3 col-span-2" :disabled="true" />
 			<TextInput label="Nome" type="text" id="name" autoComplete="" v-model='name' padding='p-4'

@@ -39,7 +39,7 @@ function cleanFilter() {
 
 </script>
 <template>
-    <form @submit.prevent="filter()" class='grid grid-cols-4 items-center justify-center'>
+    <form @submit.prevent="filter()" class='grid grid-cols-4 items-center justify-items-center'>
         <Combobox :id="'usersComboBox'" :idInstead="true" class="grid px-3 py-1 2xl:p-3" :alternatives="props.usersOptions"
             :padding="'px-3 py-1 2xl:p-3'" :focusRing="'focus:ring-indigo-500'" :focusBorder="'focus:border-indigo-500'"
             :label="'Responsável'" title="Responsável" v-model="fk_users_identification"></Combobox>
@@ -55,21 +55,21 @@ function cleanFilter() {
             <button type="submit" class="
                 mx-3
                 flex
-							justify-center
-							items-center
-                            row-start-2
-							py-2
-                            w-12
-                            h-12
-							border border-transparent
-							text-sm
-							font-medium
-							rounded-full
-							text-white
-							bg-indigo-900
-							hover:bg-indigo-700
-							ease-in-out
-							duration-500
+                justify-center
+                items-center
+                row-start-2
+                py-2
+                w-12
+                h-12
+                border border-transparent
+                text-sm
+                font-medium
+                rounded-full
+                text-white
+                bg-indigo-900
+                hover:bg-indigo-700
+                ease-in-out
+                duration-500
 				">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
