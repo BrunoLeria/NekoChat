@@ -6,7 +6,7 @@ import router from "../router";
 
 export const useTeamsStore = defineStore("teamID", () => {
     const teams = ref(useLocalStorage("teamNeko", []));
-    const teamOptions = ref(useLocalStorage("teamOptionsNeko", []));
+    const teamsOptions = ref(useLocalStorage("teamOptionsNeko", []));
 
     async function createTeam(newTeam) {
         const url = GCurl + "teams";
@@ -37,10 +37,10 @@ export const useTeamsStore = defineStore("teamID", () => {
             const data = await response.json();
             if (data) {
                 teams.value = data;
-                teamOptions.value = [];
+                teamsOptions.value = [];
                 data.forEach((element) => {
-                    teamOptions.value.push({
-                        id: element.identification,
+                    teamsOptions.value.push({
+                        identification: element.identification,
                         name: element.name ? element.name : "Usuário " + element.identification
                     });
                 });
@@ -106,7 +106,7 @@ export const useTeamsStore = defineStore("teamID", () => {
 
     return {    
         teams,
-        teamOptions,
+        teamsOptions,
         createTeam,
         findAllTeam,
         findOneTeamById,
