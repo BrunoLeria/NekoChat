@@ -5,6 +5,7 @@ import { useStatusesStore } from "../../services/stores/status";
 import { onBeforeMount, ref } from 'vue';
 import UserCard from "../../components/cards/UserCard.vue";
 import TeamCard from "../../components/cards/TeamCard.vue";
+import Socket from "../../services/socket.js";
 
 const teamStore = useTeamsStore();
 const userStore = useUsersStore();
@@ -21,6 +22,10 @@ onBeforeMount(async () => {
 function createTeam() {
 	window.open("team", "Ratting", "width=700, height = 480, left = 480, top = 200, toolbar = 0, status = 0, ");	
 }
+
+Socket.on("users", async () => {
+	users.value = await userStore.findAllUsers();
+});
 
 </script>
 <template>
