@@ -26,8 +26,9 @@ function teamName(id) {
     return props.teams[id - 1].name;
 }
 
-function openUserConfig(id) {
-    router.push({ name: 'Settings', params: { id } });
+function openUserConfig() {
+    window.open("/settings/" + props.member.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+
 }
 
 </script>
@@ -83,7 +84,7 @@ function openUserConfig(id) {
 						hover:bg-indigo-500 hover:text-white
 						ease-in-out
 						duration-500
-					" @click="openUserConfig(member.identification)">
+					" @click="openUserConfig">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-2" viewBox="0 0 20 20" fill="none"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
