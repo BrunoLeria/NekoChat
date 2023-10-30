@@ -25,6 +25,9 @@ const Combobox = defineAsyncComponent(() => import("../../components/inputs/Comb
 
 const limitOptions = [
 	{
+		identification: 0,
+	},
+	{
 		identification: 1,
 	},
 	{
@@ -59,7 +62,7 @@ async function save() {
 		name: person.value.name,
 		email: person.value.email,
 		photo: person.value.photo,
-		is_admin: person.value.is_admin,
+		is_admin: person.value.is_admin || false,
 		fk_team_identification: person.value.fk_team_identification,
 		task_limit: person.value.task_limit,
 	};
