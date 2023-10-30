@@ -33,7 +33,7 @@ function openFeedback() {
 }
 
 function openSettings() {
-	window.open("settings/" + userStore.user.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
+	window.open("/settings/" + userStore.user.identification, "Ratting", "width=900, height = 640, left = 480, top = 200, toolbar = 0, status = 0, ");
 }
 
 function updateStatus(identification) {
