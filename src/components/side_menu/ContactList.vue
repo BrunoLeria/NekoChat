@@ -1,9 +1,11 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
 import { useTalksStore } from "../../services/stores/talks";
 import ContactCard from "../cards/ContactCard.vue";
 import Filter from "./Filter.vue";
 import { useRouter } from "vue-router";
+import _ from "lodash";
+import socket from '../../services/socket';
 
 const emit = defineEmits(["update:modelValue"]);
 const talkStore = useTalksStore();
@@ -16,14 +18,15 @@ const selectTalk = async (talk) => {
 	router.push({ name: "Chat" });
 };
 
-const searchContact = computed(() => {
-  const sanitizedSearch = search.value.replace(" ", "").replace("-", "");
-  let tempList = Object.keys(talkStore.talks)
-    .filter((key) => key.includes(sanitizedSearch))
-    .map((key) => talkStore.talks[key][talkStore.talks[key].length - 1]);
-  return tempList.sort((a, b) => {
-	return new Date(b.created_at) - new Date(a.created_at);
-  });
+const response = ref({});
+response.value = await talkStore.fetchContactList();
+
+const contactList = computed(() => {
+	return _.orderBy(response.value, ["created_at"], ["desc"]);
+});
+
+socket.on("talks", async () => {
+	response.value = await talkStore.fetchContactList();
 });
 </script>
 
@@ -33,7 +36,7 @@ const searchContact = computed(() => {
 			<Filter v-model:search="search" />
 		</div>
 		<div class="overflow-y-auto h-full">
-			<div v-for="(talk, index) in searchContact">
+			<div v-for="(talk, index) in contactList">
 				<ContactCard :key="index" @click="selectTalk(talk)" :talk="talk" />
 			</div>
 		</div>
