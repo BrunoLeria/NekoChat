@@ -37,16 +37,12 @@ const selectComponent = (component) => {
 };
 
 onBeforeMount(async () => {
-	await talkStore.fetchTalks();
 	await clientStore.findAllClients();
 	await teamStore.findAllTeam();
 });
 
 Socket.on("talks", () => {
-	if (userStore.user.identification) {
-		talkStore.fetchTalks();
-		if (talkStore.selected) talkStore.findOneTalkByChatID();
-	}
+	if (talkStore.selected) talkStore.findOneTalkByChatID();
 });
 Socket.on("users", () => {
 	teamStore.findAllTeam();
