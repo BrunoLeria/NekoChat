@@ -1,7 +1,7 @@
 <script setup>
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { ref, onMounted, defineAsyncComponent } from "vue";
+import { ref, onMounted, defineAsyncComponent, Suspense } from "vue";
 import SideMenuButtons from "./SideMenuButtons.vue";
 import SideMenuHeader from "./SideMenuHeader.vue";
 import Loading from "../Loading.vue";
@@ -34,7 +34,9 @@ onMounted(() => {
 	<!-- Sidebar -->
 	<div class="flex-none h-full bg-indigo-700 auto-rows-max flex flex-col z-10 w-1/4">
 		<SideMenuHeader />
-		<ContactList :chat="selected" @update:modelValue="(newValue) => emit('update:modelValue', newValue)" />
+		<Suspense>
+			<ContactList :chat="selected" @update:modelValue="(newValue) => emit('update:modelValue', newValue)" />
+		</Suspense>
 		<SideMenuButtons @update:modelValue="(newValue) => emit('update:modelValue', newValue)" />
 	</div>
 	<!-- Sidebar -->
