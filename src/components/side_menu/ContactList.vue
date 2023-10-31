@@ -37,7 +37,7 @@ socket.on("talks", async () => {
 		</div>
 		<div class="overflow-y-auto h-full">
 			<div v-for="(talk, index) in contactList">
-				<ContactCard :key="index" @click="selectTalk(talk)" :talk="talk" />
+				<ContactCard :key="index" @click="selectTalk(talk)" :talk="talk" :search='search'/>
 			</div>
 		</div>
 	</div>

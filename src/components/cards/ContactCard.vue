@@ -7,6 +7,9 @@ import { useClientsStore } from "../../services/stores/clients";
 const props = defineProps({
 	talk: {
 		type: Object
+	},
+	search: {
+		type: String
 	}
 });
 const clientStore = useClientsStore();
@@ -36,11 +39,18 @@ const waiting = computed(() => {
 const urgent = computed(() => {
 	return props.talk.created_at <= moment().subtract(15, "minutes").format("YYYY-MM-DD HH:mm:ss");
 });
+
+const show = computed(() => {
+	if (!props.search) return true;
+	if (props.talk.contactName.toLowerCase().includes(props.search.toLowerCase())) return true;
+	if (props.talk.whatsapp_identification.toLowerCase().includes(props.search.toLowerCase())) return true;
+	return false;
+});
 </script>
 
 <template>
 	<div class="h-20 border border-indigo-900 flex items-center p-4"
-		:class="{ 'bg-yellow-600': waiting, 'bg-red-600': urgent, 'animate-pulse': urgent, 'bg-indigo-400': !urgent }">
+		:class="{ 'bg-yellow-600': waiting, 'bg-red-600': urgent, 'animate-pulse': urgent, 'bg-indigo-400': !urgent }" v-show='show'>
 		<div class="contact-list-body-item-avatar">
 			<!-- <img :src="contact.avatar" alt="" /> -->
 		</div>
