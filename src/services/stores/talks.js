@@ -46,7 +46,7 @@ export const useTalksStore = defineStore("talks", () => {
                     "Content-Type": "application/json"
                 }
             });
-            talks.value = await response.json();
+            contactList.value = await response.json();
             return;
         } catch (error) {
             console.error(error);
@@ -56,6 +56,45 @@ export const useTalksStore = defineStore("talks", () => {
             });
         }
     }
+
+    async function findContactList() {
+        const url = GCurl + "talks/contacts";
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar conversa" }
+            });
+        }
+    }
+
+    async function findContactListByUser() {
+        const url = GCurl + "talks/contacts/users/" + userStore.user.identification;
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            router.push({
+                name: "404Resource",
+                params: { resource: "chamada encontrar conversa" }
+            });
+        }
+    }
+
     async function findOneTalkByChatID() {
         const url = GCurl + "talks/" + selected.value;
         try {
@@ -78,7 +117,7 @@ export const useTalksStore = defineStore("talks", () => {
         }
     }
     async function findAllTalksByUser() {
-        talks.value = {};
+        contactList.value = {};
         const url = GCurl + "talks/users/" + userStore.user.identification;
         try {
             const response = await fetch(url, {
@@ -89,9 +128,9 @@ export const useTalksStore = defineStore("talks", () => {
             });
             const data = await response.json();
             if (data) {
-                talks.value = {};
+                contactList.value = {};
                 data.forEach((talk) => {
-                    talks.value[talk.whatsapp_identification] = talk;
+                    contactList.value[talk.whatsapp_identification] = talk;
                 });
             }
         } catch (error) {
@@ -140,8 +179,8 @@ export const useTalksStore = defineStore("talks", () => {
         }
     }
 
-    function fetchTalks() {
-        userStore.user.is_admin ? findAllTalks() : findAllTalksByUser();
+    function fetchContactList() {
+        return userStore.user.is_admin ? findContactList() : findContactListByUser();
     }
 
     return {
@@ -152,6 +191,6 @@ export const useTalksStore = defineStore("talks", () => {
         findOneTalkByChatID,
         updateTalkToNewUser,
         updateTalksToNewTask,
-        fetchTalks
+        fetchContactList
     };
 });
