@@ -3,7 +3,7 @@ import ChatBarButtons from "../../components/bars/ChatBarButtons.vue";
 import { useClientsStore } from "../../services/stores/clients";
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { computed, onMounted, onUpdated, ref } from 'vue';
+import { Suspense, computed, onMounted, onUpdated, ref } from 'vue';
 import Socket from "../../services/socket.js";
 import MessageCard from "../../components/cards/MessageCard.vue";
 
@@ -15,8 +15,6 @@ const scrollContainer = ref(null);
 
 const user = computed(() => userStore.user.name);
 await talkStore.findOneTalkByChatID();
-const response = await userStore.findOneUserById(talkStore.activeChat[0].fk_users_identification);
-
 
 onMounted(() => {
 	scrollContainer.value.scrollTo(0, scrollContainer.value.scrollHeight);
@@ -24,15 +22,6 @@ onMounted(() => {
 
 onUpdated(() => {
 	scrollContainer.value.scrollTo(0, scrollContainer.value.scrollHeight);
-});
-
-const userResponsable = computed(() => {
-	if (talkStore.activeChat && talkStore.activeChat.length > 0) {
-		if (talkStore.activeChat[0].fk_users_identification == 1) return "Administrador";
-		if (talkStore.activeChat[0].fk_users_identification == userStore.user.identification) return "Você";
-  		return response.name || response.email.split("@")[0];
-	}
-	return "";
 });
 
 const contactName = computed(() => {
@@ -55,7 +44,9 @@ Socket.on("talks", async () => {
 			<MessageCard v-for="(message, index) in talkStore.activeChat" :key="index" :message="message"
 				:user="message.from_me === true ? user : contactName" :index="index" />
 		</div>
-		<ChatBarButtons class='row-span-1 col-span-10' :responsable='userResponsable' />
+		<Suspense>
+			<ChatBarButtons class='row-span-1 col-span-10' :responsable='talkStore.activeChat[0].fk_users_identification' />
+		</Suspense>
 	</div>
 </template>
 

@@ -2,7 +2,6 @@
 import { ref, computed, onBeforeMount } from 'vue';
 import { useTalksStore } from "../../services/stores/talks";
 import { useUsersStore } from "../../services/stores/users";
-import { useTeamsStore } from "../../services/stores/teams";
 import { useClientsStore } from "../../services/stores/clients";
 import TextInput from "../../components/inputs/TextInput.vue";
 import Combobox from "../../components/inputs/Combobox.vue";
@@ -11,7 +10,7 @@ import { useTasksStore } from "../../services/stores/tasks";
 
 const props = defineProps({
 	responsable: {
-		type: String,
+		type: Number,
 		required: true
 	}
 });
@@ -19,7 +18,6 @@ const props = defineProps({
 const myMessage = ref("");
 const talkStore = useTalksStore();
 const userStore = useUsersStore();
-const teamStore = useTeamsStore();
 const clientStore = useClientsStore();
 const taskStore = useTasksStore();
 const usedIdToTransfer = ref("");
@@ -33,6 +31,9 @@ const clientId = computed(() => {
 	const activeChatPhone = activeChat?.whatsapp_identification;
 	return clientStore.clients.find(client => client.phone === activeChatPhone)?.identification;
 });
+
+users.value = await userStore.findAllUsers();
+users.value = users.value.filter(user => user.identification !== userStore.user.identification);
 
 function sendMessage() {
 	if (myMessage.value != "") {
@@ -128,9 +129,11 @@ async function transferToNewUser() {
 	}
 }
 
-onBeforeMount(async () => {
-	users.value = await userStore.findAllUsers();
-	users.value = users.value.filter(user => user.identification !== userStore.user.identification);
+const userResponsable = computed(() => {
+	if (props.responsable == 1) return "Administrador";
+	if (props.responsable == userStore.user.identification) return "Você";
+	const user = users.value.find(user => user.identification === props.responsable);
+	return user.name || user.email.split("@")[0];
 });
 </script>
 
@@ -221,14 +224,14 @@ onBeforeMount(async () => {
 					h-10
 					2xl:w-12
 					2xl:h-12
-				" title="Enviar mensagem" @click="transferToNewUser()">
+				" title="Enviar mensagem" @click="transferToNewUser()" v-if="userStore.user.is_admin">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 				class="w-6 h-6">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
 			</svg>
 		</button>
-		<div class='mx-3 col-span-4 '>
-			<p>Usuário responsável: {{ props.responsable }}</p>
+		<div class='mx-3 col-span-4' v-if="userStore.user.is_admin">
+			<p>Usuário responsável: {{ userResponsable }}</p>
 		</div>
 		<button v-if='hasClient' type="button" class="
 					col-start-6
